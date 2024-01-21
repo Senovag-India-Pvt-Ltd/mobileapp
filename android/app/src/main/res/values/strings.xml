@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Sericulture Bidding App</string>
+    <string name="title_activity_main">Sericulture Bidding App</string>
+    <string name="package_name">com.senovag.sericulture.bidding</string>
+    <string name="custom_url_scheme">com.senovag.sericulture.bidding</string>
+</resources>

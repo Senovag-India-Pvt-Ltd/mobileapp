@@ -1,0 +1,36 @@
+ion-content{
+    --ion-background-color:#fff;
+}
+
+.item-background-color{
+    --ion-item-background:#57e3edd5;
+    text-align: center;
+}
+
+.awarded-label {
+    background-color: green;
+    color: #fff;
+    padding: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.not-awarded-label {
+    background-color: red;
+    color: #fff;
+    padding: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+    font-size: 30px;
+} */
+
+fill-outline.input-label-placement-floating.sc-ion-input-md-h input.sc-ion-input-md {
+    font-size: 30px;
+    text-align: center;
+}
+
+.native-input.sc-ion-input-md {
+    font-size: 30px;
+    text-align: center;
+}

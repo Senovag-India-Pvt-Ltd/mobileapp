@@ -1,0 +1,8 @@
+{
+  "name": "sericultureBiddingApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite",
+  "id": "b19b2649"
+}
