@@ -137,7 +137,7 @@ if (Capacitor.isNative) {
     setTimeout(() => {
       const inputElement = usernameInputRef.current?.querySelector('input');
       inputElement?.focus();
-    }, 100); // Adjust the delay as needed
+    }, 20); // Adjust the delay as needed
 
     let interval: string | number | NodeJS.Timeout | undefined;
 
@@ -220,7 +220,7 @@ if (Capacitor.isNative) {
     //     return;
     // }
 
-    if (!password || password.length < 6) {
+    if (!password || password.length < 1) {
         setMessage("Please enter your password");
         setIserror(true);
         return;
@@ -272,7 +272,7 @@ if (Capacitor.isNative) {
           setTimeout(() => {
             const inputElement = inputRef1.current?.querySelector('input');
             inputElement?.focus();
-          }, 100);       
+          }, 20);       
            // history.push("/bid/" + email);
          })
          .catch(error=>{

@@ -118,7 +118,7 @@ const Bid: React.FC = () => {
     setTimeout(() => {
       const inputElement = inputRefLot.current?.querySelector('input');
       inputElement?.focus();
-    }, 100); // Adjust the delay as needed
+    }, 20); // Adjust the delay as needed
   }, []);
 
   const handleInputChange1 = (inputRef: React.RefObject<HTMLIonInputElement>, value: string) => {

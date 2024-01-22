@@ -30,7 +30,7 @@ const ChangePassword: React.FC = () => {
     setTimeout(() => {
       const inputElement = inputRefLot.current?.querySelector('input');
       inputElement?.focus();
-    }, 100); // Adjust the delay as needed
+    }, 20); // Adjust the delay as needed
     const resumeListener = App.addListener('appStateChange', (state) => {
       if (state.isActive) {
         // App has resumed (come back to the foreground), resume your counter logic here
@@ -92,7 +92,7 @@ const ChangePassword: React.FC = () => {
           setTimeout(() => {
             const inputElement = inputRefLot.current?.querySelector('input');
             inputElement?.focus();
-          }, 100); 
+          }, 20); 
           // if(localStorage.getItem("userType") == '2'){
           //   history.push("/bid/" + localStorage.getItem("username"));
           // }else{

@@ -72,6 +72,8 @@ function TimeTicker({ isActive }: { isActive: boolean; }) {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [serverTime, setServerTime] = useState(new Date());
   const [count, setCount] = useState(0);
+  const [formatedTime, setFormatedTime] = useState<string>("");
+  
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -79,9 +81,13 @@ function TimeTicker({ isActive }: { isActive: boolean; }) {
         let originalDate = new Date(serverTime);
         const newDate = new Date(originalDate.getTime() + 1000);
         setCurrentTime(newDate);
+        const formattedTime1 = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+        setFormatedTime(formattedTime1);
       } else {
         const newDate = new Date(currentTime.getTime() + 1000);
         setCurrentTime(newDate);
+        const formattedTime1 = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit',hour12: false });
+        setFormatedTime(formattedTime1);
       }
 
       setCount((prevCount) => prevCount + 1);
@@ -136,7 +142,7 @@ function TimeTicker({ isActive }: { isActive: boolean; }) {
 
   return (
     <IonText>
-      <p style={{ paddingRight: '30px', fontWeight: 'bold', color: 'red', float: 'right', fontSize: 40 }}>{formattedTime}</p>
+      <p style={{ paddingRight: '30px', fontWeight: 'bold', color: 'red', float: 'right', fontSize: 30 }}>{formatedTime}</p>
     </IonText>
   );
 }

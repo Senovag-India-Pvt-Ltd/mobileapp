@@ -66,7 +66,7 @@ const BidAccept: React.FC = () => {
     setTimeout(() => {
       const inputElement = inputRefLot.current?.querySelector('input');
       inputElement?.focus();
-    }, 100); // Adjust the delay as needed
+    }, 20); // Adjust the delay as needed
 
     const resumeListener = App.addListener('appStateChange', (state) => {
       if (state.isActive) {
@@ -93,7 +93,7 @@ const BidAccept: React.FC = () => {
     setTimeout(() => {
       const inputElement = inputRefLot.current?.querySelector('input');
       inputElement?.blur();
-    }, 100); // Adjust the delay as needed
+    }, 20); // Adjust the delay as needed
 
     setShowClickDetailsSection(!showClickDetailsSection);
     setShowFarmerDetailsSection(!showFarmerDetailsSection);
@@ -157,7 +157,7 @@ const BidAccept: React.FC = () => {
     setTimeout(() => {
       const inputElement = inputRefLot.current?.querySelector('input');
       inputElement?.focus();
-    }, 100); // Adjust the delay as needed
+    }, 20); // Adjust the delay as needed
     setShowClickDetailsSection(true);
     setShowFarmerDetailsSection(false);
     setShowAcceptButtonSection(false);
@@ -168,7 +168,7 @@ const BidAccept: React.FC = () => {
     setTimeout(() => {
       const inputElement = inputRefLot.current?.querySelector('input');
       inputElement?.focus();
-    }, 100); // Adjust the delay as needed
+    }, 20); // Adjust the delay as needed
     setLotId("");
     setLotNumberValue("");
     setShowClickDetailsSection(!showClickDetailsSection);
@@ -180,7 +180,7 @@ const BidAccept: React.FC = () => {
     setTimeout(() => {
       const inputElement = inputRefLot.current?.querySelector('input');
       inputElement?.focus();
-    }, 100); // Adjust the delay as needed
+    }, 20); // Adjust the delay as needed
     setShowClickDetailsSection(!showClickDetailsSection);
     setShowFarmerDetailsSection(!showFarmerDetailsSection);
     setShowAcceptButtonSection(!showAcceptButtonSection);
