@@ -111,3 +111,61 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 } 
+
+.logo-round {
+  display: inherit;
+  width: 120px;
+  border-radius: 50% !important;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.market-name{
+  font-weight: bold;
+  justify-content: center !important;
+}
+
+.market-section{
+  font-weight: bold;
+  padding-bottom: 10px;
+  justify-content: center;
+}
+
+.profile-logo-round {
+  width: 120px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.complete-profile-section{
+  background-color: #0f6cbe;
+  border-radius: 10px;
+  padding: 10px;
+  color: #ffffff;
+}
+
+.profile-section{
+  justify-content: center;
+}
+
+.market-name{
+  font-weight: bold;
+  justify-content: center !important;
+}
+
+.profile-contents{
+  font-weight: bold;
+  justify-content: center;
+}
+
+.profile-image-container{
+  display: initial;
+}
+
+.container-profile{
+  height: 100px;
+  width: 200px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 20px;
+}

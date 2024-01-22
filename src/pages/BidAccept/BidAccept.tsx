@@ -2,24 +2,25 @@ import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader
 import { useHistory, useLocation, useParams } from 'react-router';
 import ExploreContainer from '../../components/ExploreContainer';
 import './../BidAccept/BidAccept.css';
-import axios from "axios";
-import { useState } from 'react';
-import { Capacitor } from '@capacitor/core';
+import axios from "axios";import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
+import TimeTicker from '../../components/TimeTicker';
+import { useEffect, useRef, useState } from 'react';
 
 const BidAccept: React.FC = () => {
 
   const [iserror, setIserror] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
 
   const [dateValue, setDateValue] = useState<string>("");
-  const [lotNumberValue, setLotNumberValue] = useState<number>();
+  const [lotNumberValue, setLotNumberValue] = useState<string>("");
   const [showClickDetailsSection, setShowClickDetailsSection] = useState(true);
   const [showFarmerDetailsSection, setShowFarmerDetailsSection] = useState(false);
   const [showAcceptButtonSection, setShowAcceptButtonSection] = useState(false);
   const [showBackButtonSection, setShowBackButtonSection] = useState(false);
   const [marketId, setMarketId] = useState<number>(9);
-  const [lotId, setLotId] = useState<number>();
+  const [lotId, setLotId] = useState<string>("");
 
   const [fruitsId, setFruitsId] = useState<string>("");
   const [farmerName, setFarmerName] = useState<string>("");
@@ -29,6 +30,12 @@ const BidAccept: React.FC = () => {
   const [villageName, setVillageName] = useState<string>("");
   const [bidStatus, setBidStatus] = useState<string>("");
   const [bidAcceptedBy, setBidAcceptedBy] = useState<string>("");
+
+  const [reelingLicenseNumber, setReelingLicenseNumber] = useState<string>("");
+  const [reelerFruitsId, setReelerFruitsId] = useState<string>("");
+
+  const [timeTickerKey, setTimeTickerKey] = useState(0);
+  const [isActive, setIsActive] = useState(true);
 
 const history = useHistory();
 const location = useLocation();
@@ -48,12 +55,33 @@ if (Capacitor.isNative) {
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
     const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    return `${day}-${month}-${year}`;
   };
 
   // State to hold the current date
   const [currentDate, setCurrentDate] = useState<string>(getCurrentDate());
 
+  useEffect(() => {
+    const resumeListener = App.addListener('appStateChange', (state) => {
+      if (state.isActive) {
+        // App has resumed (come back to the foreground), resume your counter logic here
+        console.log('App has resumed');
+        setIsActive(true);
+        // Increment the key to restart the TimeTicker component
+        setTimeTickerKey((prevKey) => prevKey + 1);
+        
+      } else {
+        // App has gone into the background, pause your counter logic here if needed
+        console.log('App has gone into the background');
+        setIsActive(false);
+      }
+    });
+
+    // Cleanup function to remove the event listener
+    return () => {
+      resumeListener.remove();
+    };
+  }, []); // The empty dependency array ensures this effect runs only once when the component mounts
 
   const fetchHighestBidDetails = () => {
     setShowClickDetailsSection(!showClickDetailsSection);
@@ -72,6 +100,37 @@ if (Capacitor.isNative) {
     api.post("/getHighestBidPerLotDetails", fetchHighestBidPayload)
         .then(res => { 
           let contents = res.data.content;
+          contents = {
+            "content": {
+              "allottedlotid": 9,
+              "amount": 650,
+              "farmerFirstName": "Nidhi Bhujanga Shetty1",
+              "farmerMiddleName": "Bhujanga Shetty1",
+              "farmerLastName": "",
+              "farmerNumber": "123123456161",
+              "reelerName": "REeelerekrnerenw",
+              "reelerFruitsId": "",
+              "reelingLicenseNumber": null,
+              "reelerAuctionId": 93,
+              "lotApproxWeightBeforeWeighment": 50,
+              "farmervillageName": "Kudumallige"
+            },
+            "errorMessages": [],
+            "errorCode": 0
+          };
+          // if(res.data.errorCode == -1){
+          //   setMessage(res.data.errorMessages[0]);
+          //   setIserror(true)
+
+          //   setLotId("")
+          //   setLotNumberValue("")
+
+          //   setShowClickDetailsSection(true)
+          //   setShowFarmerDetailsSection(false)
+          //   setShowAcceptButtonSection(false)
+          //   setShowBackButtonSection(false)
+           
+          // }else{
 
           setFruitsId(contents.farmerNumber);
           setFarmerName(contents.farmerFirstName + "" + contents.farmerMiddleName + "" + contents.farmerLastName); 
@@ -81,12 +140,15 @@ if (Capacitor.isNative) {
           setVillageName(contents.farmervillageName);
           setBidAcceptedBy(contents.bidAcceptedBy);
           setBidStatus(contents.status);
+          setReelingLicenseNumber(contents.reelingLicenseNumber);
+          setReelerFruitsId(contents.reelerFruitsId);
           
           if(contents.status == "accepted"){
             setShowFarmerDetailsSection(!showFarmerDetailsSection);
             setShowAcceptButtonSection(false);
             setShowBackButtonSection(!showBackButtonSection);
           }
+       // }
 
          })
          .catch(error=>{
@@ -105,6 +167,8 @@ if (Capacitor.isNative) {
   }
 
   const toggleClickDetailsSection = () => {
+    setLotId("");
+    setLotNumberValue("");
     setShowClickDetailsSection(!showClickDetailsSection);
     setShowFarmerDetailsSection(!showFarmerDetailsSection);
     setShowAcceptButtonSection(!showAcceptButtonSection);
@@ -128,6 +192,14 @@ if (Capacitor.isNative) {
     api.post("/acceptReelerBidForGivenLot", acceptBidPayLoad)
         .then(res => { 
           console.log(res.data);
+          if(res.data.errorCode == -1){
+            setMessage(res.data.errorMessages[0].message);
+            setIserror(true)
+          }else{
+            setIsSuccess(true)
+            setMessage("Bid accepted")
+          }
+         
          })
          .catch(error=>{
             setMessage("Failed to fetch highest bid");
@@ -140,7 +212,11 @@ if (Capacitor.isNative) {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Enter Lot Number for Acceptance</IonTitle>
+          <IonButtons slot="start">
+            <IonMenuButton />
+          </IonButtons>
+          {/* Pass isActive prop to TimeTicker component */}
+          <TimeTicker key={timeTickerKey} isActive={isActive} />
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen className="ion-padding ion-text-center">
@@ -148,11 +224,11 @@ if (Capacitor.isNative) {
           <IonGrid>
             <IonRow>
               <IonCol size='6'>
-                <IonInput className="ion-text-left" value={lotNumberValue} onIonInput={(e: any) => {
+                <IonInput className="input-big-font-size" value={lotNumberValue} onIonInput={(e: any) => {
                   setLotNumberValue(e.detail.value!);
-                  setLotId(parseInt(e.detail.value!));
+                  setLotId(e.detail.value!);
                 }}
-                  label="Lot Number" labelPlacement="floating" fill="outline"></IonInput>
+                  label="Lot No" labelPlacement="stacked" fill="outline"></IonInput>
               </IonCol>
 
             </IonRow>
@@ -171,10 +247,10 @@ if (Capacitor.isNative) {
           <IonGrid>
             <IonRow>
               <IonCol size='6'>
-                <IonInput className="ion-text-left" readonly value={lotNumberValue} onIonInput={(e: any) => {
+                <IonInput className="input-big-font-size" readonly value={lotNumberValue} onIonInput={(e: any) => {
                   setLotNumberValue(e.detail.value!);
                 }}
-                  label="Lot Number" labelPlacement="floating" fill="outline"></IonInput>
+                  label="Lot No" labelPlacement="stacked" fill="outline"></IonInput>
               </IonCol>
 
               <IonCol size="6">
@@ -233,7 +309,22 @@ if (Capacitor.isNative) {
                   </IonRow>
                   <IonRow className='next-row'>
                     <IonCol>
+                      <IonItem>{reelerAuctionId}</IonItem>
+                    </IonCol>
+                  </IonRow>
+                  <IonRow className='next-row'>
+                    <IonCol>
+                      <IonItem>{reelerFruitsId}</IonItem>
+                    </IonCol>
+                  </IonRow>
+                  <IonRow className='next-row'>
+                    <IonCol>
                       <IonItem>{reelerName}</IonItem>
+                    </IonCol>
+                  </IonRow>
+                  <IonRow className='next-row'>
+                    <IonCol>
+                      <IonItem>{reelingLicenseNumber}</IonItem>
                     </IonCol>
                   </IonRow>
                   <IonRow className='next-row'>
@@ -306,6 +397,22 @@ if (Capacitor.isNative) {
             </IonRow>
           </IonGrid>
         )}
+        <IonAlert
+        isOpen={iserror}
+        onDidDismiss={() => setIserror(false)}
+        cssClass="my-custom-class"
+        header={"Error!"}
+        message={message}
+        buttons={["Dismiss"]}
+      />
+       <IonAlert
+        isOpen={isSuccess}
+        onDidDismiss={() => setIsSuccess(false)}
+        cssClass="my-custom-class"
+        header={"Success!"}
+        message={message}
+        buttons={["Dismiss"]}
+      />
 
       </IonContent>
     </IonPage>

@@ -16,6 +16,10 @@ const authService = {
     localStorage.setItem('phoneNumber', response.data.phoneNumber);
     localStorage.setItem('userMasterId', response.data.userMasterId);
     localStorage.setItem('username', response.data.username);
+    localStorage.setItem('firstName', response.data.firstName);
+    localStorage.setItem('lastName', response.data.lastName);
+    localStorage.setItem('email', response.data.emailId);
+    localStorage.setItem('marketName', response.data.marketName);
     if(response.data.godownId != null && response.data.godownId != ""){
       localStorage.setItem('godownId', response.data.godownId);
     }else{

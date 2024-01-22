@@ -22,15 +22,8 @@ ion-content{
     text-align: center;
     font-weight: bold;
 }
-    font-size: 30px;
-} */
 
-fill-outline.input-label-placement-floating.sc-ion-input-md-h input.sc-ion-input-md {
-    font-size: 30px;
-    text-align: center;
-}
-
-.native-input.sc-ion-input-md {
+.input-big-font-size{
     font-size: 30px;
     text-align: center;
 }

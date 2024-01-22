@@ -33,6 +33,7 @@ const Bid: React.FC = () => {
   const [confirmationBidText, setConfirmationBidText] = useState<string>("");
   const [showLotNumberAlert, setShowLotNumberAlert] = useState(false);
   const [showBidNumberAlert, setShowBidNumberAlert] = useState(false);
+  const [showBidNumberAlertWith0, setShowBidNumberAlertWith0] = useState(false);
   const [showBidConfirmationAlert, setShowBidConfirmationAlert] = useState(false);
 
   const [highestBidAmount, setHighestBidAmount] = useState<number>();
@@ -40,6 +41,7 @@ const Bid: React.FC = () => {
   const [showHomeSection, setShowHomeSection] = useState(true);
   const [showReportSection, setShowReportSection] = useState(false);
   const [ionSegmentText, setIonSegmentText] = useState<string>("home");
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
 
   const [bidData, setBidData] = useState<any[]>([]);
 
@@ -51,8 +53,67 @@ const Bid: React.FC = () => {
   const inputRef3 = useRef<HTMLIonInputElement>(null);
 
   const inputRefLot = useRef<HTMLIonInputElement>(null);
+  const [timeTickerKey, setTimeTickerKey] = useState(0);
+  const [isActive, setIsActive] = useState(true);
+
+  const checkReelerMinBalance = () => {
+    const submitBidData = {
+      "marketId": parseInt(localStorage.getItem("marketId")!),
+      "godownId": parseInt(localStorage.getItem("godownId")!),
+      "reelerId": parseInt(localStorage.getItem("userTypeId")!)
+    }
+
+    const api = axios.create({
+       baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
+    })
+    api.post("/getReelerBalance", submitBidData)
+      .then(res => {
+        console.log(res.data)
+        handleLotClear();
+        if (res.data.content.balance < res.data.content.minimumMarketBalance) {
+          setMessage("Reeler minimum balance should be "+res.data.content.minimumMarketBalance);
+          setIserror(true)
+          setButtonDisabled(true)
+        }else{
+          setButtonDisabled(false)
+        }
+      })
+      .catch(error => {
+        setMessage("Failed to check reeler balance");
+        setIserror(true)
+        setButtonDisabled(true)
+      })
+  }
+
+  const startTimer = () => {
+    
+      const resumeListener = App.addListener('appStateChange', (state) => {
+        if (state.isActive) {
+          // App has resumed (come back to the foreground), resume your counter logic here
+          console.log('App has resumed');
+          setIsActive(true);
+          // Increment the key to restart the TimeTicker component
+          setTimeTickerKey((prevKey) => prevKey + 1);
+          
+        } else {
+          // App has gone into the background, pause your counter logic here if needed
+          console.log('App has gone into the background');
+          setIsActive(false);
+        }
+      });
+  
+      // Cleanup function to remove the event listener
+      return () => {
+        resumeListener.remove();
+      };
+   
+  }
+
+
 
   useEffect(() => {
+    startTimer();
+    checkReelerMinBalance();
     setTimeout(() => {
       const inputElement = inputRefLot.current?.querySelector('input');
       inputElement?.focus();
@@ -96,15 +157,13 @@ const Bid: React.FC = () => {
   }
 
   const handleLotClear = () => {
-    setLotNumberValue('');
+    // setLotNumberValue('');
     setBidAmountValue1('');
     setBidAmountValue2('');
     setBidAmountValue3('');
   }
 
   const handleBidBtn = () => {
-    // alert('Bid Success')
-
     const submitBidData = {
       "marketId": parseInt(localStorage.getItem("marketId")!),
       "godownId": parseInt(localStorage.getItem("godownId")!),
@@ -119,8 +178,8 @@ const Bid: React.FC = () => {
     })
     api.post("/submitBid", submitBidData)
       .then(res => {
-        // history.push("/bid/" + email);
         console.log(res.data)
+        handleLotClear();
         if (res.data.errorCode != 0) {
           setMessage(res.data.errorMessages[0].message);
           setIserror(true)
@@ -217,6 +276,8 @@ const Bid: React.FC = () => {
       setShowLotNumberAlert(true);
     } else if (concatenatedBidAmountString == "" || concatenatedBidAmountString == null) {
       setShowBidNumberAlert(true);
+    } else if (concatenatedBidAmountString == "000") {
+      setShowBidNumberAlertWith0(true);
     } else {
       setShowBidConfirmationAlert(true);
     }
@@ -242,7 +303,7 @@ const Bid: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <TimeTicker />
+          <TimeTicker key={timeTickerKey} isActive={isActive} />
           {/* <IonTitle>MARKET {name}</IonTitle> */}
         </IonToolbar>
       </IonHeader>
@@ -278,14 +339,14 @@ const Bid: React.FC = () => {
             <IonGrid>
               <IonRow>
                 <IonCol>
-                  <IonInput className='input-custom-font-size' inputmode="numeric" value={lotNumberValue} onIonInput={(e: any) => {
+                  <IonInput className='input-big-font-size' inputmode="numeric" value={lotNumberValue} onIonInput={(e: any) => {
                     setLotNumberValue(e.detail.value!);
                     setLotId(parseInt(e.detail.value!))
                   }}
-                    label="Lot Number" labelPlacement="floating" fill="outline" ref={inputRefLot}></IonInput>
+                    label="Lot No" labelPlacement="stacked" fill="outline" ref={inputRefLot}></IonInput>
                 </IonCol>
                 <IonCol>
-                  <IonButton size="large" onClick={handleLotClear}>Clear</IonButton>
+                  <IonButton size="large" style={{marginTop: '-1px'}} onClick={handleLotClear}>Clear</IonButton>
                 </IonCol>
               </IonRow>
               <IonRow>
@@ -295,7 +356,8 @@ const Bid: React.FC = () => {
               </IonRow>
               <IonRow>
                 <IonCol>
-                  <IonInput
+                  <IonInput 
+                    className='input-big-font-size'
                     type='text'
                     maxlength={1}
                     pattern="[0-9]{1}"
@@ -309,6 +371,7 @@ const Bid: React.FC = () => {
 
                 <IonCol>
                   <IonInput
+                    className='input-big-font-size'
                     type='text'
                     maxlength={1}
                     pattern="[0-9]{1}"
@@ -329,6 +392,7 @@ const Bid: React.FC = () => {
 
                 <IonCol>
                   <IonInput
+                    className='input-big-font-size'
                     type='text'
                     maxlength={1}
                     pattern="[0-9]{1}"
@@ -349,7 +413,7 @@ const Bid: React.FC = () => {
               </IonRow>
               <IonRow>
                 <IonCol>
-                  <IonButton id="bid-btn" expand="full" size="large" onClick={generateBidAmount}>Bid</IonButton>
+                  <IonButton id="bid-btn" expand="full" size="large" onClick={generateBidAmount} disabled={isButtonDisabled}>Bid</IonButton>
                   {/* <IonButton id="bid-btn" expand="full" size="large">Bid</IonButton> */}
                 </IonCol>
                 <IonCol>
@@ -439,6 +503,14 @@ const Bid: React.FC = () => {
         onDidDismiss={() => setShowBidNumberAlert(false)}
         header="Warning!"
         message="Please enter bid amount"
+        buttons={['OK']}
+      />
+
+    <IonAlert
+        isOpen={showBidNumberAlertWith0}
+        onDidDismiss={() => setShowBidNumberAlertWith0(false)}
+        header="Warning!"
+        message="Please enter proper bid amount"
         buttons={['OK']}
       />
 

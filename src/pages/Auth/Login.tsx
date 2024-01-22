@@ -154,6 +154,14 @@ if (Capacitor.isNative) {
 
   useEffect(() => {
     logDeviceInfo();
+
+    // Return a cleanup function that will be called when the component unmounts
+    // return () => {
+    //   // This code will run when the component unmounts or leaves the view
+    //   console.log('Component is leaving the view or unmounting');
+    //   setShowLoginSection(true);
+    //   setShowVerificationSection(false);
+    // };
   }, []);
 
   const handleStart = () => {
@@ -299,7 +307,11 @@ if (Capacitor.isNative) {
             }else{
               setShowLoginSection(true);
               setShowVerificationSection(false);  
-              history.push("/bid/" + email);
+              if(localStorage.getItem("userType") == '2'){
+                history.push("/bid/" + email);
+              }else{
+                history.push("/accept-bid");
+              }
             }
           }else{
             setMessage("OTP not verified");
