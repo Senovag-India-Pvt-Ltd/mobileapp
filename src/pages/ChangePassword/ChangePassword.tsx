@@ -3,7 +3,7 @@ import { useHistory, useLocation, useParams } from 'react-router';
 import ExploreContainer from '../../components/ExploreContainer';
 import './../BidAccept/BidAccept.css';
 import axios from "axios";
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
 import TimeTicker from '../../components/TimeTicker';
@@ -21,10 +21,16 @@ const ChangePassword: React.FC = () => {
 
   const [timeTickerKey, setTimeTickerKey] = useState(0);
   const [isActive, setIsActive] = useState(true);
+  const inputRefLot = useRef<HTMLIonInputElement>(null);
+
 
   const history = useHistory();
 
   useEffect(() => {
+    setTimeout(() => {
+      const inputElement = inputRefLot.current?.querySelector('input');
+      inputElement?.focus();
+    }, 100); // Adjust the delay as needed
     const resumeListener = App.addListener('appStateChange', (state) => {
       if (state.isActive) {
         // App has resumed (come back to the foreground), resume your counter logic here
@@ -83,6 +89,10 @@ const ChangePassword: React.FC = () => {
           setCurrentPassword("");
           setNewPassword("");
           setConfirmNewPassword("");
+          setTimeout(() => {
+            const inputElement = inputRefLot.current?.querySelector('input');
+            inputElement?.focus();
+          }, 100); 
           // if(localStorage.getItem("userType") == '2'){
           //   history.push("/bid/" + localStorage.getItem("username"));
           // }else{
@@ -114,7 +124,7 @@ const ChangePassword: React.FC = () => {
         <IonGrid>
           <IonRow>
             <IonCol>
-              <IonInput className="ion-text-left" value={currentPassword} onIonInput={(e: any) => {
+              <IonInput className="ion-text-left" value={currentPassword}  ref={inputRefLot} onIonInput={(e: any) => {
                 setCurrentPassword(e.detail.value!);
 
               }}
@@ -155,7 +165,7 @@ const ChangePassword: React.FC = () => {
           isOpen={isSuccess}
           onDidDismiss={() => setIserror(false)}
           cssClass="my-custom-class"
-          header={"SUccess!"}
+          header={"Success!"}
           message={message}
           buttons={["Dismiss"]}
         />

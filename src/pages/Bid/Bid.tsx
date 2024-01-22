@@ -14,7 +14,7 @@ const Bid: React.FC = () => {
 
   const [marketId, setMarketId] = useState<number>(9);
   const [godownId, setGodownId] = useState<number>(8);
-  const [lotId, setLotId] = useState<number>(1);
+  const [lotId, setLotId] = useState<number>();
   const [reelerId, setReelerId] = useState<number>(3);
   const [amount, setAmount] = useState<number>();
   const [status, setStatus] = useState<string>('StatusString');
@@ -55,6 +55,7 @@ const Bid: React.FC = () => {
   const inputRefLot = useRef<HTMLIonInputElement>(null);
   const [timeTickerKey, setTimeTickerKey] = useState(0);
   const [isActive, setIsActive] = useState(true);
+  const [highestBidForLot, setHighestBidForLot] = useState<string>("");
 
   const checkReelerMinBalance = () => {
     const submitBidData = {
@@ -161,6 +162,7 @@ const Bid: React.FC = () => {
     setBidAmountValue1('');
     setBidAmountValue2('');
     setBidAmountValue3('');
+    fetchHighestBidForLot();
   }
 
   const handleBidBtn = () => {
@@ -180,6 +182,7 @@ const Bid: React.FC = () => {
       .then(res => {
         console.log(res.data)
         handleLotClear();
+        handleRefreshBtn();
         if (res.data.errorCode != 0) {
           setMessage(res.data.errorMessages[0].message);
           setIserror(true)
@@ -192,6 +195,36 @@ const Bid: React.FC = () => {
 
   }
 
+  const fetchHighestBidForLot = () => {
+    if(lotId != null){
+    const highestBidData = {
+      "marketId": parseInt(localStorage.getItem("marketId")!),
+      "godownId": parseInt(localStorage.getItem("godownId")!),
+      "allottedLotId": lotId
+    }
+
+    const api = axios.create({
+       baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
+    })
+    api.post("/getHighestBidPerLot", highestBidData)
+      .then(res => {
+        console.log(res.data);
+        setHighestBidForLot(res.data.content.highestBidAmount);
+       
+      })
+      .catch(error => {
+        // setMessage("Bid Adding data Failed");
+        // setIserror(true)
+      })
+    }
+
+  }
+
+  const handleReBid = (e: React.MouseEvent<HTMLIonButtonElement>, data: string) => {
+    e.preventDefault();
+    setLotNumberValue(data);
+    setLotId(parseInt(data));
+  };
 
 
   const handleRefreshBtn = () => {
@@ -343,10 +376,18 @@ const Bid: React.FC = () => {
                     setLotNumberValue(e.detail.value!);
                     setLotId(parseInt(e.detail.value!))
                   }}
+                  onIonBlur={() => {
+                    // After focus out, automatically focus on the next input field
+                    fetchHighestBidForLot();
+                    inputRef1.current?.setFocus();
+                  }}
                     label="Lot No" labelPlacement="stacked" fill="outline" ref={inputRefLot}></IonInput>
                 </IonCol>
                 <IonCol>
-                  <IonButton size="large" style={{marginTop: '-1px'}} onClick={handleLotClear}>Clear</IonButton>
+                  <IonButton size="large" style={{marginTop: '-1px'}} onClick={handleLotClear}>Clr</IonButton>
+                </IonCol>
+                <IonCol>
+                  <IonLabel className='highest-bid-label' style={{marginTop: '-1px'}}>{highestBidForLot}</IonLabel>
                 </IonCol>
               </IonRow>
               <IonRow>
@@ -423,6 +464,7 @@ const Bid: React.FC = () => {
             </IonGrid>
 
             <IonItem className='item-background-color'>
+            <IonLabel>Re-Bid</IonLabel>
               <IonLabel>Lot No</IonLabel>
               <IonLabel>Bid Amt</IonLabel>
               <IonLabel>Curr. Bid</IonLabel>
@@ -431,13 +473,16 @@ const Bid: React.FC = () => {
             {bidData.map((item) => (
               <IonCol size='12' key={item.allottedLotId}>
                 <IonRow>
-                  <IonCol size="4" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
+                <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
+                    <IonButton onClick={(e) => handleReBid(e, item.allottedLotId)}>Re-Bid</IonButton>
+                  </IonCol>
+                  <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
                     <IonLabel>{item.allottedLotId}</IonLabel>
                   </IonCol>
-                  <IonCol size="4" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
+                  <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
                     <IonLabel>{item.highestBidAmount}</IonLabel>
                   </IonCol>
-                  <IonCol size="4" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
+                  <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
                     <IonLabel>{item.myBidAmount}</IonLabel>
                   </IonCol>
                 </IonRow>

@@ -27,6 +27,7 @@ import Login from './pages/Auth/Login';
 import Bid from './pages/Bid/Bid';
 import BidAccept from './pages/BidAccept/BidAccept';
 import Logout from './pages/Logout/Logout';
+import ChangePassword from './pages/ChangePassword/ChangePassword';
 
 setupIonicReact();
 
@@ -51,6 +52,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/accept-bid" exact={true}>
               <BidAccept />
+            </Route>
+            <Route path="/change-password" exact={true}>
+              <ChangePassword />
             </Route>
             <Route path="/logout" exact={true}>
               <Logout />

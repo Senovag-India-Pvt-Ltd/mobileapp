@@ -66,6 +66,7 @@ const Login: React.FC = () => {
   const inputRef4 = useRef<HTMLIonInputElement>(null);
   const inputRef5 = useRef<HTMLIonInputElement>(null);
   const inputRef6 = useRef<HTMLIonInputElement>(null);
+  const usernameInputRef = useRef<HTMLIonInputElement>(null);
 
   const handleInputChange1 = (inputRef: React.RefObject<HTMLIonInputElement>, value: string) => {
     const inputValue = value;
@@ -130,7 +131,13 @@ if (Capacitor.isNative) {
     });
 }
 
-  useEffect(() => {                   
+  useEffect(() => {  
+    
+  
+    setTimeout(() => {
+      const inputElement = usernameInputRef.current?.querySelector('input');
+      inputElement?.focus();
+    }, 100); // Adjust the delay as needed
 
     let interval: string | number | NodeJS.Timeout | undefined;
 
@@ -399,6 +406,7 @@ if (Capacitor.isNative) {
                     <IonIcon color='primary' slot="start" icon={personCircle} aria-hidden="true"></IonIcon>
                     <IonInput labelPlacement="stacked" label="Username" placeholder="" type="email"
                         value={email}
+                        ref={usernameInputRef}
                         onIonInput={(e) => setEmail(e.detail.value!)}>
                     </IonInput>
                 </IonItem>
@@ -553,7 +561,7 @@ if (Capacitor.isNative) {
               </IonRow>
             <IonRow>
               <IonCol size='6' className="ion-text-left">
-                <IonLabel>Wait for {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')} mins</IonLabel>
+                <IonLabel>Valid for {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')} mins</IonLabel>
                 
               </IonCol>
               <IonCol size='6' className="ion-text-right">
