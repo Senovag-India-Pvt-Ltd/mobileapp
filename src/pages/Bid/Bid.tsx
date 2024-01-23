@@ -110,16 +110,16 @@ const Bid: React.FC = () => {
    
   }
 
-
-
   useEffect(() => {
     startTimer();
     checkReelerMinBalance();
-    setTimeout(() => {
-      const inputElement = inputRefLot.current?.querySelector('input');
-      inputElement?.focus();
-    }, 20); // Adjust the delay as needed
+    inputRefLot.current?.setFocus();
   }, []);
+
+
+  useEffect(() => {
+    
+  }, [lotId]);
 
   const handleInputChange1 = (inputRef: React.RefObject<HTMLIonInputElement>, value: string) => {
     const inputValue = value;
@@ -169,7 +169,6 @@ const Bid: React.FC = () => {
     setBidAmountValue1('');
     setBidAmountValue2('');
     setBidAmountValue3('');
-    fetchHighestBidForLot();
   }
 
   const handleBidBtn = () => {
@@ -202,12 +201,14 @@ const Bid: React.FC = () => {
 
   }
 
-  const fetchHighestBidForLot = () => {
-    if(lotId != null){
+  const fetchHighestBidForLot = (_lotid: any) => {
+    setLotNumberValue(_lotid);
+    setLotId(parseInt(_lotid))
+    if(_lotid != null){
     const highestBidData = {
       "marketId": parseInt(localStorage.getItem("marketId")!),
       "godownId": parseInt(localStorage.getItem("godownId")!),
-      "allottedLotId": lotId
+      "allottedLotId": parseInt(_lotid)
     }
 
     const api = axios.create({
@@ -217,7 +218,6 @@ const Bid: React.FC = () => {
       .then(res => {
         console.log(res.data);
         setHighestBidForLot(res.data.content.highestBidAmount);
-       
       })
       .catch(error => {
         // setMessage("Bid Adding data Failed");
@@ -227,11 +227,12 @@ const Bid: React.FC = () => {
 
   }
 
-  const handleReBid = (e: React.MouseEvent<HTMLIonButtonElement>, data: string) => {
+  const handleReBid = (e: React.MouseEvent<HTMLIonButtonElement>, data: string, _inputRef1: React.RefObject<HTMLIonInputElement>) => {
     e.preventDefault();
     setLotNumberValue(data);
     setLotId(parseInt(data));
-    fetchHighestBidForLot();
+    fetchHighestBidForLot(data)
+    _inputRef1.current?.setFocus();
   };
 
 
@@ -380,13 +381,10 @@ const Bid: React.FC = () => {
             <IonGrid>
               <IonRow>
                 <IonCol>
-                  <IonInput className='input-big-font-size' inputmode="numeric" value={lotNumberValue} onIonInput={(e: any) => {
-                    setLotNumberValue(e.detail.value!);
-                    setLotId(parseInt(e.detail.value!))
-                  }}
-                  onIonBlur={() => {
+                  <IonInput className='input-big-font-size' inputmode="numeric" value={lotNumberValue}
+                  onIonBlur= { async (e: any) => {
                     // After focus out, automatically focus on the next input field
-                    fetchHighestBidForLot();
+                    fetchHighestBidForLot(e.target.value);
                     inputRef1.current?.setFocus();
                   }}
                     label="Lot No" labelPlacement="stacked" fill="outline" ref={inputRefLot}></IonInput>
@@ -482,7 +480,7 @@ const Bid: React.FC = () => {
               <IonCol size='12' key={item.allottedLotId}>
                 <IonRow>
                 <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
-                    <IonButton onClick={(e) => handleReBid(e, item.allottedLotId)}>Re-Bid</IonButton>
+                    <IonButton onClick={(e) => handleReBid(e, item.allottedLotId, inputRef1)}>Re-Bid</IonButton>
                   </IonCol>
                   <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
                     <IonLabel>{item.allottedLotId}</IonLabel>
