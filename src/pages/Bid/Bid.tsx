@@ -158,7 +158,14 @@ const Bid: React.FC = () => {
   }
 
   const handleLotClear = () => {
-    // setLotNumberValue('');
+    setLotNumberValue('');
+    setHighestBidForLot('');
+    setBidAmountValue1('');
+    setBidAmountValue2('');
+    setBidAmountValue3('');
+  }
+
+  const handleClearAfterBid = () => {
     setBidAmountValue1('');
     setBidAmountValue2('');
     setBidAmountValue3('');
@@ -181,7 +188,7 @@ const Bid: React.FC = () => {
     api.post("/submitBid", submitBidData)
       .then(res => {
         console.log(res.data)
-        handleLotClear();
+        handleClearAfterBid();
         handleRefreshBtn();
         if (res.data.errorCode != 0) {
           setMessage(res.data.errorMessages[0].message);
@@ -224,6 +231,7 @@ const Bid: React.FC = () => {
     e.preventDefault();
     setLotNumberValue(data);
     setLotId(parseInt(data));
+    fetchHighestBidForLot();
   };
 
 
