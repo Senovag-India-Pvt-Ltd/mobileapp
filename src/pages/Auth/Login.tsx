@@ -265,6 +265,11 @@ if (Capacitor.isNative) {
     })
     api.post("/userMaster/generate-otp-by-user-name-and-password", loginData)
         .then(res => { 
+        
+          if(res.data.content.error){
+            setMessage(res.data.content.error_description);
+            setIserror(true)
+          }else{
           setPhoneNumber(res.data.content.phoneNumber.substring(res.data.content.phoneNumber.length - 4));
           handleStart();
           setShowVerificationSection(true)
@@ -272,10 +277,12 @@ if (Capacitor.isNative) {
           setTimeout(() => {
             const inputElement = inputRef1.current?.querySelector('input');
             inputElement?.focus();
-          }, 20);       
+          }, 20);  
+        }     
            // history.push("/bid/" + email);
          })
          .catch(error=>{
+        
             setMessage("OTP not sent " +error);
             setIserror(true)
          })

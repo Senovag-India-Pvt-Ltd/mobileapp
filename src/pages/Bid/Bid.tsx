@@ -67,7 +67,13 @@ const Bid: React.FC = () => {
     const api = axios.create({
        baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
     })
-    api.post("/getReelerBalance", submitBidData)
+    api.post("/getReelerBalance", submitBidData, {
+      headers: {
+        "Content-Type": "application/json",
+        accept: "*/*",
+        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+      },
+    })
       .then(res => {
         console.log(res.data)
         handleLotClear();
@@ -184,7 +190,13 @@ const Bid: React.FC = () => {
     const api = axios.create({
        baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
     })
-    api.post("/submitBid", submitBidData)
+    api.post("/submitBid", submitBidData, {
+      headers: {
+        "Content-Type": "application/json",
+        accept: "*/*",
+        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+      },
+    })
       .then(res => {
         console.log(res.data)
         handleClearAfterBid();
@@ -214,7 +226,13 @@ const Bid: React.FC = () => {
     const api = axios.create({
        baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
     })
-    api.post("/getHighestBidPerLot", highestBidData)
+    api.post("/getHighestBidPerLot", highestBidData, {
+      headers: {
+        "Content-Type": "application/json",
+        accept: "*/*",
+        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+      },
+    })
       .then(res => {
         console.log(res.data);
         setHighestBidForLot(res.data.content.highestBidAmount);
@@ -252,7 +270,13 @@ const Bid: React.FC = () => {
       //  baseURL: `http://13.200.62.144:8002/market-auction/v1/auction/reeler`
       baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
     })
-    api.post("/getHighestAndCurrentBidByEachLotForReeler", submitData)
+    api.post("/getHighestAndCurrentBidByEachLotForReeler", submitData, {
+      headers: {
+        "Content-Type": "application/json",
+        accept: "*/*",
+        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+      },
+    })
       //   api.post("/getHighestBidPerLotDetails", submitData)
       .then(res => {
         // console.log(res.data)

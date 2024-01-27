@@ -108,7 +108,13 @@ const BidAccept: React.FC = () => {
       baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
       //  baseURL: `http://13.200.62.144:8002/market-auction/v1/auction/reeler`
     })
-    api.post("/getHighestBidPerLotDetails", fetchHighestBidPayload)
+    api.post("/getHighestBidPerLotDetails", fetchHighestBidPayload, {
+      headers: {
+        "Content-Type": "application/json",
+        accept: "*/*",
+        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+      },
+    })
       .then(res => {
         let contents = res.data.content;
 
@@ -195,7 +201,13 @@ const BidAccept: React.FC = () => {
     const api = axios.create({
       baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
     })
-    api.post("/acceptReelerBidForGivenLot", acceptBidPayLoad)
+    api.post("/acceptReelerBidForGivenLot", acceptBidPayLoad, {
+      headers: {
+        "Content-Type": "application/json",
+        accept: "*/*",
+        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+      },
+    })
       .then(res => {
         console.log(res.data);
         if (res.data.errorCode == -1) {
