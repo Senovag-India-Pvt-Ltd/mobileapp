@@ -1,4 +1,4 @@
-import { InputChangeEventDetail, IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonItem, IonItemDivider, IonLabel, IonMenuButton, IonPage, IonRow, IonSegment, IonSegmentButton, IonTitle, IonToolbar } from '@ionic/react';
+import { InputChangeEventDetail, IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonItem, IonItemDivider, IonLabel, IonMenuButton, IonPage, IonRow, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
 import { useHistory, useLocation, useParams } from 'react-router';
 import ExploreContainer from '../../components/ExploreContainer';
 import './../Bid/Bid.css';
@@ -7,6 +7,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
 import TimeTicker from '../../components/TimeTicker';
+import { Geolocation } from '@capacitor/geolocation';
+import { options } from 'ionicons/icons';
 
 const Bid: React.FC = () => {
 
@@ -92,6 +94,68 @@ const Bid: React.FC = () => {
       })
   }
 
+  //get location of the device 
+  const getDeviceLocation = async ()=>{
+    let geolocationOptions = { maximumAge: 1000, timeout: 5000, enableHighAccuracy: true };
+    const locId = await Geolocation.watchPosition(geolocationOptions,(position,err)=>{
+      if(err){
+        console.info("error",err);
+      }
+      if(position){
+        checkDeviceInZone(position);
+        console.info('position',position);
+      }
+      
+      
+    });
+    console.info("locId",locId);
+  }
+  const checkDeviceInZone = (location:any)=>{
+    console.info(location);
+    let usrloc = {
+      lat:location.coords.latitude,
+      lng:location.coords.longitude
+    };
+    
+    //6.6 mtr acuracy
+    // let mrktloc = {
+    //   lat: 12.9652161,
+    //   lng: 77.5249014
+    // };
+   
+    let mrktloc = {
+      lat: localStorage.getItem("marketLat"),
+      lng: localStorage.getItem("marketLongitude")
+    };
+    //  let mrktloc = {
+    //   lat: 12.2958104,
+    //   lng: 76.6393805
+    // };
+    // let mrktloc = {
+    //   lat: 13.7342183,
+    //   lng: 75.2542902
+    // };
+    let radius = 0.2; //range in km
+    let isinrange = arePointsNear(usrloc,mrktloc,radius);
+    if(!isinrange){
+      setMessage("Your location in far away from market"+location.coords.latitude+":Lang"+location.coords.longitude);
+      setIserror(true)
+      setButtonDisabled(true)
+    }else{
+      setButtonDisabled(false)
+    }
+    console.info("isinrange",isinrange);
+  }
+  //check the device location is within the range
+  const arePointsNear = (checkPoint:any, centerPoint:any, km:number) => {
+    var ky = 40000 / 360;
+    var kx = Math.cos(Math.PI * centerPoint.lat / 180.0) * ky;
+    var dx = Math.abs(centerPoint.lng - checkPoint.lng) * kx;
+    var dy = Math.abs(centerPoint.lat - checkPoint.lat) * ky;
+    
+    return Math.sqrt(dx * dx + dy * dy) <= km;
+  }
+
   const startTimer = () => {
     
       const resumeListener = App.addListener('appStateChange', (state) => {
@@ -116,10 +180,19 @@ const Bid: React.FC = () => {
    
   }
 
+  // useIonViewDidEnter(() => {
+  //   inputRefLot.current?.setFocus();
+  // });
+
+  useIonViewWillEnter(() => {
+    inputRefLot.current?.setFocus();
+  });
+
   useEffect(() => {
     startTimer();
     checkReelerMinBalance();
     inputRefLot.current?.setFocus();
+    getDeviceLocation();
   }, []);
 
 

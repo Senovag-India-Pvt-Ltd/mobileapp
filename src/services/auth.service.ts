@@ -40,6 +40,9 @@ const authService = {
     }else{
       localStorage.setItem('deviceId', "0");
     }
+    localStorage.setItem('radius', response.data.radius);
+    localStorage.setItem('marketLat', response.data.marketLat);
+    localStorage.setItem('marketLongitude', response.data.marketLongitude);
     console.log(response.data.token)
   },
 

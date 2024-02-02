@@ -1,4 +1,4 @@
-import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonItem, IonLabel, IonMenuButton, IonPage, IonRow, IonSegment, IonSegmentButton, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonItem, IonLabel, IonMenuButton, IonPage, IonRow, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
 import { useHistory, useLocation, useParams } from 'react-router';
 import ExploreContainer from '../../components/ExploreContainer';
 import './../BidAccept/BidAccept.css';
@@ -26,11 +26,15 @@ const ChangePassword: React.FC = () => {
 
   const history = useHistory();
 
+  // useIonViewDidEnter(() => {
+  //   inputRefLot.current?.setFocus();
+  // });
+
+  useIonViewWillEnter(() => {
+    inputRefLot.current?.setFocus();
+  });
+
   useEffect(() => {
-    setTimeout(() => {
-      const inputElement = inputRefLot.current?.querySelector('input');
-      inputElement?.focus();
-    }, 20); // Adjust the delay as needed
     const resumeListener = App.addListener('appStateChange', (state) => {
       if (state.isActive) {
         // App has resumed (come back to the foreground), resume your counter logic here
@@ -89,10 +93,7 @@ const ChangePassword: React.FC = () => {
           setCurrentPassword("");
           setNewPassword("");
           setConfirmNewPassword("");
-          setTimeout(() => {
-            const inputElement = inputRefLot.current?.querySelector('input');
-            inputElement?.focus();
-          }, 20); 
+          inputRefLot.current?.setFocus();
           // if(localStorage.getItem("userType") == '2'){
           //   history.push("/bid/" + localStorage.getItem("username"));
           // }else{
@@ -128,7 +129,7 @@ const ChangePassword: React.FC = () => {
                 setCurrentPassword(e.detail.value!);
 
               }}
-                label="Current password" labelPlacement="stacked" fill="outline"></IonInput>
+                label="Current password" labelPlacement="stacked" fill="outline" inputmode="email"></IonInput>
             </IonCol>
           </IonRow>
           <IonRow>

@@ -1,4 +1,4 @@
-import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonItem, IonLabel, IonMenuButton, IonPage, IonRow, IonSegment, IonSegmentButton, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonItem, IonLabel, IonMenuButton, IonPage, IonRow, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
 import { useHistory, useLocation, useParams } from 'react-router';
 import ExploreContainer from '../../components/ExploreContainer';
 import './../BidAccept/BidAccept.css';
@@ -62,12 +62,15 @@ const BidAccept: React.FC = () => {
   // State to hold the current date
   const [currentDate, setCurrentDate] = useState<string>(getCurrentDate());
 
-  useEffect(() => {
-    setTimeout(() => {
-      const inputElement = inputRefLot.current?.querySelector('input');
-      inputElement?.focus();
-    }, 20); // Adjust the delay as needed
+  // useIonViewDidEnter(() => {
+  //   inputRefLot.current?.setFocus();
+  // });
 
+  useIonViewWillEnter(() => {
+    inputRefLot.current?.setFocus();
+  });
+
+  useEffect(() => {
     const resumeListener = App.addListener('appStateChange', (state) => {
       if (state.isActive) {
         // App has resumed (come back to the foreground), resume your counter logic here
@@ -90,10 +93,7 @@ const BidAccept: React.FC = () => {
   }, []); // The empty dependency array ensures this effect runs only once when the component mounts
 
   const fetchHighestBidDetails = () => {
-    setTimeout(() => {
-      const inputElement = inputRefLot.current?.querySelector('input');
-      inputElement?.blur();
-    }, 20); // Adjust the delay as needed
+    inputRefLot.current?.setFocus();
 
     setShowClickDetailsSection(!showClickDetailsSection);
     setShowFarmerDetailsSection(!showFarmerDetailsSection);
@@ -160,10 +160,7 @@ const BidAccept: React.FC = () => {
 
 
   const toggleBackButtonSection = () => {
-    setTimeout(() => {
-      const inputElement = inputRefLot.current?.querySelector('input');
-      inputElement?.focus();
-    }, 20); // Adjust the delay as needed
+    inputRefLot.current?.setFocus();
     setShowClickDetailsSection(true);
     setShowFarmerDetailsSection(false);
     setShowAcceptButtonSection(false);
@@ -171,10 +168,7 @@ const BidAccept: React.FC = () => {
   }
 
   const toggleClickDetailsSection = () => {
-    setTimeout(() => {
-      const inputElement = inputRefLot.current?.querySelector('input');
-      inputElement?.focus();
-    }, 20); // Adjust the delay as needed
+    inputRefLot.current?.setFocus();
     setLotId("");
     setLotNumberValue("");
     setShowClickDetailsSection(!showClickDetailsSection);
@@ -183,10 +177,7 @@ const BidAccept: React.FC = () => {
   };
 
   const handleAcceptButtonEvent = () => {
-    setTimeout(() => {
-      const inputElement = inputRefLot.current?.querySelector('input');
-      inputElement?.focus();
-    }, 20); // Adjust the delay as needed
+    inputRefLot.current?.setFocus();
     setShowClickDetailsSection(!showClickDetailsSection);
     setShowFarmerDetailsSection(!showFarmerDetailsSection);
     setShowAcceptButtonSection(!showAcceptButtonSection);

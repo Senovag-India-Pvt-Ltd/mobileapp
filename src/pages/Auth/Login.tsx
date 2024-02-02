@@ -1,4 +1,4 @@
-import { BackButtonEvent, IonCard, IonCardContent, IonCardHeader, IonContent, IonHeader, IonImg, IonList, IonPage, IonRouterContext, IonTitle, IonToolbar, isPlatform, useIonRouter, useIonViewDidEnter, useIonViewWillLeave } from '@ionic/react';
+import { BackButtonEvent, IonCard, IonCardContent, IonCardHeader, IonContent, IonHeader, IonImg, IonList, IonPage, IonRouterContext, IonTitle, IonToolbar, isPlatform, useIonRouter, useIonViewDidEnter, useIonViewWillEnter, useIonViewWillLeave } from '@ionic/react';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import axios from "axios";
 import { IonGrid, IonRow, IonCol } from '@ionic/react';
@@ -67,6 +67,7 @@ const Login: React.FC = () => {
   const inputRef5 = useRef<HTMLIonInputElement>(null);
   const inputRef6 = useRef<HTMLIonInputElement>(null);
   const usernameInputRef = useRef<HTMLIonInputElement>(null);
+  const otpInputRef = useRef<HTMLIonInputElement>(null);
 
   const handleInputChange1 = (inputRef: React.RefObject<HTMLIonInputElement>, value: string) => {
     const inputValue = value;
@@ -131,13 +132,16 @@ if (Capacitor.isNative) {
     });
 }
 
+useIonViewDidEnter(() => {
+  usernameInputRef.current?.setFocus();
+});
+
+
+useIonViewWillEnter(() => {
+  usernameInputRef.current?.setFocus();
+});
+
   useEffect(() => {  
-    
-  
-    setTimeout(() => {
-      const inputElement = usernameInputRef.current?.querySelector('input');
-      inputElement?.focus();
-    }, 20); // Adjust the delay as needed
 
     let interval: string | number | NodeJS.Timeout | undefined;
 
@@ -273,11 +277,9 @@ if (Capacitor.isNative) {
           setPhoneNumber(res.data.content.phoneNumber.substring(res.data.content.phoneNumber.length - 4));
           handleStart();
           setShowVerificationSection(true)
-          setShowLoginSection(false)    
-          setTimeout(() => {
-            const inputElement = inputRef1.current?.querySelector('input');
-            inputElement?.focus();
-          }, 20);  
+          setShowLoginSection(false)  
+          otpInputRef.current?.setFocus();  
+         // inputRef1.current?.setFocus();
         }     
            // history.push("/bid/" + email);
          })
@@ -412,6 +414,7 @@ if (Capacitor.isNative) {
                 <IonItem>
                     <IonIcon color='primary' slot="start" icon={personCircle} aria-hidden="true"></IonIcon>
                     <IonInput labelPlacement="stacked" label="Username" placeholder="" type="email"
+                    inputmode="email"
                         value={email}
                         ref={usernameInputRef}
                         onIonInput={(e) => setEmail(e.detail.value!)}>
@@ -486,6 +489,7 @@ if (Capacitor.isNative) {
             <IonRow>
             <IonCol>
             <IonInput labelPlacement="stacked" label="OTP" placeholder="" fill='outline'
+             ref={otpInputRef}
                             onIonInput={(e) => setOtp(e.detail.value!)}>
                         </IonInput>
                         </IonCol>
