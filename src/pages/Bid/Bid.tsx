@@ -128,8 +128,8 @@ const Bid: React.FC = () => {
       lng: localStorage.getItem("marketLongitude")
     };
     //  let mrktloc = {
-    //   lat: 12.2958104,
-    //   lng: 76.6393805
+    //   lat:12.959744,
+    //   lng: 77.6404992
     // };
     // let mrktloc = {
     //   lat: 13.7342183,
@@ -179,10 +179,6 @@ const Bid: React.FC = () => {
       };
    
   }
-
-  // useIonViewDidEnter(() => {
-  //   inputRefLot.current?.setFocus();
-  // });
 
   useIonViewWillEnter(() => {
     inputRefLot.current?.setFocus();
@@ -311,8 +307,7 @@ const Bid: React.FC = () => {
         setHighestBidForLot(res.data.content.highestBidAmount);
       })
       .catch(error => {
-        // setMessage("Bid Adding data Failed");
-        // setIserror(true)
+    
       })
     }
 
@@ -328,11 +323,6 @@ const Bid: React.FC = () => {
 
 
   const handleRefreshBtn = () => {
-    // const submitData = {
-    //   "marketId":  localStorage.getItem("marketId"),
-    //   "allottedLotId": lotId,
-    // }
-
     const submitData = {
       "marketId": parseInt(localStorage.getItem("marketId")!),
       "godownId": parseInt(localStorage.getItem("godownId")!),
@@ -340,7 +330,6 @@ const Bid: React.FC = () => {
     }
 
     const api = axios.create({
-      //  baseURL: `http://13.200.62.144:8002/market-auction/v1/auction/reeler`
       baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
     })
     api.post("/getHighestAndCurrentBidByEachLotForReeler", submitData, {
@@ -350,40 +339,8 @@ const Bid: React.FC = () => {
         Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
       },
     })
-      //   api.post("/getHighestBidPerLotDetails", submitData)
       .then(res => {
-        // console.log(res.data)
-        // setHighestBidAmount(res.data.content.amount)
-
         setBidData(res.data.content);
-
-        // setBidData([
-        //   {
-        //     "allottedLotId": 19,
-        //     "highestBidAmount": 400,
-        //     "myBidAmount": 400
-        //   },
-        //   {
-        //     "allottedLotId": 20,
-        //     "highestBidAmount": 650,
-        //     "myBidAmount": 100
-        //   },
-        //   {
-        //     "allottedLotId": 6,
-        //     "highestBidAmount": 600,
-        //     "myBidAmount": 200
-        //   },
-        //   {
-        //     "allottedLotId": 9,
-        //     "highestBidAmount": 400,
-        //     "myBidAmount": 250
-        //   },
-        //   {
-        //     "allottedLotId": 13,
-        //     "highestBidAmount": 500,
-        //     "myBidAmount": 500
-        //   }
-        // ]);
       })
       .catch(error => {
         setMessage("Bid Adding data Failed");
@@ -443,14 +400,12 @@ const Bid: React.FC = () => {
             <IonMenuButton />
           </IonButtons>
           <TimeTicker key={timeTickerKey} isActive={isActive} />
-          {/* <IonTitle>MARKET {name}</IonTitle> */}
         </IonToolbar>
       </IonHeader>
 
       <IonContent fullscreen>
         <IonHeader>
           <IonToolbar>
-            {/* <IonTitle size="small">Welcome {name}</IonTitle> */}
 
             <IonSegment value={ionSegmentText}>
               <IonSegmentButton value="home" onClick={toggleHomeSection}>
@@ -463,18 +418,8 @@ const Bid: React.FC = () => {
 
           </IonToolbar>
         </IonHeader>
-        {/* <ExploreContainer name={name} /> */}
         {showHomeSection && (
           <IonContent fullscreen className="ion-padding">
-            {/* <IonSegment value="default">
-                    <IonSegmentButton value="default">
-                        <IonLabel>Home</IonLabel>
-                    </IonSegmentButton>
-                    <IonSegmentButton value="segment">
-                        <IonLabel>Transaction Report</IonLabel>
-                    </IonSegmentButton>
-                </IonSegment> */}
-
             <IonGrid>
               <IonRow>
                 <IonCol>

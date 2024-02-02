@@ -1,5 +1,3 @@
-// src/services/auth.service.ts
-
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 
@@ -59,11 +57,6 @@ const authService = {
     const token = localStorage.getItem('jwtToken');
     return token ? token : null;
   },
-
-  // getUserInfo: () => {
-  //   const token = localStorage.getItem('token');
-  //   return token ? jwtDecode(token) : null;
-  // },
 };
 
 export default authService;

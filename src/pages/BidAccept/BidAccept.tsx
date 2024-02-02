@@ -62,10 +62,6 @@ const BidAccept: React.FC = () => {
   // State to hold the current date
   const [currentDate, setCurrentDate] = useState<string>(getCurrentDate());
 
-  // useIonViewDidEnter(() => {
-  //   inputRefLot.current?.setFocus();
-  // });
-
   useIonViewWillEnter(() => {
     inputRefLot.current?.setFocus();
   });
@@ -86,7 +82,6 @@ const BidAccept: React.FC = () => {
       }
     });
 
-    // Cleanup function to remove the event listener
     return () => {
       resumeListener.remove();
     };
@@ -106,7 +101,6 @@ const BidAccept: React.FC = () => {
 
     const api = axios.create({
       baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
-      //  baseURL: `http://13.200.62.144:8002/market-auction/v1/auction/reeler`
     })
     api.post("/getHighestBidPerLotDetails", fetchHighestBidPayload, {
       headers: {
@@ -266,16 +260,6 @@ const BidAccept: React.FC = () => {
                   <IonInput className="ion-text-left" readonly fill="outline" value={currentDate} label="Date" labelPlacement="floating"></IonInput>
                 </IonCol>
               </IonRow>
-
-              {/* <IonRow>
-              <IonCol size="6"  class='--ion-grid-column-padding'>
-                <IonLabel className='label-content'><h1>Farmer Details</h1></IonLabel>
-              </IonCol>
-              <IonCol size="6">
-                <IonLabel className='label-content'><h1>Reeler Details</h1></IonLabel>
-              </IonCol>
-            </IonRow> */}
-
               <IonRow>
 
               </IonRow>
@@ -352,33 +336,6 @@ const BidAccept: React.FC = () => {
                 </IonCol>
               </IonRow>
             </IonGrid>
-
-            {/* <IonGrid>
-              <IonRow>
-                <IonCol size="6">
-                  <IonInput className="ion-text-left" readonly fill="outline" value={fruitsId}></IonInput>
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol size="6">
-                  <IonInput className="ion-text-left" readonly fill="outline" value={farmerName}></IonInput>
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol size="6">
-                  <IonInput className="ion-text-left" readonly fill="outline" value={villageName}></IonInput>
-                </IonCol>
-                <IonCol size="6">
-                  <IonInput className="ion-text-left" readonly fill="outline" value={reelerName}></IonInput>
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol size="6">
-                  <IonInput className="ion-text-left" readonly fill="outline" value={amount}></IonInput>
-                </IonCol>
-              </IonRow>
-            </IonGrid> */}
-
           </>
         )}
 

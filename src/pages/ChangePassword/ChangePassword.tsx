@@ -26,10 +26,6 @@ const ChangePassword: React.FC = () => {
 
   const history = useHistory();
 
-  // useIonViewDidEnter(() => {
-  //   inputRefLot.current?.setFocus();
-  // });
-
   useIonViewWillEnter(() => {
     inputRefLot.current?.setFocus();
   });
@@ -94,11 +90,6 @@ const ChangePassword: React.FC = () => {
           setNewPassword("");
           setConfirmNewPassword("");
           inputRefLot.current?.setFocus();
-          // if(localStorage.getItem("userType") == '2'){
-          //   history.push("/bid/" + localStorage.getItem("username"));
-          // }else{
-          //   history.push("/accept-bid");
-          // }
         }
 
       })
