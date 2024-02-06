@@ -94,12 +94,15 @@ const Bid: React.FC = () => {
       })
   }
 
-  //get location of the device 
+ // get location of the device 
   const getDeviceLocation = async ()=>{
     let geolocationOptions = { maximumAge: 1000, timeout: 5000, enableHighAccuracy: true };
     const locId = await Geolocation.watchPosition(geolocationOptions,(position,err)=>{
       if(err){
         console.info("error",err);
+        setMessage("User denied the request for Geolocation. Please turn on location for further process");
+        setIserror(true)
+        setButtonDisabled(true)
       }
       if(position){
         checkDeviceInZone(position);
@@ -110,6 +113,38 @@ const Bid: React.FC = () => {
     });
     console.info("locId",locId);
   }
+  // const getDeviceLocation = async () => {
+  //   let geolocationOptions = { maximumAge: 1000, timeout: 5000, enableHighAccuracy: true };
+  //   try {
+  //     const locId = await Geolocation.watchPosition(geolocationOptions, (position, error) => {
+  //       if (error) {
+  //         console.error("Error:", error);
+  //         setMessage("Error: "+error);
+  //         setIserror(true)
+  //         if (error.code === 1) {
+  //           console.error("User denied the request for Geolocation.");
+  //           setMessage("User denied the request for Geolocation.");
+  //           setIserror(true)
+  //         } else {
+  //           console.error("Error getting geolocation:", error.message);
+  //           setMessage("User denied the request for Geolocation. Please turn on location for further process");
+  //           setIserror(true)
+  //           setButtonDisabled(true)
+  //         }
+  //       }
+  //       if (position) {
+  //         checkDeviceInZone(position);
+  //         console.info('Position:', position);
+  //         setButtonDisabled(false)
+  //       }
+  //     });
+  //     console.info("locId:", locId);
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     setMessage("Catch block: "+error);
+  //     setIserror(true)
+  //   }
+  // }
   const checkDeviceInZone = (location:any)=>{
     console.info(location);
     let usrloc = {
