@@ -152,6 +152,75 @@ const BidAccept: React.FC = () => {
 
   }
 
+  const fetchHighestBidDetailsOnFocusOut = () => {
+    inputRefLot.current?.setFocus();
+
+    // setShowClickDetailsSection(!showClickDetailsSection);
+    // setShowFarmerDetailsSection(!showFarmerDetailsSection);
+    // setShowAcceptButtonSection(!showAcceptButtonSection);
+
+    const fetchHighestBidPayload = {
+      "marketId": localStorage.getItem("marketId"),
+      "allottedLotId": lotId
+    }
+
+    const api = axios.create({
+      baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
+    })
+    api.post("/getHighestBidPerLotDetails", fetchHighestBidPayload, {
+      headers: {
+        "Content-Type": "application/json",
+        accept: "*/*",
+        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+      },
+    })
+      .then(res => {
+        let contents = res.data.content;
+
+        if (res.data.errorCode == -1) {
+          setMessage(res.data.errorMessages[0]);
+          setIserror(true)
+
+          setLotId("")
+          setLotNumberValue("")
+
+          setShowClickDetailsSection(true)
+          setShowFarmerDetailsSection(false)
+          setShowAcceptButtonSection(false)
+          setShowBackButtonSection(false)
+
+        } else {
+
+          setFruitsId(contents.farmerNumber);
+          setFarmerName(contents.farmerFirstName + "" + contents.farmerMiddleName + "" + contents.farmerLastName);
+          setAmount(contents.amount + ".000");
+          setReelerName(contents.reelerName);
+          setReelerAuctionId(contents.reelerAuctionId);
+          setVillageName(contents.farmervillageName);
+          setBidAcceptedBy(contents.bidAcceptedBy);
+          setBidStatus(contents.status);
+          setReelingLicenseNumber(contents.reelingLicenseNumber);
+          setReelerFruitsId(contents.reelerFruitsId);
+
+          if (contents.status == "accepted") {
+           // setShowFarmerDetailsSection(!showFarmerDetailsSection);
+            setShowAcceptButtonSection(false);
+            setShowBackButtonSection(!showBackButtonSection);
+          }else{
+            setShowFarmerDetailsSection(true);
+            setShowAcceptButtonSection(true);
+            setShowBackButtonSection(false);
+          }
+        }
+
+      })
+      .catch(error => {
+        setMessage("Failed to fetch highest bid");
+        setIserror(true)
+      })
+
+  }
+
 
   const toggleBackButtonSection = () => {
     inputRefLot.current?.setFocus();
@@ -231,6 +300,8 @@ const BidAccept: React.FC = () => {
                   setLotNumberValue(e.detail.value!);
                   setLotId(e.detail.value!);
                 }}
+                type='text'
+                inputmode="numeric"
                   label="Lot No" labelPlacement="stacked" fill="outline" ref={inputRefLot}></IonInput>
               </IonCol>
 
@@ -250,10 +321,22 @@ const BidAccept: React.FC = () => {
             <IonGrid>
               <IonRow>
                 <IonCol size='6'>
-                  <IonInput className="input-big-font-size" readonly value={lotNumberValue} onIonInput={(e: any) => {
+                  {/* <IonInput className="input-big-font-size" readonly value={lotNumberValue} onIonInput={(e: any) => {
                     setLotNumberValue(e.detail.value!);
                   }}
-                    label="Lot No" labelPlacement="stacked" fill="outline"></IonInput>
+                    label="Lot No" labelPlacement="stacked" fill="outline"></IonInput> */}
+                    
+                    <IonInput className="input-big-font-size" value={lotNumberValue} onIonInput={(e: any) => {
+                  setLotNumberValue(e.detail.value!);
+                  setLotId(e.detail.value!);
+                }}
+                type='text'
+                inputmode="numeric"
+                onIonBlur= { async (e: any) => {
+                  // After focus out, automatically focus on the next input field
+                  fetchHighestBidDetailsOnFocusOut()
+                }}
+                  label="Lot No" labelPlacement="stacked" fill="outline"></IonInput>
                 </IonCol>
 
                 <IonCol size="6">
@@ -346,7 +429,7 @@ const BidAccept: React.FC = () => {
                 <IonButton id="click-for-details-btn" expand="full" size="large" onClick={handleAcceptButtonEvent}>Accept</IonButton>
               </IonCol>
               <IonCol>
-                <IonButton id="click-for-details-btn" expand="full" size="large" onClick={toggleClickDetailsSection}>Back</IonButton>
+                <IonButton id="click-for-details-btn" expand="full" size="large" onClick={toggleClickDetailsSection}>Reject</IonButton>
               </IonCol>
             </IonRow>
           </IonGrid>
@@ -362,12 +445,12 @@ const BidAccept: React.FC = () => {
 
             </IonRow>
 
-            <IonRow>
+            {/* <IonRow>
               <IonCol>
                 <IonButton id="click-for-details-btn" expand="full" size="large" onClick={toggleBackButtonSection} >Back</IonButton>
               </IonCol>
 
-            </IonRow>
+            </IonRow> */}
           </IonGrid>
         )}
         <IonAlert
