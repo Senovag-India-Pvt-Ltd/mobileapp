@@ -159,9 +159,14 @@ const Bid: React.FC = () => {
     // };
    
     let mrktloc = {
-      lat: localStorage.getItem("marketLat"),
+      lat: localStorage.getItem("marketLat"), 
       lng: localStorage.getItem("marketLongitude")
     };
+
+    // let mrktloc = {
+    //   lat: 12.9989718,
+    //   lng:77.5411513
+    // };
     //  let mrktloc = {
     //   lat:12.959744,
     //   lng: 77.6404992
@@ -305,6 +310,7 @@ const Bid: React.FC = () => {
         console.log(res.data)
         handleClearAfterBid();
         handleRefreshBtn();
+        fetchHighestBidForLot(lotId);
         if (res.data.errorCode != 0) {
           setMessage(res.data.errorMessages[0].message);
           setIserror(true)
@@ -342,7 +348,7 @@ const Bid: React.FC = () => {
         setHighestBidForLot(res.data.content.highestBidAmount);
       })
       .catch(error => {
-    
+        setHighestBidForLot("");
       })
     }
 
