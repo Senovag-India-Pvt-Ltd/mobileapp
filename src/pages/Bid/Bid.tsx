@@ -175,7 +175,13 @@ const Bid: React.FC = () => {
     //   lat: 13.7342183,
     //   lng: 75.2542902
     // };
-    let radius = 0.2; //range in km
+  
+   let radius = 0.2; //range in km
+   let radiusString = localStorage.getItem("radius");
+
+   if(radiusString != null && radiusString != "" && radiusString != "null" && radiusString != undefined){
+     radius = parseFloat(radiusString!);
+   }
     let isinrange = arePointsNear(usrloc,mrktloc,radius);
     if(!isinrange){
       setMessage("Your location in far away from market"+location.coords.latitude+":Lang"+location.coords.longitude);
