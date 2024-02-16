@@ -445,12 +445,12 @@ const BidAccept: React.FC = () => {
 
             </IonRow>
 
-            {/* <IonRow>
+            <IonRow>
               <IonCol>
-                <IonButton id="click-for-details-btn" expand="full" size="large" onClick={toggleBackButtonSection} >Back</IonButton>
+                <IonButton id="click-for-details-btn" expand="full" size="large" onClick={toggleBackButtonSection} >Click here for new lot</IonButton>
               </IonCol>
 
-            </IonRow> */}
+            </IonRow>
           </IonGrid>
         )}
         <IonAlert
