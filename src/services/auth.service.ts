@@ -7,6 +7,7 @@ const API_URL = 'https://api.senovagseri.com/master-data';
 
 const authService = {
   login: async (username: string, password: string) => {
+    debugger
     const response = await axios.post(`${API_URL}/auth/login`, { username, password });
     localStorage.setItem('jwtToken', response.data.token);
     localStorage.setItem('marketId', response.data.marketId);
@@ -18,6 +19,36 @@ const authService = {
     localStorage.setItem('lastName', response.data.lastName);
     localStorage.setItem('email', response.data.emailId);
     localStorage.setItem('marketName', response.data.marketName);
+    if(response.data.phoneNumber != null && response.data.phoneNumber != ""){
+      localStorage.setItem('phoneNumber', response.data.phoneNumber);
+    }else{
+      localStorage.setItem('phoneNumber', "");
+    }
+    if(response.data.username != null && response.data.username != ""){
+      localStorage.setItem('username', response.data.username);
+    }else{
+      localStorage.setItem('username', "");
+    }
+    if(response.data.firstName != null && response.data.firstName != ""){
+      localStorage.setItem('firstName', response.data.firstName);
+    }else{
+      localStorage.setItem('firstName', "");
+    }
+    if(response.data.lastName != null && response.data.lastName != ""){
+      localStorage.setItem('lastName', response.data.lastName);
+    }else{
+      localStorage.setItem('lastName', "");
+    }
+    if(response.data.marketName != null && response.data.marketName != ""){
+      localStorage.setItem('marketName', response.data.marketName);
+    }else{
+      localStorage.setItem('marketName', "");
+    }
+    if(response.data.emailId != null && response.data.emailId != ""){
+      localStorage.setItem('email', response.data.emailId);
+    }else{
+      localStorage.setItem('email', "");
+    }
     if(response.data.godownId != null && response.data.godownId != ""){
       localStorage.setItem('godownId', response.data.godownId);
     }else{

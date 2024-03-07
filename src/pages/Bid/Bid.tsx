@@ -9,6 +9,7 @@ import { App } from '@capacitor/app';
 import TimeTicker from '../../components/TimeTicker';
 import { Geolocation } from '@capacitor/geolocation';
 import { options } from 'ionicons/icons';
+import PopupForm from './PopupForm';
 
 const Bid: React.FC = () => {
 
@@ -46,6 +47,8 @@ const Bid: React.FC = () => {
   const [isButtonDisabled, setButtonDisabled] = useState(false);
 
   const [bidData, setBidData] = useState<any[]>([]);
+  const [reportData, setReportData] = useState<any[]>([]);
+  const [selectedReportData, setSelectedReportData] = useState<any[]>([]);
 
   const history = useHistory();
   const location = useLocation();
@@ -58,6 +61,22 @@ const Bid: React.FC = () => {
   const [timeTickerKey, setTimeTickerKey] = useState(0);
   const [isActive, setIsActive] = useState(true);
   const [highestBidForLot, setHighestBidForLot] = useState<string>("");
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [todayDate, setTodayDate] = useState("");
+  const [reelerNumber, setReelerNumber] = useState<number>();
+
+  const [isUserInExactLocation, setIsUserInExactLocation] = useState(false);
+  const [isMinimumBalanceValid, setIsMinimumBalanceValid] = useState(false);
+
+  const handleRowClick = (item: any) => () => {
+    setSelectedReportData(item);
+    setShowPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
 
   const checkReelerMinBalance = () => {
     const submitBidData = {
@@ -82,15 +101,82 @@ const Bid: React.FC = () => {
         if (res.data.content.balance < res.data.content.minimumMarketBalance) {
           setMessage("Reeler minimum balance should be "+res.data.content.minimumMarketBalance);
           setIserror(true)
+          setIsMinimumBalanceValid(false)
           setButtonDisabled(true)
         }else{
+          setIsMinimumBalanceValid(true)
+          if(isUserInExactLocation == true && isMinimumBalanceValid == true){
           setButtonDisabled(false)
+          }
         }
       })
       .catch(error => {
+        setIsMinimumBalanceValid(false)
         setMessage("Failed to check reeler balance");
         setIserror(true)
         setButtonDisabled(true)
+      })
+  }
+
+  const getReelerNumber = () => {
+    const reelerPayload = {
+        "id": parseInt(localStorage.getItem("userTypeId")!)    
+    }
+
+    const api = axios.create({
+       baseURL: `https://api.senovagseri.com/farmer-registration/v1/reeler`
+    })
+    api.get(`/get/${parseInt(localStorage.getItem("userTypeId")!)}` , {
+      headers: {
+        "Content-Type": "application/json",
+        accept: "*/*",
+        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+      },
+    })
+      .then(res => {
+        setReelerNumber(res.data.content.reelerNumber);
+        console.log(res.data)
+        
+      })
+      .catch(error => {
+        setMessage("Failed to fetch reeler details");
+        setIserror(true)
+      })
+  }
+
+  const reelerTransactionReport = () => {
+    const reelerTransactionReportData = {
+        "marketId": parseInt(localStorage.getItem("marketId")!),
+        "godownId": parseInt(localStorage.getItem("godownId")!),
+        "reportFromDate": todayDate,
+        "reelerNumber": reelerNumber
+    }
+
+    // const reelerTransactionReportData = {
+    //   "marketId": 54,
+    //   "godownId": 0,
+    //   "reportFromDate": "2024-01-27",
+    //   "reelerNumber": "1310"
+    // }
+
+    const api = axios.create({
+       baseURL: `https://api.senovagseri.com/market-auction/v1/auction/report`
+    })
+    api.post("/getReelerBiddingReport", reelerTransactionReportData, {
+      headers: {
+        "Content-Type": "application/json",
+        accept: "*/*",
+        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+      },
+    })
+      .then(res => {
+        setReportData(res.data.content);
+        console.log(res.data)
+        
+      })
+      .catch(error => {
+        setMessage("No data found");
+        setIserror(true)
       })
   }
 
@@ -99,6 +185,7 @@ const Bid: React.FC = () => {
     let geolocationOptions = { maximumAge: 1000, timeout: 5000, enableHighAccuracy: true };
     const locId = await Geolocation.watchPosition(geolocationOptions,(position,err)=>{
       if(err){
+        setIsUserInExactLocation(false)
         console.info("error",err);
         setMessage("User denied the request for Geolocation. Please turn on location for further process");
         setIserror(true)
@@ -151,6 +238,13 @@ const Bid: React.FC = () => {
       lat:location.coords.latitude,
       lng:location.coords.longitude
     };
+
+    
+    // let mrktloc = {
+    //   lat:12.9400832,
+    //   lng:77.5389184
+    // };
+
     
     //6.6 mtr acuracy
     // let mrktloc = {
@@ -184,11 +278,16 @@ const Bid: React.FC = () => {
    }
     let isinrange = arePointsNear(usrloc,mrktloc,radius);
     if(!isinrange){
+      setIsUserInExactLocation(false)
       setMessage("Your location in far away from market"+location.coords.latitude+":Lang"+location.coords.longitude);
       setIserror(true)
       setButtonDisabled(true)
     }else{
+      
+      setIsUserInExactLocation(true)
+      if(isUserInExactLocation == true && isMinimumBalanceValid == true){
       setButtonDisabled(false)
+      }
     }
     console.info("isinrange",isinrange);
   }
@@ -235,6 +334,13 @@ const Bid: React.FC = () => {
     checkReelerMinBalance();
     inputRefLot.current?.setFocus();
     getDeviceLocation();
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setTodayDate(formattedDate);
+    getReelerNumber();
   }, []);
 
 
@@ -437,6 +543,7 @@ const Bid: React.FC = () => {
     setIonSegmentText("report");
     setShowHomeSection(!showHomeSection);
     setShowReportSection(!showReportSection);
+    reelerTransactionReport();
   }
 
   return (
@@ -594,7 +701,34 @@ const Bid: React.FC = () => {
             <IonGrid>
               <IonRow>
                 <IonCol>
-                  <IonLabel>Report section</IonLabel>
+                <IonItem className='item-background-color'>
+                  <IonLabel>Lot No</IonLabel>
+                  <IonLabel>Bid Amt</IonLabel>
+                  <IonLabel>Status</IonLabel>
+              {/* <IonLabel>St.</IonLabel> */}
+            </IonItem>
+            {reportData.map((item, index) => (
+              <div className='report-section-contents'>
+                 <PopupForm isOpen={showPopup} onClose={handleClosePopup} itemData={selectedReportData} />
+                 <div key={index} onClick={handleRowClick(item)}>
+             
+              <IonCol size='12' key={item.lotId}>
+                <IonRow className='report-contents'>
+                  <IonCol size="4">
+                    <IonLabel>{item.lotId}</IonLabel>
+                  </IonCol>
+                  <IonCol size="4">
+                    <IonLabel>{item.bidAmount}</IonLabel>
+                  </IonCol>
+                  <IonCol size="4">
+                    <IonLabel>{item.accepted}</IonLabel>
+                  </IonCol>
+                </IonRow>
+                <IonItemDivider className='divider-component-for-table'/>
+              </IonCol>
+              </div>
+              </div>
+            ))}
                 </IonCol>
               </IonRow>
             </IonGrid>

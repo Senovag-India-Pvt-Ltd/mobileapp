@@ -32,3 +32,59 @@ ion-content{
     font-size: 30px;
     text-align: center;
 }
+
+.custom-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.divider-component{
+    /* margin-right: 100px !important;
+    margin-left: 10px !important; */
+    min-height: 0px !important;
+}
+
+.divider-component-for-table{
+    min-height: 0px !important;
+}
+
+.report-section-contents{
+    height: 50px;
+}
+
+.divider-component-for-table{
+    min-height: 10px !important;
+}
+
+.report-contents{
+    text-align: center;
+}
+
+.centered-modal{
+    display: flex; 
+     justify-content: center;
+    align-items: center;
+    height: 100vh;
+/* 
+    line-height: 40px;
+    height: 100%;
+    text-align: center; */
+}
+
+.modal-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.modal-content {
+    width:100%;
+    max-width: 100%; /* Adjust as needed */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+
