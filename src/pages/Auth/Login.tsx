@@ -52,6 +52,7 @@ const Login: React.FC = () => {
   const [otpNumber6, setOtpNumber6] = useState<string>("");
 
   const usernameInputRef = useRef<HTMLIonInputElement>(null);
+  const passwordInputRef = useRef<HTMLIonInputElement>(null);
   const otpInputRef = useRef<HTMLIonInputElement>(null);
 
   const location = useLocation();
@@ -67,12 +68,12 @@ const Login: React.FC = () => {
   }
 
   useIonViewDidEnter(() => {
-    usernameInputRef.current?.setFocus();
+    passwordInputRef.current?.setFocus();
   });
 
 
   useIonViewWillEnter(() => {
-    usernameInputRef.current?.setFocus();
+    passwordInputRef.current?.setFocus();
   });
 
   useEffect(() => {
@@ -99,6 +100,12 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     logDeviceInfo();
+    let usrname = "";
+    if(localStorage.getItem("username")!= null){
+      usrname = localStorage.getItem("username")!;
+    }
+    setEmail(usrname);
+   
   }, []);
 
   const handleStart = () => {
@@ -282,6 +289,7 @@ const Login: React.FC = () => {
                 <IonIcon color='primary' slot="start" icon={lockClosed} aria-hidden="true"></IonIcon>
                 <IonInput labelPlacement="stacked" label="Password" type="password"
                   value={password}
+                  ref={passwordInputRef}
                   onIonInput={(e) => setPassword(e.detail.value!)}>
                 </IonInput>
               </IonItem>
