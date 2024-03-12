@@ -40,6 +40,7 @@ const BidAccept: React.FC = () => {
 
   const history = useHistory();
   const location = useLocation();
+  const [showBidConfirmationAlert, setShowBidConfirmationAlert] = useState(false);
 
   if (Capacitor.isNative) {
     App.addListener('backButton', ({ canGoBack }) => {
@@ -239,6 +240,19 @@ const BidAccept: React.FC = () => {
     setShowAcceptButtonSection(!showAcceptButtonSection);
   };
 
+  const rejectButtonPopUpSection = () => {
+    setShowBidConfirmationAlert(true);
+  };
+
+  const toggleRejectButtonSection = () => {
+    inputRefLot.current?.setFocus();
+    setLotId("");
+    setLotNumberValue("");
+    setShowClickDetailsSection(!showClickDetailsSection);
+    setShowFarmerDetailsSection(!showFarmerDetailsSection);
+    setShowAcceptButtonSection(!showAcceptButtonSection);
+  };
+
   const handleAcceptButtonEvent = () => {
     inputRefLot.current?.setFocus();
     setShowClickDetailsSection(!showClickDetailsSection);
@@ -429,7 +443,10 @@ const BidAccept: React.FC = () => {
                 <IonButton id="click-for-details-btn" expand="full" size="large" onClick={handleAcceptButtonEvent}>Accept</IonButton>
               </IonCol>
               <IonCol>
-                <IonButton id="click-for-details-btn" expand="full" size="large" onClick={toggleClickDetailsSection}>Reject</IonButton>
+                <IonButton id="click-for-details-btn" expand="full" size="large" onClick={rejectButtonPopUpSection}>Reject</IonButton>
+              </IonCol>
+              <IonCol>
+                <IonButton id="click-for-details-btn" expand="full" size="large" onClick={toggleClickDetailsSection}>Back</IonButton>
               </IonCol>
             </IonRow>
           </IonGrid>
@@ -453,6 +470,33 @@ const BidAccept: React.FC = () => {
             </IonRow>
           </IonGrid>
         )}
+         <IonAlert
+        header="Are you sure"
+        message="You want to reject?"
+        isOpen={showBidConfirmationAlert}
+        onDidDismiss={() => setShowBidConfirmationAlert(false)}
+
+        buttons={[
+        
+          {
+            text: 'Yes',
+            role: 'confirm',
+            handler: () => {
+              console.log('Alert confirmed');
+              toggleRejectButtonSection();
+            },
+          },
+          {
+            text: 'No',
+            role: 'cancel',
+            handler: () => {
+              console.log('Alert canceled');
+
+            },
+          },
+        ]}
+
+      ></IonAlert>
         <IonAlert
           isOpen={iserror}
           onDidDismiss={() => setIserror(false)}

@@ -7,7 +7,6 @@ const API_URL = 'https://api.senovagseri.com/master-data';
 
 const authService = {
   login: async (username: string, password: string) => {
-    debugger
     const response = await axios.post(`${API_URL}/auth/login`, { username, password });
     localStorage.setItem('jwtToken', response.data.token);
     localStorage.setItem('marketId', response.data.marketId);

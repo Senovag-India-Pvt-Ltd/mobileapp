@@ -96,25 +96,25 @@ function TimeTicker({ isActive }: { isActive: boolean; }) {
     return () => clearInterval(intervalId);
   }, [count]);
 
-  useEffect(() => {
-    // Fetch server time when component mounts
-    const apiUrl = 'https://api.senovagseri.com/master-data/v1/util/current-time-millisec';
-    const jwtToken = authService.getToken();
+  // useEffect(() => {
+  //   // Fetch server time when component mounts
+  //   const apiUrl = 'https://api.senovagseri.com/master-data/v1/util/current-time-millisec';
+  //   const jwtToken = authService.getToken();
 
-    const headers = {
-      'Authorization': `Bearer ${jwtToken}`,
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    };
+  //   const headers = {
+  //     'Authorization': `Bearer ${jwtToken}`,
+  //     'Content-Type': 'application/json',
+  //     'Access-Control-Allow-Origin': '*',
+  //   };
 
-    axios.get(apiUrl, { headers })
-      .then((response) => {
-        setServerTime(response.data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  }, []);
+  //   axios.get(apiUrl, { headers })
+  //     .then((response) => {
+  //       setServerTime(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error);
+  //     });
+  // }, []);
 
   useEffect(() => {
     // Update server time when isActive changes (i.e., when BidAccept is resumed)
