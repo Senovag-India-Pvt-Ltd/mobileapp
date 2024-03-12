@@ -29,6 +29,8 @@ const Bid: React.FC = () => {
   const [message, setMessage] = useState<string>("");
   const [lotNumberValue, setLotNumberValue] = useState<string>("");
 
+  const [bidAmountValueStart, setBidAmountValueStart] = useState<string>("0");
+
   const [bidAmountValue1, setBidAmountValue1] = useState<string>("");
   const [bidAmountValue2, setBidAmountValue2] = useState<string>("");
   const [bidAmountValue3, setBidAmountValue3] = useState<string>("");
@@ -257,10 +259,13 @@ const Bid: React.FC = () => {
       lng: localStorage.getItem("marketLongitude")
     };
 
-    // let mrktloc = {
-    //   lat: 12.9989718,
-    //   lng:77.5411513
-    // };
+//     let mrktloc = {
+//       lat: 
+//       12.9927085,
+//       lng: 
+      
+// 77.5540493
+//     };
     //  let mrktloc = {
     //   lat:12.959744,
     //   lng: 77.6404992
@@ -348,6 +353,14 @@ const Bid: React.FC = () => {
     
   }, [lotId]);
 
+  const handleInputChangeStart = (inputRef: React.RefObject<HTMLIonInputElement>, value: string) => {
+    const inputValue = value;
+    setBidAmountValueStart(inputValue);
+    if (!isNaN(parseInt(inputValue, 10))) {
+      inputRef.current?.setFocus();
+    }
+  };
+
   const handleInputChange1 = (inputRef: React.RefObject<HTMLIonInputElement>, value: string) => {
     const inputValue = value;
     setBidAmountValue1(inputValue);
@@ -387,12 +400,14 @@ const Bid: React.FC = () => {
   const handleLotClear = () => {
     setLotNumberValue('');
     setHighestBidForLot('');
+    setBidAmountValueStart('0');
     setBidAmountValue1('');
     setBidAmountValue2('');
     setBidAmountValue3('');
   }
 
   const handleClearAfterBid = () => {
+    setBidAmountValueStart('0');
     setBidAmountValue1('');
     setBidAmountValue2('');
     setBidAmountValue3('');
@@ -504,8 +519,13 @@ const Bid: React.FC = () => {
 
   const generateBidAmount = () => {
     let concatenatedBidAmountString = "";
+
+    if (bidAmountValueStart != undefined && bidAmountValueStart != null && !Number.isNaN(bidAmountValueStart)) {
+      concatenatedBidAmountString = `${bidAmountValueStart}`;
+    }
+
     if (bidAmountValue1 != undefined && bidAmountValue1 != null && !Number.isNaN(bidAmountValue1)) {
-      concatenatedBidAmountString = `${bidAmountValue1}`;
+      concatenatedBidAmountString = concatenatedBidAmountString + `${bidAmountValue1}`;
     }
 
     if (bidAmountValue2 != undefined && bidAmountValue2 != null && !Number.isNaN(bidAmountValue2)) {
@@ -598,6 +618,20 @@ const Bid: React.FC = () => {
                 </IonCol>
               </IonRow>
               <IonRow>
+              <IonCol>
+                  <IonInput 
+                    className='input-big-font-size'
+                    type='text'
+                    maxlength={1}
+                    pattern="[0-9]{1}"
+                    fill="outline"
+                    value={bidAmountValueStart}
+                    onIonInput={(e) => handleInputChangeStart(inputRef1, e.detail.value!)}
+                    // ref={inputRef1}
+                    inputmode="numeric"
+                  ></IonInput>
+                </IonCol>
+
                 <IonCol>
                   <IonInput 
                     className='input-big-font-size'
