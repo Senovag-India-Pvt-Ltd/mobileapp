@@ -68,12 +68,12 @@ const Login: React.FC = () => {
   }
 
   useIonViewDidEnter(() => {
-    passwordInputRef.current?.setFocus();
+    usernameInputRef.current?.setFocus();
   });
 
 
   useIonViewWillEnter(() => {
-    passwordInputRef.current?.setFocus();
+    usernameInputRef.current?.setFocus();
   });
 
   useEffect(() => {
@@ -103,6 +103,7 @@ const Login: React.FC = () => {
     let usrname = "";
     if(localStorage.getItem("username")!= null){
       usrname = localStorage.getItem("username")!;
+      passwordInputRef.current?.setFocus();
     }
     setEmail(usrname);
    
