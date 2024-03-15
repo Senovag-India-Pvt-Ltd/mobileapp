@@ -232,12 +232,18 @@ const BidAccept: React.FC = () => {
   }
 
   const toggleClickDetailsSection = () => {
+    // inputRefLot.current?.setFocus();
+    // setLotId("");
+    // setLotNumberValue("");
+    // setShowClickDetailsSection(!showClickDetailsSection);
+    // setShowFarmerDetailsSection(!showFarmerDetailsSection);
+    // setShowAcceptButtonSection(!showAcceptButtonSection);
+
     inputRefLot.current?.setFocus();
-    setLotId("");
-    setLotNumberValue("");
-    setShowClickDetailsSection(!showClickDetailsSection);
-    setShowFarmerDetailsSection(!showFarmerDetailsSection);
-    setShowAcceptButtonSection(!showAcceptButtonSection);
+    setShowClickDetailsSection(true);
+    setShowFarmerDetailsSection(false);
+    setShowAcceptButtonSection(false);
+    setShowBackButtonSection(false);
   };
 
   const rejectButtonPopUpSection = () => {
@@ -334,7 +340,12 @@ const BidAccept: React.FC = () => {
           <>
             <IonGrid>
               <IonRow>
-                <IonCol size='6'>
+              <IonCol size="12">
+                  <IonLabel>{currentDate}</IonLabel>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol size='5'>
                   {/* <IonInput className="input-big-font-size" readonly value={lotNumberValue} onIonInput={(e: any) => {
                     setLotNumberValue(e.detail.value!);
                   }}
@@ -352,9 +363,12 @@ const BidAccept: React.FC = () => {
                 }}
                   label="Lot No" labelPlacement="stacked" fill="outline"></IonInput>
                 </IonCol>
+                <IonCol size='2'>
+                <IonButton id="click-for-details-btn" className='clr-button-height' expand="full" size="default" onClick={toggleClickDetailsSection}>CLR</IonButton>
+              </IonCol>
 
-                <IonCol size="6">
-                  <IonInput className="ion-text-left" readonly fill="outline" value={currentDate} label="Date" labelPlacement="floating"></IonInput>
+                <IonCol size="5">
+                  <IonInput className="ion-text-left input-big-font-size" readonly fill="outline" value={amount} label="Rate" labelPlacement="floating"></IonInput>
                 </IonCol>
               </IonRow>
               <IonRow>
@@ -365,32 +379,6 @@ const BidAccept: React.FC = () => {
 
             <IonGrid>
               <IonRow>
-                <IonCol>
-                  <IonGrid>
-                    <IonRow>
-                      <IonCol className='row-header'>
-                        <IonLabel className='label-content'><h1>Farmer Details</h1></IonLabel>
-                      </IonCol>
-                    </IonRow>
-                    <IonRow className='first-row'>
-                      <IonCol>
-                        <IonItem>{fruitsId}</IonItem>
-                      </IonCol>
-                    </IonRow>
-                    <IonRow className='next-row'>
-                      <IonCol>
-                        <IonItem>{farmerName}</IonItem>
-                      </IonCol>
-                    </IonRow>
-                    {villageName && (
-                      <IonRow className='next-row'>
-                        <IonCol>
-                          <IonItem>{villageName}</IonItem>
-                        </IonCol>
-                      </IonRow>
-                    )}
-                  </IonGrid>
-                </IonCol>
 
                 <IonCol>
                   <IonGrid>
@@ -424,11 +412,34 @@ const BidAccept: React.FC = () => {
                         </IonCol>
                       </IonRow>
                     )}
-                    <IonRow className='next-row'>
-                      <IonCol>
-                        <IonItem>{amount}</IonItem>
+    
+                  </IonGrid>
+                </IonCol>
+
+                <IonCol>
+                  <IonGrid>
+                    <IonRow>
+                      <IonCol className='row-header'>
+                        <IonLabel className='label-content'><h1>Farmer Details</h1></IonLabel>
                       </IonCol>
                     </IonRow>
+                    <IonRow className='first-row'>
+                      <IonCol>
+                        <IonItem>{fruitsId}</IonItem>
+                      </IonCol>
+                    </IonRow>
+                    <IonRow className='next-row'>
+                      <IonCol>
+                        <IonItem>{farmerName}</IonItem>
+                      </IonCol>
+                    </IonRow>
+                    {villageName && (
+                      <IonRow className='next-row'>
+                        <IonCol>
+                          <IonItem>{villageName}</IonItem>
+                        </IonCol>
+                      </IonRow>
+                    )}
                   </IonGrid>
                 </IonCol>
               </IonRow>
@@ -445,9 +456,7 @@ const BidAccept: React.FC = () => {
               <IonCol>
                 <IonButton id="click-for-details-btn" expand="full" size="large" onClick={rejectButtonPopUpSection}>Reject</IonButton>
               </IonCol>
-              <IonCol>
-                <IonButton id="click-for-details-btn" expand="full" size="large" onClick={toggleClickDetailsSection}>Back</IonButton>
-              </IonCol>
+    
             </IonRow>
           </IonGrid>
         )}
@@ -462,12 +471,12 @@ const BidAccept: React.FC = () => {
 
             </IonRow>
 
-            <IonRow>
+            {/* <IonRow>
               <IonCol>
                 <IonButton id="click-for-details-btn" expand="full" size="large" onClick={toggleBackButtonSection} >Click here for new lot</IonButton>
               </IonCol>
 
-            </IonRow>
+            </IonRow> */}
           </IonGrid>
         )}
          <IonAlert

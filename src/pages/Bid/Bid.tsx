@@ -70,6 +70,7 @@ const Bid: React.FC = () => {
 
   const [isUserInExactLocation, setIsUserInExactLocation] = useState(false);
   const [isMinimumBalanceValid, setIsMinimumBalanceValid] = useState(false);
+  const [is1stBoxVisible, setIs1stBoxVisible] = useState(false);
 
   const handleRowClick = (item: any) => () => {
     setSelectedReportData(item);
@@ -137,6 +138,32 @@ const Bid: React.FC = () => {
     })
       .then(res => {
         setReelerNumber(res.data.content.reelerNumber);
+        console.log(res.data)
+        
+      })
+      .catch(error => {
+        setMessage("Failed to fetch reeler details");
+        setIserror(true)
+      })
+  }
+
+  const getMarketDetails = () => {
+    const reelerPayload = {
+        "id": parseInt(localStorage.getItem("marketId")!)    
+    }
+
+    const api = axios.create({
+       baseURL: `https://api.senovagseri.com/master-data/v1/marketMaster`
+    })
+    api.get(`/get/${parseInt(localStorage.getItem("marketId")!)}` , {
+      headers: {
+        "Content-Type": "application/json",
+        accept: "*/*",
+        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+      },
+    })
+      .then(res => {
+        setIs1stBoxVisible(res.data.content.bidAmountFlag)
         console.log(res.data)
         
       })
@@ -241,7 +268,7 @@ const Bid: React.FC = () => {
       lng:location.coords.longitude
     };
 
-    
+
     // let mrktloc = {
     //   lat:12.9400832,
     //   lng:77.5389184
@@ -346,6 +373,7 @@ const Bid: React.FC = () => {
     const formattedDate = `${year}-${month}-${day}`;
     setTodayDate(formattedDate);
     getReelerNumber();
+    getMarketDetails();
   }, []);
 
 
@@ -520,9 +548,12 @@ const Bid: React.FC = () => {
   const generateBidAmount = () => {
     let concatenatedBidAmountString = "";
 
+    if(bidAmountValueStart != '0'){
     if (bidAmountValueStart != undefined && bidAmountValueStart != null && !Number.isNaN(bidAmountValueStart)) {
       concatenatedBidAmountString = `${bidAmountValueStart}`;
     }
+  }
+    
 
     if (bidAmountValue1 != undefined && bidAmountValue1 != null && !Number.isNaN(bidAmountValue1)) {
       concatenatedBidAmountString = concatenatedBidAmountString + `${bidAmountValue1}`;
@@ -569,7 +600,7 @@ const Bid: React.FC = () => {
   return (
     <IonPage>
       <IonHeader className="ion-no-border">
-        <IonToolbar>
+        <IonToolbar className='bid-tool-bar-height'>
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
@@ -618,19 +649,20 @@ const Bid: React.FC = () => {
                 </IonCol>
               </IonRow>
               <IonRow>
-              <IonCol>
-                  <IonInput 
-                    className='input-big-font-size'
-                    type='text'
-                    maxlength={1}
-                    pattern="[0-9]{1}"
-                    fill="outline"
-                    value={bidAmountValueStart}
-                    onIonInput={(e) => handleInputChangeStart(inputRef1, e.detail.value!)}
-                    // ref={inputRef1}
-                    inputmode="numeric"
-                  ></IonInput>
-                </IonCol>
+              {is1stBoxVisible && (
+                  <IonCol>
+                    <IonInput 
+                      className='input-big-font-size'
+                      type='text'
+                      maxlength={1}
+                      pattern="[0-9]{1}"
+                      fill="outline"
+                      value={bidAmountValueStart}
+                      onIonInput={(e) => handleInputChangeStart(inputRef1, e.detail.value!)}
+                      inputmode="numeric"
+                    ></IonInput>
+                  </IonCol>
+                )}
 
                 <IonCol>
                   <IonInput 
@@ -700,19 +732,29 @@ const Bid: React.FC = () => {
             </IonGrid>
 
             <IonItem className='item-background-color'>
-            <IonLabel>Re-Bid</IonLabel>
+            <IonCol size="4">
+              <IonLabel>Re-Bid</IonLabel>
+                    </IonCol>
+                    <IonCol size="1">
               <IonLabel>Lot No</IonLabel>
+                    </IonCol>
+                    <IonCol size="3">
               <IonLabel>Bid Amt</IonLabel>
+                    </IonCol>
+                    <IonCol size="3">
               <IonLabel>Curr. Bid</IonLabel>
-              {/* <IonLabel>St.</IonLabel> */}
+                    </IonCol>
+                    <IonCol size="1">
+              <IonLabel>Y/N</IonLabel>
+                    </IonCol>
             </IonItem>
             {bidData.map((item) => (
               <IonCol size='12' key={item.allottedLotId}>
                 <IonRow>
-                <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
+                <IonCol size="4" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
                     <IonButton onClick={(e) => handleReBid(e, item.allottedLotId, inputRef1)}>Re-Bid</IonButton>
                   </IonCol>
-                  <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
+                  <IonCol size="1" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
                     <IonLabel>{item.allottedLotId}</IonLabel>
                   </IonCol>
                   <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
@@ -720,6 +762,9 @@ const Bid: React.FC = () => {
                   </IonCol>
                   <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
                     <IonLabel>{item.myBidAmount}</IonLabel>
+                  </IonCol>
+                  <IonCol size="1" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
+                    <IonLabel>{item.status}</IonLabel>
                   </IonCol>
                 </IonRow>
               </IonCol>

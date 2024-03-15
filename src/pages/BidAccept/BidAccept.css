@@ -29,3 +29,7 @@ ion-content{
     font-size: 30px;
     text-align: center;
 }
+
+.clr-button-height{
+    height: 50px;
+}

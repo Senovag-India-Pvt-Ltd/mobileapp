@@ -87,4 +87,8 @@ ion-content{
     border-radius: 10px;
 }
 
+.bid-tool-bar-height{
+    height: 60px !important; 
+}
+
 
