@@ -72,6 +72,10 @@ const Bid: React.FC = () => {
   const [isMinimumBalanceValid, setIsMinimumBalanceValid] = useState(false);
   const [is1stBoxVisible, setIs1stBoxVisible] = useState(false);
 
+  const [reelerBalance, setReelerBalance] = useState<string>("");
+  const [reelerAppxPurchase, setReelerAppxPurchase] = useState<string>("");
+  const [reelerDeposit, setReelerDeposit] = useState<string>("");
+
   const handleRowClick = (item: any) => () => {
     setSelectedReportData(item);
     setShowPopup(true);
@@ -163,7 +167,11 @@ const Bid: React.FC = () => {
       },
     })
       .then(res => {
+        if(res.data.content.bidAmountFlag == null){
+          setIs1stBoxVisible(false)
+        }else{
         setIs1stBoxVisible(res.data.content.bidAmountFlag)
+        }
         console.log(res.data)
         
       })
@@ -177,9 +185,16 @@ const Bid: React.FC = () => {
     const reelerTransactionReportData = {
         "marketId": parseInt(localStorage.getItem("marketId")!),
         "godownId": parseInt(localStorage.getItem("godownId")!),
-        "reportFromDate": todayDate,
-        "reelerNumber": reelerNumber
+        "auctionDate": todayDate,
+        "reelerId":  parseInt(localStorage.getItem("userTypeId")!),
     }
+
+  //   const reelerTransactionReportData = {
+  //     "marketId": 54,
+     
+  //     "auctionDate": "2024-01-23",
+  //     "reelerId": 121,
+  // }
 
     // const reelerTransactionReportData = {
     //   "marketId": 54,
@@ -191,7 +206,7 @@ const Bid: React.FC = () => {
     const api = axios.create({
        baseURL: `https://api.senovagseri.com/market-auction/v1/auction/report`
     })
-    api.post("/getReelerBiddingReport", reelerTransactionReportData, {
+    api.post("/getReelerReportForApp", reelerTransactionReportData, {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
@@ -199,8 +214,12 @@ const Bid: React.FC = () => {
       },
     })
       .then(res => {
-        setReportData(res.data.content);
-        console.log(res.data)
+        setReportData(res.data.content.reelerReportList);
+      
+        setReelerDeposit("Total amount depoited: Rs."+res.data.content.totalAmountDeposited);
+        setReelerAppxPurchase("Approximate purchase: Rs."+res.data.content.approximatePurchase);
+        setReelerBalance("Balance: Rs."+res.data.content.reelerCurrentBalance)
+        console.log(res.data);
         
       })
       .catch(error => {
@@ -277,8 +296,10 @@ const Bid: React.FC = () => {
     
     //6.6 mtr acuracy
     // let mrktloc = {
-    //   lat: 12.9652161,
-    //   lng: 77.5249014
+    //   lat: 
+    //   13.0026854,
+    //   lng: 
+    //   77.5603454
     // };
    
     let mrktloc = {
@@ -732,38 +753,38 @@ const Bid: React.FC = () => {
             </IonGrid>
 
             <IonItem className='item-background-color'>
-            <IonCol size="4">
+            <IonCol size="3">
               <IonLabel>Re-Bid</IonLabel>
                     </IonCol>
-                    <IonCol size="1">
-              <IonLabel>Lot No</IonLabel>
+                    <IonCol size="2">
+              <IonLabel>Lt No</IonLabel>
                     </IonCol>
-                    <IonCol size="3">
+                    <IonCol size="2">
               <IonLabel>Bid Amt</IonLabel>
                     </IonCol>
                     <IonCol size="3">
               <IonLabel>Curr. Bid</IonLabel>
                     </IonCol>
-                    <IonCol size="1">
+                    <IonCol size="2">
               <IonLabel>Y/N</IonLabel>
                     </IonCol>
             </IonItem>
             {bidData.map((item) => (
               <IonCol size='12' key={item.allottedLotId}>
                 <IonRow>
-                <IonCol size="4" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
-                    <IonButton onClick={(e) => handleReBid(e, item.allottedLotId, inputRef1)}>Re-Bid</IonButton>
+                <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
+                    <IonButton className='re-bid-button' size="small" onClick={(e) => handleReBid(e, item.allottedLotId, inputRef1)}>Re-Bid</IonButton>
                   </IonCol>
-                  <IonCol size="1" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
+                  <IonCol size="2" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
                     <IonLabel>{item.allottedLotId}</IonLabel>
                   </IonCol>
-                  <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
+                  <IonCol size="2" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
                     <IonLabel>{item.highestBidAmount}</IonLabel>
                   </IonCol>
                   <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
                     <IonLabel>{item.myBidAmount}</IonLabel>
                   </IonCol>
-                  <IonCol size="1" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
+                  <IonCol size="2" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
                     <IonLabel>{item.status}</IonLabel>
                   </IonCol>
                 </IonRow>
@@ -780,35 +801,52 @@ const Bid: React.FC = () => {
             <IonGrid>
               <IonRow>
                 <IonCol>
-                <IonItem className='item-background-color'>
-                  <IonLabel>Lot No</IonLabel>
+                <IonItem className='item-background-color rep-header-contents'>
+                  <IonLabel>Sl. No</IonLabel>
+                  <IonLabel>Lot No.</IonLabel>
                   <IonLabel>Bid Amt</IonLabel>
-                  <IonLabel>Status</IonLabel>
+                  <IonLabel>Wt</IonLabel>
+                  <IonLabel>Amt</IonLabel>
+                  <IonLabel>MF</IonLabel>
               {/* <IonLabel>St.</IonLabel> */}
             </IonItem>
             {reportData.map((item, index) => (
-              <div className='report-section-contents'>
-                 <PopupForm isOpen={showPopup} onClose={handleClosePopup} itemData={selectedReportData} />
-                 <div key={index} onClick={handleRowClick(item)}>
              
               <IonCol size='12' key={item.lotId}>
                 <IonRow className='report-contents'>
-                  <IonCol size="4">
-                    <IonLabel>{item.lotId}</IonLabel>
+                  <IonCol size="2">
+                    <IonLabel>{item.serialNumber}</IonLabel>
                   </IonCol>
-                  <IonCol size="4">
+                  <IonCol size="2">
+                    <IonLabel>{item.allottedLotId}</IonLabel>
+                  </IonCol>
+                  <IonCol size="2">
                     <IonLabel>{item.bidAmount}</IonLabel>
                   </IonCol>
-                  <IonCol size="4">
-                    <IonLabel>{item.accepted}</IonLabel>
+                  <IonCol size="2">
+                    <IonLabel>{item.weight}</IonLabel>
+                  </IonCol>
+                  <IonCol size="2">
+                    <IonLabel>{item.amount}</IonLabel>
+                  </IonCol>
+                  <IonCol size="2">
+                    <IonLabel>{item.marketFee}</IonLabel>
                   </IonCol>
                 </IonRow>
                 <IonItemDivider className='divider-component-for-table'/>
               </IonCol>
-              </div>
-              </div>
+             
             ))}
                 </IonCol>
+              </IonRow>
+              <IonRow className='report-summary'>
+                <IonLabel>{reelerDeposit}</IonLabel>
+              </IonRow>
+              <IonRow className='report-summary'>
+                <IonLabel>{reelerAppxPurchase}</IonLabel>
+              </IonRow>
+              <IonRow className='report-summary-reeler-balance'>
+                <IonLabel>{reelerBalance}</IonLabel>
               </IonRow>
             </IonGrid>
           </IonContent>

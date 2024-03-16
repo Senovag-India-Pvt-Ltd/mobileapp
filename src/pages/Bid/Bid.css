@@ -60,6 +60,7 @@ ion-content{
 
 .report-contents{
     text-align: center;
+    font-size: 10px;
 }
 
 .centered-modal{
@@ -89,6 +90,25 @@ ion-content{
 
 .bid-tool-bar-height{
     height: 60px !important; 
+}
+
+.report-summary{
+    margin-left: 5px;
+    font-size: 12px;
+}
+
+.report-summary-reeler-balance{
+    margin-left: 5px;
+    height:100px;
+    font-size: 12px;
+}
+
+.re-bid-button{
+    width:55px;
+}
+
+.rep-header-contents{
+    font-size: 10px;
 }
 
 
