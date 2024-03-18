@@ -6,6 +6,7 @@ import axios from "axios"; import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
 import TimeTicker from '../../components/TimeTicker';
 import { useEffect, useRef, useState } from 'react';
+import { API_URL } from '../../services/auth.service';
 
 const BidAccept: React.FC = () => {
 
@@ -101,9 +102,12 @@ const BidAccept: React.FC = () => {
     }
 
     const api = axios.create({
-      baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
+      baseURL: API_URL
+      // baseURL: `http://13.200.62.144:8002/market-auction/v1/auction/reeler`
+    //  baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
+    // baseURL: `http://localhost:8002/market-auction/v1/auction/reeler`
     })
-    api.post("/getHighestBidPerLotDetails", fetchHighestBidPayload, {
+    api.post("market-auction/v1/auction/reeler/getHighestBidPerLotDetails", fetchHighestBidPayload, {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
@@ -166,9 +170,12 @@ const BidAccept: React.FC = () => {
     }
 
     const api = axios.create({
-      baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
+      baseURL: API_URL
+      // baseURL: `http://13.200.62.144:8002/market-auction/v1/auction/reeler`
+    //  baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
+   // baseURL: `http://localhost:8002/market-auction/v1/auction/reeler`
     })
-    api.post("/getHighestBidPerLotDetails", fetchHighestBidPayload, {
+    api.post("market-auction/v1/auction/reeler/getHighestBidPerLotDetails", fetchHighestBidPayload, {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
@@ -273,9 +280,9 @@ const BidAccept: React.FC = () => {
     }
 
     const api = axios.create({
-      baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
+      baseURL: API_URL
     })
-    api.post("/acceptReelerBidForGivenLot", acceptBidPayLoad, {
+    api.post("market-auction/v1/auction/reeler/acceptReelerBidForGivenLot", acceptBidPayLoad, {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
@@ -290,6 +297,53 @@ const BidAccept: React.FC = () => {
         } else {
           setIsSuccess(true)
           setMessage("Bid accepted")
+        }
+
+      })
+      .catch(error => {
+        setMessage("Failed to fetch highest bid");
+        setIserror(true)
+      })
+
+  };
+
+  const handleRejectButtonEvent = () => {
+    inputRefLot.current?.setFocus();
+    setShowClickDetailsSection(!showClickDetailsSection);
+    setShowFarmerDetailsSection(!showFarmerDetailsSection);
+    setShowAcceptButtonSection(!showAcceptButtonSection);
+
+    const rejectBidPayLoad = {
+      "marketId": localStorage.getItem("marketId"),
+      "godownId": localStorage.getItem("godownId"),
+      "allottedLotId": lotId,
+      "bidAcceptedBy": localStorage.getItem("username")!,
+    }
+
+    const api = axios.create({
+      baseURL: API_URL
+    })
+    api.post("market-auction/v1/auction/reeler/rejectReelerBidForGivenLot", rejectBidPayLoad, {
+      headers: {
+        "Content-Type": "application/json",
+        accept: "*/*",
+        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+      },
+    })
+      .then(res => {
+        console.log(res.data);
+        if (res.data.errorCode == -1) {
+          setMessage(res.data.errorMessages[0].message);
+          setIserror(true)
+        } else {
+          setIsSuccess(true)
+          setMessage("Bid rejected successfully.")
+          inputRefLot.current?.setFocus();
+          setLotId("");
+          setLotNumberValue("");
+          setShowClickDetailsSection(!showClickDetailsSection);
+          setShowFarmerDetailsSection(!showFarmerDetailsSection);
+          setShowAcceptButtonSection(!showAcceptButtonSection);
         }
 
       })
@@ -481,7 +535,7 @@ const BidAccept: React.FC = () => {
         )}
          <IonAlert
         header="Are you sure"
-        message="You want to reject?"
+        message="You want to reject? Bid will starts from 0 in the next auction"
         isOpen={showBidConfirmationAlert}
         onDidDismiss={() => setShowBidConfirmationAlert(false)}
 
@@ -492,7 +546,7 @@ const BidAccept: React.FC = () => {
             role: 'confirm',
             handler: () => {
               console.log('Alert confirmed');
-              toggleRejectButtonSection();
+              handleRejectButtonEvent();
             },
           },
           {

@@ -10,6 +10,7 @@ import TimeTicker from '../../components/TimeTicker';
 import { Geolocation } from '@capacitor/geolocation';
 import { options } from 'ionicons/icons';
 import PopupForm from './PopupForm';
+import { API_URL } from '../../services/auth.service';
 
 const Bid: React.FC = () => {
 
@@ -93,9 +94,9 @@ const Bid: React.FC = () => {
     }
 
     const api = axios.create({
-       baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
+       baseURL: API_URL,
     })
-    api.post("/getReelerBalance", submitBidData, {
+    api.post("market-auction/v1/auction/reeler/getReelerBalance", submitBidData, {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
@@ -131,9 +132,9 @@ const Bid: React.FC = () => {
     }
 
     const api = axios.create({
-       baseURL: `https://api.senovagseri.com/farmer-registration/v1/reeler`
+       baseURL: API_URL,
     })
-    api.get(`/get/${parseInt(localStorage.getItem("userTypeId")!)}` , {
+    api.get(`farmer-registration/v1/reeler/get/${parseInt(localStorage.getItem("userTypeId")!)}` , {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
@@ -157,9 +158,9 @@ const Bid: React.FC = () => {
     }
 
     const api = axios.create({
-       baseURL: `https://api.senovagseri.com/master-data/v1/marketMaster`
+       baseURL: API_URL,
     })
-    api.get(`/get/${parseInt(localStorage.getItem("marketId")!)}` , {
+    api.get(`master-data/v1/marketMaster/get/${parseInt(localStorage.getItem("marketId")!)}` , {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
@@ -191,22 +192,14 @@ const Bid: React.FC = () => {
 
   //   const reelerTransactionReportData = {
   //     "marketId": 54,
-     
   //     "auctionDate": "2024-01-23",
   //     "reelerId": 121,
   // }
 
-    // const reelerTransactionReportData = {
-    //   "marketId": 54,
-    //   "godownId": 0,
-    //   "reportFromDate": "2024-01-27",
-    //   "reelerNumber": "1310"
-    // }
-
     const api = axios.create({
-       baseURL: `https://api.senovagseri.com/market-auction/v1/auction/report`
+       baseURL: API_URL,
     })
-    api.post("/getReelerReportForApp", reelerTransactionReportData, {
+    api.post("market-auction/v1/auction/report/getReelerReportForApp", reelerTransactionReportData, {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
@@ -297,9 +290,9 @@ const Bid: React.FC = () => {
     //6.6 mtr acuracy
     // let mrktloc = {
     //   lat: 
-    //   13.0026854,
+    //   13.0121728,
     //   lng: 
-    //   77.5603454
+    //   77.5258112
     // };
    
     let mrktloc = {
@@ -473,9 +466,9 @@ const Bid: React.FC = () => {
     }
 
     const api = axios.create({
-       baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
+       baseURL: API_URL,
     })
-    api.post("/submitBid", submitBidData, {
+    api.post("market-auction/v1/auction/reeler/submitBid", submitBidData, {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
@@ -510,9 +503,9 @@ const Bid: React.FC = () => {
     }
 
     const api = axios.create({
-       baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
+       baseURL: API_URL,
     })
-    api.post("/getHighestBidPerLot", highestBidData, {
+    api.post("market-auction/v1/auction/reeler/getHighestBidPerLot", highestBidData, {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
@@ -547,9 +540,9 @@ const Bid: React.FC = () => {
     }
 
     const api = axios.create({
-      baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
+      baseURL: API_URL,
     })
-    api.post("/getHighestAndCurrentBidByEachLotForReeler", submitData, {
+    api.post("market-auction/v1/auction/reeler/getHighestAndCurrentBidByEachLotForReeler", submitData, {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
@@ -855,26 +848,28 @@ const Bid: React.FC = () => {
       </IonContent>
 
       <IonAlert
+        className='ion-alert-button'
         header="Confirm rate"
         message={confirmationBidText}
         isOpen={showBidConfirmationAlert}
         onDidDismiss={() => setShowBidConfirmationAlert(false)}
 
         buttons={[
-          {
-            text: 'No',
-            role: 'cancel',
-            handler: () => {
-              console.log('Alert canceled');
-
-            },
-          },
+        
           {
             text: 'Yes',
             role: 'confirm',
             handler: () => {
               console.log('Alert confirmed');
               handleBidBtn();
+            },
+          },
+          {
+            text: 'No',
+            role: 'cancel',
+            handler: () => {
+              console.log('Alert canceled');
+
             },
           },
         ]}

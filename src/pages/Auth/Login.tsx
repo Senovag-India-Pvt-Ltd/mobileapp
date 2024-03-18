@@ -10,7 +10,7 @@ import './Login.css';
 
 import { Device } from '@capacitor/device';
 import { JSX } from 'react/jsx-runtime';
-import authService from '../../services/auth.service';
+import authService, { API_URL } from '../../services/auth.service';
 import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
 import { Wave } from '../../components/Wave';
@@ -154,9 +154,9 @@ const Login: React.FC = () => {
     }
 
     const api = axios.create({
-      baseURL: `https://api.senovagseri.com/master-data/v1`,
+      baseURL: API_URL,
     })
-    api.post("/userMaster/generate-otp-by-user-name-and-password", loginData)
+    api.post("master-data/v1/userMaster/generate-otp-by-user-name-and-password", loginData)
       .then(res => {
 
         if (res.data.content.error) {
@@ -185,10 +185,10 @@ const Login: React.FC = () => {
     }
 
     const api = axios.create({
-      baseURL: `https://api.senovagseri.com/master-data/v1`
+      baseURL: API_URL,
     })
     try {
-      const res = await api.post("/userMaster/verify-otp-by-user-name", loginData);
+      const res = await api.post("master-data/v1/userMaster/verify-otp-by-user-name", loginData);
       if (res.data.content.otpVerified) {
         await authService.login(email, password);
         if (localStorage.getItem("jwtToken") == 'null' || localStorage.getItem("jwtToken") == null || localStorage.getItem("jwtToken") == ' ') {

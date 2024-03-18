@@ -111,4 +111,8 @@ ion-content{
     font-size: 10px;
 }
 
+.alert-button-group.sc-ion-alert-md {
+    justify-content: space-around !important;
+}
+
 

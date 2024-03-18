@@ -8,6 +8,7 @@ import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
 import TimeTicker from '../../components/TimeTicker';
 import { setErrorHandler } from 'ionicons/dist/types/stencil-public-runtime';
+import { API_URL } from '../../services/auth.service';
 
 const ChangePassword: React.FC = () => {
 
@@ -68,10 +69,10 @@ const ChangePassword: React.FC = () => {
     }
 
     const api = axios.create({
-      baseURL: `https://api.senovagseri.com/master-data/v1/userMaster`
+      baseURL: API_URL,
     })
 
-    api.post("/change-password", fetchHighestBidPayload, {
+    api.post("master-data/v1/userMaster/change-password", fetchHighestBidPayload, {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",

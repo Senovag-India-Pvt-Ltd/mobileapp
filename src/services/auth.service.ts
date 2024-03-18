@@ -2,12 +2,14 @@ import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 
 //const API_URL = 'http://localhost:8001/master-data';
-const API_URL = 'https://api.senovagseri.com/master-data';
+// const API_URL = 'https://api.senovagseri.com/master-data';
 //const API_URL = 'http://13.200.62.144:8001/master-data/v1';
+
+export const API_URL = 'https://api.senovagseri.com/';
 
 const authService = {
   login: async (username: string, password: string) => {
-    const response = await axios.post(`${API_URL}/auth/login`, { username, password });
+    const response = await axios.post(`${API_URL}master-data/auth/login`, { username, password });
     localStorage.setItem('jwtToken', response.data.token);
     localStorage.setItem('marketId', response.data.marketId);
     localStorage.setItem('roleId', response.data.roleId);
