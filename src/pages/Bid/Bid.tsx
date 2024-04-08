@@ -755,19 +755,19 @@ const Bid: React.FC = () => {
 
             <IonItem className='item-background-color'>
             <IonCol size="3">
-              <IonLabel>Re-Bid</IonLabel>
+              <IonLabel className='table-header'>Re-Bid</IonLabel>
                     </IonCol>
                     <IonCol size="2">
-              <IonLabel>Lt No</IonLabel>
+              <IonLabel className='table-header'>Lt No</IonLabel>
                     </IonCol>
                     <IonCol size="2">
-              <IonLabel>Bid Amt</IonLabel>
+              <IonLabel className='table-header'>Bid Amt</IonLabel>
                     </IonCol>
                     <IonCol size="3">
-              <IonLabel>Curr. Bid</IonLabel>
+              <IonLabel className='table-header'>Curr. Bid</IonLabel>
                     </IonCol>
                     <IonCol size="2">
-              <IonLabel>Y/N</IonLabel>
+              <IonLabel className='table-header'>Y/N</IonLabel>
                     </IonCol>
             </IonItem>
             {bidData.map((item) => (
