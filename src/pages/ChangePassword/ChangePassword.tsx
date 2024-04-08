@@ -9,6 +9,7 @@ import { App } from '@capacitor/app';
 import TimeTicker from '../../components/TimeTicker';
 import { setErrorHandler } from 'ionicons/dist/types/stencil-public-runtime';
 import { API_URL } from '../../services/auth.service';
+// import { API_URL, API_URL_Master } from '../../services/auth.service';
 
 const ChangePassword: React.FC = () => {
 
@@ -69,7 +70,8 @@ const ChangePassword: React.FC = () => {
     }
 
     const api = axios.create({
-      baseURL: API_URL,
+       baseURL: API_URL,
+      //baseURL: API_URL_Master,
     })
 
     api.post("master-data/v1/userMaster/change-password", fetchHighestBidPayload, {

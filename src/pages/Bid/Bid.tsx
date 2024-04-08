@@ -10,7 +10,9 @@ import TimeTicker from '../../components/TimeTicker';
 import { Geolocation } from '@capacitor/geolocation';
 import { options } from 'ionicons/icons';
 import PopupForm from './PopupForm';
-import { API_URL } from '../../services/auth.service';
+ import { API_URL } from '../../services/auth.service';
+//import {  API_URL_Market, API_URL_Master } from '../../services/auth.service';
+
 
 const Bid: React.FC = () => {
 
@@ -94,7 +96,8 @@ const Bid: React.FC = () => {
     }
 
     const api = axios.create({
-       baseURL: API_URL,
+        baseURL: API_URL,
+      // baseURL: API_URL_Market
     })
     api.post("market-auction/v1/auction/reeler/getReelerBalance", submitBidData, {
       headers: {
@@ -126,31 +129,32 @@ const Bid: React.FC = () => {
       })
   }
 
-  const getReelerNumber = () => {
-    const reelerPayload = {
-        "id": parseInt(localStorage.getItem("userTypeId")!)    
-    }
+  // const getReelerNumber = () => {
+  //   const reelerPayload = {
+  //       "id": parseInt(localStorage.getItem("userTypeId")!)    
+  //   }
 
-    const api = axios.create({
-       baseURL: API_URL,
-    })
-    api.get(`farmer-registration/v1/reeler/get/${parseInt(localStorage.getItem("userTypeId")!)}` , {
-      headers: {
-        "Content-Type": "application/json",
-        accept: "*/*",
-        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-      },
-    })
-      .then(res => {
-        setReelerNumber(res.data.content.reelerNumber);
-        console.log(res.data)
+  //   const api = axios.create({
+  //     //  baseURL: API_URL,
+  //     baseURL: API_URL_Market
+  //   })
+  //   api.get(`farmer-registration/v1/reeler/get/${parseInt(localStorage.getItem("userTypeId")!)}` , {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       accept: "*/*",
+  //       Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+  //     },
+  //   })
+  //     .then(res => {
+  //       setReelerNumber(res.data.content.reelerNumber);
+  //       console.log(res.data)
         
-      })
-      .catch(error => {
-        setMessage("Failed to fetch reeler details");
-        setIserror(true)
-      })
-  }
+  //     })
+  //     .catch(error => {
+  //       setMessage("Failed to fetch reeler details");
+  //       setIserror(true)
+  //     })
+  // }
 
   const getMarketDetails = () => {
     const reelerPayload = {
@@ -158,7 +162,8 @@ const Bid: React.FC = () => {
     }
 
     const api = axios.create({
-       baseURL: API_URL,
+        baseURL: API_URL,
+      //baseURL: API_URL_Master,
     })
     api.get(`master-data/v1/marketMaster/get/${parseInt(localStorage.getItem("marketId")!)}` , {
       headers: {
@@ -197,7 +202,8 @@ const Bid: React.FC = () => {
   // }
 
     const api = axios.create({
-       baseURL: API_URL,
+        baseURL: API_URL,
+      //baseURL: API_URL_Market,
     })
     api.post("market-auction/v1/auction/report/getReelerReportForApp", reelerTransactionReportData, {
       headers: {
@@ -290,9 +296,12 @@ const Bid: React.FC = () => {
     //6.6 mtr acuracy
     // let mrktloc = {
     //   lat: 
-    //   13.0121728,
+      
+    //   13.002514000000001,
     //   lng: 
-    //   77.5258112
+       
+
+    //   77.5602775
     // };
    
     let mrktloc = {
@@ -386,14 +395,10 @@ const Bid: React.FC = () => {
     const day = String(currentDate.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
     setTodayDate(formattedDate);
-    getReelerNumber();
+    //getReelerNumber();
     getMarketDetails();
   }, []);
 
-
-  useEffect(() => {
-    
-  }, [lotId]);
 
   const handleInputChangeStart = (inputRef: React.RefObject<HTMLIonInputElement>, value: string) => {
     const inputValue = value;
@@ -466,7 +471,8 @@ const Bid: React.FC = () => {
     }
 
     const api = axios.create({
-       baseURL: API_URL,
+        baseURL: API_URL,
+      //baseURL: API_URL_Market,
     })
     api.post("market-auction/v1/auction/reeler/submitBid", submitBidData, {
       headers: {
@@ -503,7 +509,8 @@ const Bid: React.FC = () => {
     }
 
     const api = axios.create({
-       baseURL: API_URL,
+        baseURL: API_URL,
+      //baseURL: API_URL_Market,
     })
     api.post("market-auction/v1/auction/reeler/getHighestBidPerLot", highestBidData, {
       headers: {
@@ -540,7 +547,8 @@ const Bid: React.FC = () => {
     }
 
     const api = axios.create({
-      baseURL: API_URL,
+       baseURL: API_URL,
+      //baseURL: API_URL_Market,
     })
     api.post("market-auction/v1/auction/reeler/getHighestAndCurrentBidByEachLotForReeler", submitData, {
       headers: {

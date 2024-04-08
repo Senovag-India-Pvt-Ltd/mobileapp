@@ -10,7 +10,9 @@ import './Login.css';
 
 import { Device } from '@capacitor/device';
 import { JSX } from 'react/jsx-runtime';
-import authService, { API_URL } from '../../services/auth.service';
+ import authService, { API_URL} from '../../services/auth.service';
+//import authService, { API_URL_Master } from '../../services/auth.service';
+
 import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
 import { Wave } from '../../components/Wave';
@@ -155,6 +157,7 @@ const Login: React.FC = () => {
 
     const api = axios.create({
       baseURL: API_URL,
+     // baseURL: API_URL_Master,
     })
     api.post("master-data/v1/userMaster/generate-otp-by-user-name-and-password", loginData)
       .then(res => {
@@ -185,7 +188,8 @@ const Login: React.FC = () => {
     }
 
     const api = axios.create({
-      baseURL: API_URL,
+       baseURL: API_URL,
+      //baseURL: API_URL_Master,
     })
     try {
       const res = await api.post("master-data/v1/userMaster/verify-otp-by-user-name", loginData);

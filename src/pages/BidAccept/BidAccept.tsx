@@ -6,7 +6,8 @@ import axios from "axios"; import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
 import TimeTicker from '../../components/TimeTicker';
 import { useEffect, useRef, useState } from 'react';
-import { API_URL } from '../../services/auth.service';
+ import { API_URL } from '../../services/auth.service';
+//import { API_URL_Market } from '../../services/auth.service';
 
 const BidAccept: React.FC = () => {
 
@@ -102,7 +103,8 @@ const BidAccept: React.FC = () => {
     }
 
     const api = axios.create({
-      baseURL: API_URL
+       baseURL: API_URL
+      //baseURL: API_URL_Market
       // baseURL: `http://13.200.62.144:8002/market-auction/v1/auction/reeler`
     //  baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
     // baseURL: `http://localhost:8002/market-auction/v1/auction/reeler`
@@ -171,6 +173,7 @@ const BidAccept: React.FC = () => {
 
     const api = axios.create({
       baseURL: API_URL
+     //baseURL: API_URL_Market
       // baseURL: `http://13.200.62.144:8002/market-auction/v1/auction/reeler`
     //  baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
    // baseURL: `http://localhost:8002/market-auction/v1/auction/reeler`
@@ -280,7 +283,8 @@ const BidAccept: React.FC = () => {
     }
 
     const api = axios.create({
-      baseURL: API_URL
+       baseURL: API_URL
+      //baseURL: API_URL_Market
     })
     api.post("market-auction/v1/auction/reeler/acceptReelerBidForGivenLot", acceptBidPayLoad, {
       headers: {
@@ -322,6 +326,7 @@ const BidAccept: React.FC = () => {
 
     const api = axios.create({
       baseURL: API_URL
+      //baseURL: API_URL_Market
     })
     api.post("market-auction/v1/auction/reeler/rejectReelerBidForGivenLot", rejectBidPayLoad, {
       headers: {
