@@ -43,6 +43,7 @@ const BidAccept: React.FC = () => {
   const history = useHistory();
   const location = useLocation();
   const [showBidConfirmationAlert, setShowBidConfirmationAlert] = useState(false);
+  const [showAcceptConfirmationAlert, setShowAcceptConfirmationAlert] = useState(false);
 
   if (Capacitor.isNative) {
     App.addListener('backButton', ({ canGoBack }) => {
@@ -260,6 +261,10 @@ const BidAccept: React.FC = () => {
     setShowBidConfirmationAlert(true);
   };
 
+  const acceptButtonPopUpSection = () => {
+    setShowAcceptConfirmationAlert(true);
+  };
+
   const toggleRejectButtonSection = () => {
     inputRefLot.current?.setFocus();
     setLotId("");
@@ -300,7 +305,7 @@ const BidAccept: React.FC = () => {
           setIserror(true)
         } else {
           setIsSuccess(true)
-          setMessage("Bid accepted")
+          setMessage("Bid accepted. Reeler:"+reelerName+"("+reelingLicenseNumber+")")
         }
 
       })
@@ -459,12 +464,14 @@ const BidAccept: React.FC = () => {
                       </IonRow>
                     )}
 
+                  {bidStatus == 'accepted' && (
                     <IonRow className='next-row'>
                       <IonCol>
                         <IonItem>{reelerName}</IonItem>
                       </IonCol>
                     </IonRow>
-                    {reelingLicenseNumber && (
+                    )}
+                    {reelingLicenseNumber && bidStatus == 'accepted' && (
                       <IonRow className='next-row'>
                         <IonCol>
                           <IonItem>{reelingLicenseNumber}</IonItem>
@@ -510,7 +517,7 @@ const BidAccept: React.FC = () => {
           <IonGrid>
             <IonRow>
               <IonCol>
-                <IonButton id="click-for-details-btn" expand="full" size="large" onClick={handleAcceptButtonEvent}>Accept</IonButton>
+                <IonButton id="click-for-details-btn" expand="full" size="large" onClick={acceptButtonPopUpSection}>Accept</IonButton>
               </IonCol>
               <IonCol>
                 <IonButton id="click-for-details-btn" expand="full" size="large" onClick={rejectButtonPopUpSection}>Reject</IonButton>
@@ -565,6 +572,35 @@ const BidAccept: React.FC = () => {
         ]}
 
       ></IonAlert>
+
+<IonAlert
+        header="Are you sure"
+        message="You want to accept?"
+        isOpen={showAcceptConfirmationAlert}
+        onDidDismiss={() => setShowAcceptConfirmationAlert(false)}
+
+        buttons={[
+        
+          {
+            text: 'Yes',
+            role: 'confirm',
+            handler: () => {
+              console.log('Alert confirmed');
+              handleAcceptButtonEvent();
+            },
+          },
+          {
+            text: 'No',
+            role: 'cancel',
+            handler: () => {
+              console.log('Alert canceled');
+
+            },
+          },
+        ]}
+
+      ></IonAlert>
+
         <IonAlert
           isOpen={iserror}
           onDidDismiss={() => setIserror(false)}
