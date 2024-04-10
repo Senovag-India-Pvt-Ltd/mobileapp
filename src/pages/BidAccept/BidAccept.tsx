@@ -136,7 +136,8 @@ const BidAccept: React.FC = () => {
 
           setFruitsId(contents.farmerNumber);
           setFarmerName(contents.farmerFirstName + "" + contents.farmerMiddleName + "" + contents.farmerLastName);
-          setAmount(contents.amount + ".000");
+          // setAmount(contents.amount + ".000");
+          setAmount(contents.amount);
           setReelerName(contents.reelerName);
           setReelerAuctionId(contents.reelerAuctionId);
           setVillageName(contents.farmervillageName);
@@ -205,7 +206,8 @@ const BidAccept: React.FC = () => {
 
           setFruitsId(contents.farmerNumber);
           setFarmerName(contents.farmerFirstName + "" + contents.farmerMiddleName + "" + contents.farmerLastName);
-          setAmount(contents.amount + ".000");
+          // setAmount(contents.amount + ".000");
+          setAmount(contents.amount);
           setReelerName(contents.reelerName);
           setReelerAuctionId(contents.reelerAuctionId);
           setVillageName(contents.farmervillageName);
@@ -367,7 +369,7 @@ const BidAccept: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar className='bid-tool-bar-height'>
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
@@ -415,24 +417,24 @@ const BidAccept: React.FC = () => {
                   }}
                     label="Lot No" labelPlacement="stacked" fill="outline"></IonInput> */}
                     
-                    <IonInput className="input-big-font-size" value={lotNumberValue} onIonInput={(e: any) => {
+                    <IonInput className="input-big-font-size content-margin" value={lotNumberValue} onIonInput={(e: any) => {
                   setLotNumberValue(e.detail.value!);
                   setLotId(e.detail.value!);
                 }}
                 type='text'
                 inputmode="numeric"
-                onIonBlur= { async (e: any) => {
-                  // After focus out, automatically focus on the next input field
-                  fetchHighestBidDetailsOnFocusOut()
-                }}
+                // onIonBlur= { async (e: any) => {
+                //   // After focus out, automatically focus on the next input field
+                //   fetchHighestBidDetailsOnFocusOut()
+                // }}
                   label="Lot No" labelPlacement="stacked" fill="outline"></IonInput>
                 </IonCol>
                 <IonCol size='2'>
-                <IonButton id="click-for-details-btn" className='clr-button-height' expand="full" size="default" onClick={toggleClickDetailsSection}>CLR</IonButton>
+                <IonButton id="click-for-details-btn" className='clr-button-height content-margin' expand="full" size="default" onClick={toggleClickDetailsSection}>CLR</IonButton>
               </IonCol>
 
                 <IonCol size="5">
-                  <IonInput className="ion-text-left input-big-font-size" readonly fill="outline" value={amount} label="Rate" labelPlacement="floating"></IonInput>
+                  <IonInput className="ion-text-left input-big-font-size content-margin rate-amount" readonly fill="outline" value={amount} label="Rate" labelPlacement="floating"></IonInput>
                 </IonCol>
               </IonRow>
               <IonRow>
@@ -447,34 +449,34 @@ const BidAccept: React.FC = () => {
                 <IonCol>
                   <IonGrid>
                     <IonRow>
-                      <IonCol className='row-header'>
-                        <IonLabel className='label-content'><h1>Reeler Details</h1></IonLabel>
+                      <IonCol className='row-header content-margin'>
+                        <IonLabel className='label-content'><h6>Reeler Details</h6></IonLabel>
                       </IonCol>
                     </IonRow>
                     <IonRow className='next-row'>
-                      <IonCol>
-                        <IonItem>{reelerAuctionId}</IonItem>
+                      <IonCol class='col-padding'>
+                        <IonItem className='content-padding'>{reelerAuctionId}</IonItem>
                       </IonCol>
                     </IonRow>
                     {reelerFruitsId && (
                       <IonRow className='next-row'>
-                        <IonCol>
-                          <IonItem>{reelerFruitsId}</IonItem>
+                        <IonCol class='col-padding'>
+                          <IonItem  className='content-padding'>{reelerFruitsId}</IonItem>
                         </IonCol>
                       </IonRow>
                     )}
 
                   {bidStatus == 'accepted' && (
                     <IonRow className='next-row'>
-                      <IonCol>
-                        <IonItem>{reelerName}</IonItem>
+                      <IonCol class='col-padding'>
+                        <IonItem  className='content-padding'>{reelerName}</IonItem>
                       </IonCol>
                     </IonRow>
                     )}
                     {reelingLicenseNumber && bidStatus == 'accepted' && (
                       <IonRow className='next-row'>
-                        <IonCol>
-                          <IonItem>{reelingLicenseNumber}</IonItem>
+                        <IonCol class='col-padding'>
+                          <IonItem  className='content-padding'>{reelingLicenseNumber}</IonItem>
                         </IonCol>
                       </IonRow>
                     )}
@@ -485,24 +487,24 @@ const BidAccept: React.FC = () => {
                 <IonCol>
                   <IonGrid>
                     <IonRow>
-                      <IonCol className='row-header'>
-                        <IonLabel className='label-content'><h1>Farmer Details</h1></IonLabel>
+                      <IonCol className='row-header content-margin'>
+                        <IonLabel className='label-content'><h6>Farmer Details</h6></IonLabel>
                       </IonCol>
                     </IonRow>
                     <IonRow className='first-row'>
-                      <IonCol>
-                        <IonItem>{fruitsId}</IonItem>
+                      <IonCol class='col-padding'>
+                        <IonItem  className='content-padding'>{fruitsId}</IonItem>
                       </IonCol>
                     </IonRow>
                     <IonRow className='next-row'>
-                      <IonCol>
-                        <IonItem>{farmerName}</IonItem>
+                      <IonCol class='col-padding'>
+                        <IonItem  className='content-padding'>{farmerName}</IonItem>
                       </IonCol>
                     </IonRow>
                     {villageName && (
                       <IonRow className='next-row'>
-                        <IonCol>
-                          <IonItem>{villageName}</IonItem>
+                        <IonCol class='col-padding'>
+                          <IonItem  className='content-padding'>{villageName}</IonItem>
                         </IonCol>
                       </IonRow>
                     )}
@@ -515,7 +517,7 @@ const BidAccept: React.FC = () => {
 
         {showAcceptButtonSection && (
           <IonGrid>
-            <IonRow>
+            <IonRow className='content-margin'>
               <IonCol>
                 <IonButton id="click-for-details-btn" expand="full" size="large" onClick={acceptButtonPopUpSection}>Accept</IonButton>
               </IonCol>
