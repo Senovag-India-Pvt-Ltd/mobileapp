@@ -131,7 +131,7 @@ const UploadImagePage: React.FC = () => {
         
         </div>
         {photoUrl && (
-          <div style={{ marginTop: '5px', textAlign: 'center' }}>
+          <div className='image-container'>
             <IonImg src={photoUrl} style={{ width: '400px', height: '400px' }} />
           </div>
         )}
