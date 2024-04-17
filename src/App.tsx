@@ -41,7 +41,7 @@ const App: React.FC = () => {
           <Menu />
           <IonRouterOutlet id="main" placeholder={undefined}>
             <Route path="/" exact={true}>
-              <Redirect to="/login" />
+              <Redirect to="/upload" />
             </Route>
             <Route path="/folder/:name" exact={true}>
               <Page />

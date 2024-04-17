@@ -1,5 +1,6 @@
 
 
+
 import React, { useState, useRef } from 'react';
 import {
   IonContent,
@@ -23,7 +24,7 @@ const { Camera } = Plugins;
 
 const UploadImagePage: React.FC = () => {
   const history = useHistory();
-  const [photoUrl, setPhotoUrl] = useState<string | undefined>(undefined);
+  const [photoUrls, setPhotoUrls] = useState<string[]>([]);
   const [toastMessage, setToastMessage] = useState<string | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -31,24 +32,28 @@ const UploadImagePage: React.FC = () => {
     const files = event.target.files;
 
     if (files && files.length > 0) {
-      const file = files[0];
-      const reader = new FileReader();
+      const newPhotoUrls: string[] = [...photoUrls]; // Copy existing photoUrls
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
 
-      reader.onload = async () => {
-        const imageDataUrl = reader.result as string;
-        setPhotoUrl(imageDataUrl);
-      };
+        reader.onload = async () => {
+          const imageDataUrl = reader.result as string;
+          newPhotoUrls.push(imageDataUrl);
+          if (newPhotoUrls.length === files.length + photoUrls.length) {
+            setPhotoUrls(newPhotoUrls);
+          }
+        };
 
-      reader.readAsDataURL(file);
+        reader.readAsDataURL(file);
+      }
     }
   };
-
- 
 
   const handleClear = () => {
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
-      setPhotoUrl(undefined);
+      setPhotoUrls([]);
     }
   };
 
@@ -63,30 +68,31 @@ const UploadImagePage: React.FC = () => {
   }
 
   const handleUpload = async () => {
-    if (!photoUrl) {
-      setToastMessage('Please select an image first.');
+    if (photoUrls.length === 0) {
+      setToastMessage('Please select at least one image first.');
       return;
     }
 
-    
     const formData = new FormData();
-    formData.append('image', photoUrl);
+    photoUrls.forEach((url, index) => {
+      formData.append(`image_${index}`, url); // Change `image` to your desired key
+    });
 
     try {
-      //'_API_ENDPOINT'
       const response = await fetch('API_ENDPOINT', {
         method: 'POST',
         body: formData,
       });
 
       if (response.ok) {
-        setToastMessage('Image uploaded successfully.');
+        setToastMessage('Images uploaded successfully.');
+        setPhotoUrls([]);
       } else {
-        setToastMessage('Error uploading image. Please try again.');
+        setToastMessage('Error uploading images. Please try again.');
       }
     } catch (error) {
-      console.error('Error uploading image:', error);
-      setToastMessage('Error uploading image. Please try again.');
+      console.error('Error uploading images:', error);
+      setToastMessage('Error uploading images. Please try again.');
     }
   };
 
@@ -100,7 +106,7 @@ const UploadImagePage: React.FC = () => {
       });
 
       if (capturedPhoto && capturedPhoto.webPath) {
-        setPhotoUrl(capturedPhoto.webPath); 
+        setPhotoUrls([...photoUrls, capturedPhoto.webPath]);
       }
     } catch (error) {
       console.error('Error capturing photo:', error);
@@ -119,24 +125,24 @@ const UploadImagePage: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        {/* <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}> */}
         <div className="file-upload-container">
-          <input type="file" accept="image/*" onChange={handleFileInputChange} ref={fileInputRef} />
+          <input type="file" accept="image/*" onChange={handleFileInputChange} ref={fileInputRef} multiple />
           <IonButton onClick={handleCameraCapture} size="small">
             Capture Image
           </IonButton>
           <IonButton onClick={handleClear} size="small" color="danger" style={{ marginLeft: 'auto' }}>
             Clear
           </IonButton>
-        
         </div>
-        {photoUrl && (
-          <div className='image-container'>
-            <IonImg src={photoUrl} style={{ width: '400px', height: '400px' }} />
+        {photoUrls.length > 0 && (
+          <div style={{ marginTop: '5px',textAlign:'center'}}>
+            {photoUrls.map((url, index) => (
+              <IonImg key={index} src={url} style={{ width: '400px', height: '400px' }} />
+            ))}
           </div>
         )}
         <IonButton onClick={handleUpload} expand="block">
-          Upload Image
+          Upload Images
         </IonButton>
         <IonToast
           isOpen={!!toastMessage}
@@ -150,6 +156,7 @@ const UploadImagePage: React.FC = () => {
 };
 
 export default UploadImagePage;
+
 
 
 
