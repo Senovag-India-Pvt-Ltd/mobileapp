@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { IonText } from '@ionic/react';
 import axios from "axios";
 // import authService, { API_URL_Master } from '../services/auth.service';
-import authService, { API_URL } from '../services/auth.service';
+import authService, {  API_URL_Master } from '../services/auth.service';
 
 
 // const TimeTicker: React.FC = () => {
@@ -121,7 +121,7 @@ function TimeTicker({ isActive }: { isActive: boolean; }) {
     // Update server time when isActive changes (i.e., when BidAccept is resumed)
     if (isActive) {
       // const apiUrl = 'https://api.senovagseri.com/master-data/v1/util/current-time-millisec';
-       const apiUrl = API_URL +'master-data/v1/util/current-time-millisec';
+       const apiUrl = API_URL_Master+'master-data/v1/util/current-time-millisec';
     //  const apiUrl = API_URL_Master +'master-data/v1/util/current-time-millisec';
       const jwtToken = authService.getToken();
 

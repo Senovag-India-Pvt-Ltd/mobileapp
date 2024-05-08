@@ -31,6 +31,19 @@ import ChangePassword from './pages/ChangePassword/ChangePassword';
 import UploadImagePage from './pages/practice/upload';
 
 
+
+
+import HomePage from './pages/practice/Dashboard/HomePage';
+import ListPage from './pages/practice/Dashboard/ListPage';
+
+import DocPage from './pages/practice/Dashboard/DocPage';
+import DocumentUpload from './pages/practice/Dashboard/DocumentUpload';
+
+
+
+
+
+
 setupIonicReact();
 
 const App: React.FC = () => {
@@ -41,7 +54,7 @@ const App: React.FC = () => {
           <Menu />
           <IonRouterOutlet id="main" placeholder={undefined}>
             <Route path="/" exact={true}>
-              <Redirect to="/upload" />
+              <Redirect to="/login" />
             </Route>
             <Route path="/folder/:name" exact={true}>
               <Page />
@@ -49,12 +62,23 @@ const App: React.FC = () => {
             <Route path="/login" exact={true}>
               <Login />
               </Route>
-              <Route path="/upload" exact={true}>
-              <UploadImagePage />
+             
+              
+              
+              <Route path="/dash" exact={true}>
+              <HomePage/>
+              </Route>
+              <Route path="/list/:inspectionType" exact={true}>
+                <ListPage/>
+              </Route>
+              <Route path="/docu/:inspectionType/:inspectionTaskId" exact={true}>
+                <DocPage/>
               </Route>
               
+
+           
               
-            <Route path="/bid/:name" exact={true}>
+             <Route path="/bid/:name" exact={true}>
               <Bid />
             </Route>
             <Route path="/accept-bid" exact={true}>

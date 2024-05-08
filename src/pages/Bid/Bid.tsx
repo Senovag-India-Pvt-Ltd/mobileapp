@@ -10,8 +10,8 @@ import TimeTicker from '../../components/TimeTicker';
 import { Geolocation } from '@capacitor/geolocation';
 import { options } from 'ionicons/icons';
 import PopupForm from './PopupForm';
- import { API_URL } from '../../services/auth.service';
-//import {  API_URL_Market, API_URL_Master } from '../../services/auth.service';
+ //import { API_URL, API_URL_Market } from '../../services/auth.service';
+import {  API_URL_Market, API_URL_Master } from '../../services/auth.service';
 
 
 const Bid: React.FC = () => {
@@ -96,8 +96,8 @@ const Bid: React.FC = () => {
     }
 
     const api = axios.create({
-        baseURL: API_URL,
-      // baseURL: API_URL_Market
+      //  baseURL: API_URL,
+       baseURL: API_URL_Market
     })
     api.post("market-auction/v1/auction/reeler/getReelerBalance", submitBidData, {
       headers: {
@@ -162,8 +162,8 @@ const Bid: React.FC = () => {
     }
 
     const api = axios.create({
-        baseURL: API_URL,
-      //baseURL: API_URL_Master,
+      //  baseURL: API_URL,
+      baseURL: API_URL_Master,
     })
     api.get(`master-data/v1/marketMaster/get/${parseInt(localStorage.getItem("marketId")!)}` , {
       headers: {
@@ -202,8 +202,8 @@ const Bid: React.FC = () => {
   // }
 
     const api = axios.create({
-        baseURL: API_URL,
-      //baseURL: API_URL_Market,
+       // baseURL: API_URL,
+      baseURL: API_URL_Market,
     })
     api.post("market-auction/v1/auction/report/getReelerReportForApp", reelerTransactionReportData, {
       headers: {
@@ -463,7 +463,7 @@ const Bid: React.FC = () => {
   const handleBidBtn = () => {
     const submitBidData = {
       "marketId": parseInt(localStorage.getItem("marketId")!),
-      "godownId": parseInt(localStorage.getItem("godownId")!),
+      "godownId": parseInt(localStorage.getItem("godownId")!), //userMasterId
       "allottedLotId": lotId,
       "reelerId": parseInt(localStorage.getItem("userTypeId")!),
       "amount": amount,
@@ -471,8 +471,8 @@ const Bid: React.FC = () => {
     }
 
     const api = axios.create({
-        baseURL: API_URL,
-      //baseURL: API_URL_Market,
+       // baseURL: API_URL,
+      baseURL: API_URL_Market,
     })
     api.post("market-auction/v1/auction/reeler/submitBid", submitBidData, {
       headers: {
@@ -509,8 +509,8 @@ const Bid: React.FC = () => {
     }
 
     const api = axios.create({
-        baseURL: API_URL,
-      //baseURL: API_URL_Market,
+      //  baseURL: API_URL,
+      baseURL: API_URL_Market,
     })
     api.post("market-auction/v1/auction/reeler/getHighestBidPerLot", highestBidData, {
       headers: {
@@ -547,8 +547,8 @@ const Bid: React.FC = () => {
     }
 
     const api = axios.create({
-       baseURL: API_URL,
-      //baseURL: API_URL_Market,
+      // baseURL: API_URL,
+      baseURL: API_URL_Market,
     })
     api.post("market-auction/v1/auction/reeler/getHighestAndCurrentBidByEachLotForReeler", submitData, {
       headers: {

@@ -15,7 +15,7 @@ import {
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, calculator, calculatorOutline, calculatorSharp, camera, cameraOutline, heartOutline, heartSharp, logoGoogle, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import { archiveOutline, archiveSharp, bookmarkOutline, calculator, calculatorOutline, calculatorSharp, camera, cameraOutline, document, documentAttach, documentAttachSharp, documentLockSharp, documentOutline, documentSharp, documentText, heartOutline, heartSharp, logoGoogle, mailOutline, mailSharp, notificationsCircle, notificationsCircleOutline, notificationsCircleSharp, notificationsOffOutline, notificationsOffSharp, notificationsOutline, notificationsSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
 import './Menu.css';
 
 interface AppPage {
@@ -45,11 +45,19 @@ const appPages: AppPage[] = [
     mdIcon: paperPlaneSharp
   },
   {
+    title: 'Dash',
+    url: '/dash',
+    iosIcon: documentOutline,
+    mdIcon: documentAttach
+  },
+  
+  {
     title: 'Capture',
     url: '/upload',
     iosIcon: cameraOutline,
     mdIcon: camera
   },
+ 
   {
     title: 'Change Password',
     url: '/change-password',
