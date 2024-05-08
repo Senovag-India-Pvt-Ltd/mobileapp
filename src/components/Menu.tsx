@@ -45,18 +45,13 @@ const appPages: AppPage[] = [
     mdIcon: paperPlaneSharp
   },
   {
-    title: 'Dash',
+    title: 'Dashboard',
     url: '/dash',
     iosIcon: documentOutline,
     mdIcon: documentAttach
   },
   
-  {
-    title: 'Capture',
-    url: '/upload',
-    iosIcon: cameraOutline,
-    mdIcon: camera
-  },
+  
  
   {
     title: 'Change Password',
