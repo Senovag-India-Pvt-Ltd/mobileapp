@@ -289,9 +289,9 @@
 
 
 
-
+import { camera } from 'ionicons/icons';
 import React, { useState, useRef } from 'react';
-import { IonButton, IonSelect, IonSelectOption, IonImg } from '@ionic/react';
+import { IonButton, IonSelect, IonSelectOption, IonImg, IonIcon ,IonToast } from '@ionic/react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { API_URL_Inspection } from '../../../services/auth.service';
@@ -310,6 +310,11 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({ onUpload, docId }) => {
   const [showUpload, setShowUpload] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement>(null); // Ref for the captured image
+
+  const [uploadSuccess, setUploadSuccess] = useState<boolean>(false); // State for upload success status
+  const [uploadError, setUploadError] = useState<boolean>(false); // State for upload error status
+  
+
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -355,6 +360,9 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({ onUpload, docId }) => {
 
       console.log('File upload response:', response.data);
 
+      setUploadSuccess(true); // Set upload success status
+      setTimeout(() => setUploadSuccess(false), 3000); 
+
       onUpload(uploadFile);
       setSelectedFile(null);
       if (fileInputRef.current) {
@@ -362,6 +370,8 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({ onUpload, docId }) => {
       }
     } catch (error) {
       console.error('Error uploading file:', error);
+      setUploadError(true); // Set upload error status
+    setTimeout(() => setUploadError(false), 3000);
     }
   };
 
@@ -392,6 +402,8 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({ onUpload, docId }) => {
     }
   };
 
+  
+
   const handleSelectChange = (value: string) => {
     setShowUpload(value === 'yes');
     setSelectedFile(null); // Clear selected file on change
@@ -411,13 +423,32 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({ onUpload, docId }) => {
       </IonSelect>
       {showUpload && (
         <>
+        <label htmlFor="fileInput">(Max:2mb)</label>
           <input type="file" onChange={handleFileChange} ref={fileInputRef} />
-          <IonButton onClick={handleCameraCapture}>Capture Image</IonButton>
+          <IonButton onClick={handleCameraCapture}><IonIcon icon={camera} slot="icon-only" /></IonButton>
+
+          
           {selectedFile && <IonButton onClick={handleUpload}>Upload</IonButton>}
           {selectedFile && <IonButton onClick={handleClear}>Clear</IonButton>}
         </>
       )}
-      {selectedFile && <IonImg src={selectedFile} ref={imageRef} />}
+
+<IonToast
+        isOpen={uploadSuccess}
+        onDidDismiss={() => setUploadSuccess(false)}
+        message="Successfully uploaded"
+        duration={3000}
+      />
+      <IonToast
+        isOpen={uploadError}
+        onDidDismiss={() => setUploadError(false)}
+        message="Error uploading file. Please try again."
+        duration={3000}
+        color="danger"
+      />
+      {/* {selectedFile && <IonImg src={selectedFile} ref={imageRef} />} */}
+      {selectedFile && !selectedFile.startsWith('data:image') && <IonImg src={selectedFile} ref={imageRef} />}
+
     </div>
   );
 };

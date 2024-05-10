@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { IonContent, IonPage, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonButtons, IonHeader, IonMenuButton, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonPage, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonButtons, IonHeader, IonMenuButton, IonTitle, IonToolbar ,IonToast} from '@ionic/react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import './DocPage.css';
@@ -17,6 +17,11 @@ const DocPage: React.FC = () => {
   const [inspectionTypeId, setInspectionTypeId] = useState<number>(0);
   const [request, setRequest] = useState<number>(0);
   const [status, setStatus] = useState<number>(0); // Add status as state
+
+  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false); // State for submit success status
+  const [submitError, setSubmitError] = useState<boolean>(false); // State for submit error status
+  
+
 
   useEffect(() => {
     fetchData();
@@ -165,45 +170,47 @@ const DocPage: React.FC = () => {
         console.log('First API Response:', res.data); // Log entire response
         const requestTypeId = res.data.content.requestTypeId; // Assuming this is where you get requestTypeId
         setRequest(requestTypeId); // Assuming setRequest is a function that sets state
-  
+        
         // Set status here based on your response data
         const status = res.data.content.status;
         console.log('Status:', status); // Log status
-  
+        
         // Check conditions for calling the second API
         if (
           ([1, 2, 3].includes(Number(inspectionType)) && status === 3) ||
           ([4, 5].includes(Number(inspectionType)) && status === 4)
         ) {
-          console.log('Calling second API...'); // Log message indicating second API call
-          // Call second API here
-          const anotherApi = axios.create({
-            baseURL: API_URL_DBT
-          });
-  
-          const anotherRequestBody = {
-            id: requestTypeId, // Use the correct variable here
-          };
-  
-         
-          anotherApi.post(`dbt/v1/service/updateApplicationWorkFlowStatusAndTriggerNextStep?id=${requestTypeId}` , {
-            headers: {
-              "Content-Type": "application/json",
-              accept: "*/*",
-              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-            },
-          })
-        
-            .then(res => {
-              console.log('Second API Response:', res.data); // Log response from second API
-            })
-            .catch(error => {
-              console.error('Error calling second API:', error);
+            console.log('Calling second API...'); // Log message indicating second API call
+            // Call second API here
+            const anotherApi = axios.create({
+              baseURL: API_URL_DBT
             });
-        } else {
-          console.log('Second API not called because conditions not met.');
-        }
-      })
+    
+            const anotherRequestBody = {
+              id: requestTypeId, // Use the correct variable here
+            };
+    
+          
+            anotherApi.post(`dbt/v1/service/updateApplicationWorkFlowStatusAndTriggerNextStep?id=${requestTypeId}` , {
+              headers: {
+                "Content-Type": "application/json",
+                accept: "*/*",
+                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+              },
+            })
+          
+              .then(res => {
+                console.log('Second API Response:', res.data); // Log response from second API
+              })
+              .catch(error => {
+                console.error('Error calling second API:', error);
+                setSubmitError(true);
+                setTimeout(() => setSubmitError(false), 3000);
+              });
+          } else {
+            console.log('Second API not called because conditions not met.');
+          }
+        })
       .catch(error => {
         console.error('Error updating inspection task status:', error);
       });
@@ -214,6 +221,9 @@ const DocPage: React.FC = () => {
   const handleSubmit = () => {
     // Call your API here
     updateInspectionTaskStatus();
+
+    setSubmitSuccess(true); // Set submit success status
+    setTimeout(() => setSubmitSuccess(false), 3000);
   };
 
   return (
@@ -243,6 +253,21 @@ const DocPage: React.FC = () => {
             ))}
           </IonRow>
         </IonGrid>
+
+        <IonToast
+  isOpen={submitSuccess}
+  onDidDismiss={() => setSubmitSuccess(false)}
+  message="Successfully submitted"
+  duration={3000}
+/>
+
+/* <IonToast
+  isOpen={submitError}
+  onDidDismiss={() => setSubmitError(false)}
+  message="Error submitting. Please try again."
+  duration={3000}
+  color="danger"
+/>
 
         {required && currentLocation.latitude && currentLocation.longitude && (
           <div className="location-container">

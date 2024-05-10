@@ -65,14 +65,14 @@ const HomePage: React.FC = () => {
   return (
     <IonPage>
       <IonContent>
-        <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
+        {/* <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
           <IonRefresherContent
             pullingIcon="arrow-down"
             pullingText="Pull to refresh"
             refreshingSpinner="circles"
             refreshingText="Refreshing...">
           </IonRefresherContent>
-        </IonRefresher>
+        </IonRefresher> */}
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
