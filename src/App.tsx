@@ -28,7 +28,7 @@ import Bid from './pages/Bid/Bid';
 import BidAccept from './pages/BidAccept/BidAccept';
 import Logout from './pages/Logout/Logout';
 import ChangePassword from './pages/ChangePassword/ChangePassword';
-import UploadImagePage from './pages/practice/upload';
+
 
 
 
@@ -38,6 +38,8 @@ import ListPage from './pages/practice/Dashboard/ListPage';
 
 import DocPage from './pages/practice/Dashboard/DocPage';
 import DocumentUpload from './pages/practice/Dashboard/DocumentUpload';
+
+
 
 
 
@@ -62,6 +64,10 @@ const App: React.FC = () => {
             <Route path="/login" exact={true}>
               <Login />
               </Route>
+             
+
+
+            
              
               
               

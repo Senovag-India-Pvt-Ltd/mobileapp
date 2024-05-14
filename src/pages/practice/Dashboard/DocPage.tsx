@@ -234,7 +234,7 @@ const DocPage: React.FC = () => {
             <IonButtons slot="start">
               <IonMenuButton />
             </IonButtons>
-            <IonTitle>Documents</IonTitle>
+            <IonTitle><b>Documents</b></IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonGrid>
@@ -261,7 +261,7 @@ const DocPage: React.FC = () => {
   duration={3000}
 />
 
-/* <IonToast
+ <IonToast
   isOpen={submitError}
   onDidDismiss={() => setSubmitError(false)}
   message="Error submitting. Please try again."

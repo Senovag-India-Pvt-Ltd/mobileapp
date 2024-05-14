@@ -15,7 +15,7 @@ import {
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, calculator, calculatorOutline, calculatorSharp, camera, cameraOutline, document, documentAttach, documentAttachSharp, documentLockSharp, documentOutline, documentSharp, documentText, heartOutline, heartSharp, logoGoogle, mailOutline, mailSharp, notificationsCircle, notificationsCircleOutline, notificationsCircleSharp, notificationsOffOutline, notificationsOffSharp, notificationsOutline, notificationsSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import { archiveOutline, archiveSharp, bookmarkOutline, calculator, calculatorOutline, calculatorSharp, camera, cameraOutline, cameraReverse, cameraSharp, cardSharp, document, documentAttach, documentAttachSharp, documentLockSharp, documentOutline, documentSharp, documentText, fileTrayFull, fileTrayFullOutline, gridOutline, gridSharp, heartOutline, heartSharp, listCircle, listCircleOutline, logoGoogle, mailOutline, mailSharp, menuOutline, menuSharp, notificationsCircle, notificationsCircleOutline, notificationsCircleSharp, notificationsOffOutline, notificationsOffSharp, notificationsOutline, notificationsSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
 import './Menu.css';
 
 interface AppPage {
@@ -32,6 +32,8 @@ const appPages: AppPage[] = [
     iosIcon: mailOutline,
     mdIcon: mailSharp
   },
+
+ 
   {
     title: 'Start Bid',
     url: '/bid/KKR1',
@@ -47,8 +49,8 @@ const appPages: AppPage[] = [
   {
     title: 'Dashboard',
     url: '/dash',
-    iosIcon: documentOutline,
-    mdIcon: documentAttach
+    iosIcon: gridSharp,
+    mdIcon: gridSharp
   },
   
   

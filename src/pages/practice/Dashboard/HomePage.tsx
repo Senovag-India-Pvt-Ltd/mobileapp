@@ -78,7 +78,7 @@ const HomePage: React.FC = () => {
             <IonButtons slot="start">
               <IonMenuButton />
             </IonButtons>
-            <IonTitle>Dashboard</IonTitle>
+            <IonTitle><b>Dashboard</b></IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonGrid>

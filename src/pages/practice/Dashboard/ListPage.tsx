@@ -70,7 +70,7 @@ const ListPage: React.FC = () => {
             <IonButtons slot="start">
               <IonMenuButton />
             </IonButtons>
-            <IonTitle>List Page</IonTitle>
+            <IonTitle><b>List Page</b></IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonGrid>
