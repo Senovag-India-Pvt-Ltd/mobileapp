@@ -76,7 +76,7 @@ const ListPage: React.FC = () => {
         <IonGrid>
           <IonRow className="card-container">
             {lists.map((item, index) => (
-              <IonCol size="6" key={index}>
+              <IonCol size="13" key={index}>
                 <IonCard onClick={() => handleBoxClick(item.inspectionType,item.inspectionTaskId)} className="card">
                   <IonCardHeader>
                     <IonCardTitle>Request Type ID: {item.requestTypeId}</IonCardTitle>

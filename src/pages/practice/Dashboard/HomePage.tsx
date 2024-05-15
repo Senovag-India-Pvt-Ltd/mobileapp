@@ -54,25 +54,12 @@ const HomePage: React.FC = () => {
     history.push(`/list/${id}`);
   };
 
-  const handleRefresh = (event: CustomEvent) => {
-    fetchData(); // Call your fetchData function to fetch updated data
 
-    setTimeout(() => {
-      event.detail.complete(); // Complete the refresh action
-    }, 2000); // Adjust the timeout as needed
-  };
 
   return (
     <IonPage>
       <IonContent>
-        {/* <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
-          <IonRefresherContent
-            pullingIcon="arrow-down"
-            pullingText="Pull to refresh"
-            refreshingSpinner="circles"
-            refreshingText="Refreshing...">
-          </IonRefresherContent>
-        </IonRefresher> */}
+        
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
@@ -84,7 +71,7 @@ const HomePage: React.FC = () => {
         <IonGrid>
           <IonRow className="card-container">
             {data.map((item, index) => (
-              <IonCol size="6" key={index}>
+              <IonCol size="13" key={index}>
                 <IonCard onClick={() => handleBoxClick(item.inspectionType)} className="card">
                   <IonCardHeader>
                     <IonCardTitle>Name: {item.inspectionName}</IonCardTitle>
