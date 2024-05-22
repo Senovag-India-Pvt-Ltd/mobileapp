@@ -191,7 +191,7 @@ const DocPage: React.FC = () => {
             };
     
           
-            anotherApi.post(`dbt/v1/service/updateApplicationWorkFlowStatusAndTriggerNextStep?id=${requestTypeId}` , {
+            anotherApi.post(`dbt/v1/service/updateApplicationWorkFlowStatusAndTriggerNextStep?id=${requestTypeId}` ,{}, {
               headers: {
                 "Content-Type": "application/json",
                 accept: "*/*",
