@@ -90,8 +90,14 @@ const Menu: React.FC = () => {
   const filteredAppPages = appPages.filter((page) => {
     // If userType is not 2, show the "Accept Bid" menu item
 
+  
+    
 
-    if (page.title === 'Accept Bid' && userType == '2') {
+    if (page.title === 'Accept Bid' && (userType == '2' || userType == '3')) {
+      return false;
+    }
+    
+    if (page.title === 'Dashboard' && userType != '3') {
       return false;
     }
     if (page.title === 'Start Bid' && userType != '2') {

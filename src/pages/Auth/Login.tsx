@@ -27,7 +27,14 @@ const Login: React.FC = () => {
 
     console.log(info);
     console.log(deviceIdObj.identifier);
-  };
+
+    // if(info.platform === 'android') {
+    //   const androidId = await this.androidId
+    // } else if(info.platform === 'ios') {
+    //   // TODO
+    // }
+    
+  };  
 
   const history = useHistory();
   const [email, setEmail] = useState<string>("");
@@ -191,41 +198,85 @@ const Login: React.FC = () => {
       //  baseURL: API_URL,
       baseURL: API_URL_Master,
     })
-    try {
-      const res = await api.post("master-data/v1/userMaster/verify-otp-by-user-name", loginData);
-      if (res.data.content.otpVerified) {
-        await authService.login(email, password);
-        if (localStorage.getItem("jwtToken") == 'null' || localStorage.getItem("jwtToken") == null || localStorage.getItem("jwtToken") == ' ') {
-          setMessage("Not able to login, please check credentials");
-          setIserror(true);
-          setShowLoginSection(true);
-          setShowVerificationSection(false);
-          history.push("/login");
-        } else if (localStorage.getItem("deviceId") != deviceId && localStorage.getItem("userType") == '2') {
-          setMessage("Please use the registered device");
-          setIserror(true);
-          setShowLoginSection(true);
-          setShowVerificationSection(false);
-          history.push("/login");
-        } else {
-          setShowLoginSection(true);
-          setShowVerificationSection(false);
-          if (localStorage.getItem("userType") == '2') {
-            history.push("/bid/" + email);
-          } else {
-            history.push("/accept-bid");
-          }
-        }
-      } else {
-        setMessage("OTP not verified");
+  //   try {
+  //     const res = await api.post("master-data/v1/userMaster/verify-otp-by-user-name", loginData);
+  //     if (res.data.content.otpVerified) {
+  //       await authService.login(email, password);
+  //       if (localStorage.getItem("jwtToken") == 'null' || localStorage.getItem("jwtToken") == null || localStorage.getItem("jwtToken") == ' ') {
+  //         setMessage("Not able to login, please check credentials");
+  //         setIserror(true);
+  //         setShowLoginSection(true);
+  //         setShowVerificationSection(false);
+  //         history.push("/login");
+  //       } else if (localStorage.getItem("deviceId") != deviceId && localStorage.getItem("userType") == '2') {
+  //         setMessage("Please use the registered device");
+  //         setIserror(true);
+  //         setShowLoginSection(true);
+  //         setShowVerificationSection(false);
+  //         history.push("/login");
+  //       } else {
+  //         setShowLoginSection(true);
+  //         setShowVerificationSection(false);
+  //         if (localStorage.getItem("userType") == '2') {
+  //           history.push("/bid/" + email);
+  //         } else {
+  //           history.push("/accept-bid");
+  //         }
+  //       }
+  //     } else {
+  //       setMessage("OTP not verified");
+  //       setIserror(true);
+  //     }
+  //   }
+  //   catch (error) {
+  //     setMessage("Error while authenticating user credential");
+  //     setIserror(true);
+  //   }
+  // };
+
+  try {
+    const res = await api.post("master-data/v1/userMaster/verify-otp-by-user-name", loginData);
+    if (res.data.content.otpVerified) {
+      await authService.login(email, password);
+      if (localStorage.getItem("jwtToken") == 'null' || localStorage.getItem("jwtToken") == null || localStorage.getItem("jwtToken") == ' ') {
+        setMessage("Not able to login, please check credentials");
         setIserror(true);
+        setShowLoginSection(true);
+        setShowVerificationSection(false);
+        history.push("/login");
+      } else if (localStorage.getItem("deviceId") != deviceId && localStorage.getItem("userType") == '2') {
+        setMessage("Please use the registered device");
+        setIserror(true);
+        setShowLoginSection(true);
+        setShowVerificationSection(false);
+        history.push("/login");
+      } else if (localStorage.getItem("deviceId") != deviceId && localStorage.getItem("userType") == '3') {
+        setMessage("Please use the registered device");
+        setIserror(true);
+        setShowLoginSection(true);
+        setShowVerificationSection(false);
+        history.push("/login");
+      } else {
+        setShowLoginSection(true);
+        setShowVerificationSection(false);
+        if (localStorage.getItem("userType") == '2') {
+          history.push("/bid/" + email);
+        }else if (localStorage.getItem("userType") == '3') {
+          history.push("/dash");
+        } else {
+          history.push("/accept-bid");
+        }
       }
-    }
-    catch (error) {
-      setMessage("Error while authenticating user credential");
+    } else {
+      setMessage("OTP not verified");
       setIserror(true);
     }
-  };
+  }
+  catch (error) {
+    setMessage("Error while authenticating user credential");
+    setIserror(true);
+  }
+};
 
   return (
     <IonPage>

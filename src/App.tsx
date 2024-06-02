@@ -54,7 +54,7 @@ const App: React.FC = () => {
       <IonReactRouter>
         <IonSplitPane contentId="main">
           <Menu />
-          <IonRouterOutlet id="main" placeholder={undefined}>
+          <IonRouterOutlet id="main" >
             <Route path="/" exact={true}>
               <Redirect to="/login" />
             </Route>
