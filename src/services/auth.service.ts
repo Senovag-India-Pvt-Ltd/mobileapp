@@ -4,16 +4,16 @@ import jwtDecode from 'jwt-decode';
 //const API_URL = 'http://localhost:8001/master-data';
 // const API_URL = 'https://api.senovagseri.com/master-data';
 //const API_URL = 'http://13.200.62.144:8001/master-data/v1';
-export const API_URL_Inspection = 'http://13.200.62.144:8010/';
-export const API_URL_DBT = 'http://13.200.62.144:8013/';
+// export const API_URL_Inspection = 'http://13.200.62.144:8010/';
+// export const API_URL_DBT = 'http://13.200.62.144:8013/';
 // const API_URL_Master = 'https://api.senovagseri.com/';
 
   // export const API_URL = 'https://api.senovagseri.com/';
 
  //export const API_URL_Market = 'http://13.200.62.144:8002/';
- export const API_URL_Market = 'http://13.200.62.144:8010/';
+//  export const API_URL_Market = 'http://13.200.62.144:8010/';
 
- export const API_URL_Master = 'http://13.200.62.144:8001/';
+//  export const API_URL_Master = 'http://13.200.62.144:8001/';
 
 
 //  export const API_URL_Inspection = 'https://api.senovagseri.com/';
@@ -21,6 +21,12 @@ export const API_URL_DBT = 'http://13.200.62.144:8013/';
 // export const API_URL_Market = 'https://api.senovagseri.com/';
 
 // export const API_URL_Master ='https://api.senovagseri.com/';
+
+
+export const API_URL_Market = 'https://e-reshme.karnataka.gov.in/';
+export const API_URL_Master = 'https://e-reshme.karnataka.gov.in/';
+export const API_URL_Inspection = 'https://e-reshme.karnataka.gov.in/';
+export const API_URL_DBT = 'https://e-reshme.karnataka.gov.in/';
 
 const authService = {
   login: async (username: string, password: string) => {

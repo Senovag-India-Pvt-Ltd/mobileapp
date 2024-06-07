@@ -287,10 +287,10 @@ const Bid: React.FC = () => {
     };
 
 
-    let mrktloc = {
-      lat:12.9400832,
-      lng:77.5389184
-    };
+    // let mrktloc = {
+    //   lat:12.9400832,
+    //   lng:77.5389184
+    // };
 
     
     //6.6 mtr acuracy
@@ -304,10 +304,10 @@ const Bid: React.FC = () => {
     //   77.5602775
     // };
    
-    // let mrktloc = {
-    //   lat: localStorage.getItem("marketLat"), 
-    //   lng: localStorage.getItem("marketLongitude")
-    // };
+    let mrktloc = {
+      lat: localStorage.getItem("marketLat"), 
+      lng: localStorage.getItem("marketLongitude")
+    };
 
 //     let mrktloc = {
 //       lat: 
