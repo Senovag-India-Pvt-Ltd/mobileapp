@@ -864,20 +864,21 @@ const Bid: React.FC = () => {
 
         buttons={[
         
+         
+      {
+            text: 'No',
+            role: 'cancel',
+            handler: () => {
+              console.log('Alert canceled');
+
+            },
+          }, 
           {
             text: 'Yes',
             role: 'confirm',
             handler: () => {
               console.log('Alert confirmed');
               handleBidBtn();
-            },
-          },
-          {
-            text: 'No',
-            role: 'cancel',
-            handler: () => {
-              console.log('Alert canceled');
-
             },
           },
         ]}
