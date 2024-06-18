@@ -23,7 +23,9 @@ const Login: React.FC = () => {
     const info = await Device.getInfo();
     const deviceIdObj = await Device.getId();
 
-    setDeviceId(deviceIdObj.identifier);
+    // setDeviceId(deviceIdObj.identifier);
+    const deviceModel = info.manufacturer+info.model;
+    setDeviceId(btoa(deviceModel));
 
     console.log(info);
     console.log(deviceIdObj.identifier);
