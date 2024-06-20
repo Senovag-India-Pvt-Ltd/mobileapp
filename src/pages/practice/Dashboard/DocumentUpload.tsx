@@ -346,6 +346,11 @@
 // export default DocumentUpload;
 
 
+
+
+
+//Back button added in this code
+
 import { brushSharp, camera, eyeOutline, eyeSharp, fileTrayStackedOutline, imageOutline, trashSharp } from 'ionicons/icons';
 import React, { useState, useRef } from 'react';
 import { IonButton, IonIcon, IonToast, IonModal, IonImg, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/react';
@@ -416,9 +421,8 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({ onUpload, docId }) => {
 
         const formData = new FormData();
         formData.append('multipartFile', uploadFile);
-
         await api.post(`/inspection/v1/inspectionTaskDocument/upload?${parameters}`, formData);
-
+  
         onUpload(uploadFile);
       }
 

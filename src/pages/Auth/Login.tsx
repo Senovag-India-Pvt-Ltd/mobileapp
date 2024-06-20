@@ -252,13 +252,7 @@ const Login: React.FC = () => {
         setShowLoginSection(true);
         setShowVerificationSection(false);
         history.push("/login");
-      } else if (localStorage.getItem("deviceId") != deviceId && localStorage.getItem("userType") == '3') {
-        setMessage("Please use the registered device");
-        setIserror(true);
-        setShowLoginSection(true);
-        setShowVerificationSection(false);
-        history.push("/login");
-      } else {
+      }else {
         setShowLoginSection(true);
         setShowVerificationSection(false);
         if (localStorage.getItem("userType") == '2') {
