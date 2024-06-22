@@ -366,7 +366,7 @@ interface DocumentUploadProps {
 }
 
 const DocumentUpload: React.FC<DocumentUploadProps> = ({ onUpload, docId }) => {
-  const { documentMasterId, inspectionType } = useParams<{ documentMasterId: string; inspectionType: string }>();
+  const { documentMasterId, inspectionTaskId } = useParams<{ documentMasterId: string; inspectionTaskId: string }>();
   const [selectedFiles, setSelectedFiles] = useState<{ url: string; name: string }[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalFile, setModalFile] = useState<{ url: string; name: string } | null>(null);
@@ -400,7 +400,7 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({ onUpload, docId }) => {
         },
       });
 
-      const parameters = `inspectionTaskId=${inspectionType}&documentMasterId=${docId}`;
+      const parameters = `inspectionTaskId=${inspectionTaskId}&documentMasterId=${docId}`;
 
       for (const file of selectedFiles) {
         let uploadFile: File | null = null;

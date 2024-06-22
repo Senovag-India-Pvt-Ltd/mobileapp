@@ -223,6 +223,7 @@ const HomePage: React.FC = () => {
     })
       .then(res => {
         console.log("API Response:", res.data);
+        
         if (res.data.errorCode === 0) {
           const content = res.data.content;
           setData(content.inspectionTask || []); // Ensure data is set as an empty array if no tasks
