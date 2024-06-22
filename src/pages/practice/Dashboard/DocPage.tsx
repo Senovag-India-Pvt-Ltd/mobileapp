@@ -734,10 +734,10 @@ const DocPage: React.FC = () => {
         console.log('Status:', status); // Log status
 
         // Check conditions for calling the second API
-        if (
-          ([1, 2, 3].includes(Number(inspectionType)) && status === 3) ||
-          ([4, 5].includes(Number(inspectionType)) && status === 4)
-        ) {
+        // if (
+        //   ([1, 2, 3].includes(Number(inspectionType)) && status === 3) ||
+        //   ([4, 5].includes(Number(inspectionType)) && status === 4)
+        // ) {
           console.log('Calling second API...'); // Log message indicating second API call
           // Call second API here
           const anotherApi = axios.create({
@@ -763,9 +763,9 @@ const DocPage: React.FC = () => {
               setSubmitError(true);
               setTimeout(() => setSubmitError(false), 3000);
             });
-        } else {
-          console.log('Second API not called because conditions not met.');
-        }
+        // } else {
+        //   console.log('Second API not called because conditions not met.');
+        // }
       })
       .catch((error) => {
         console.error('Error updating inspection task status:', error);
