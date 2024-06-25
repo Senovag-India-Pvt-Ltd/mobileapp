@@ -170,7 +170,11 @@
 
 
 
-// import { camera } from 'ionicons/icons';
+
+
+//Back button added in this code
+
+// import { brushSharp, camera, eyeOutline, eyeSharp, fileTrayStackedOutline, imageOutline, trashSharp } from 'ionicons/icons';
 // import React, { useState, useRef } from 'react';
 // import { IonButton, IonIcon, IonToast, IonModal, IonImg, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/react';
 // import { useParams } from 'react-router-dom';
@@ -185,10 +189,10 @@
 // }
 
 // const DocumentUpload: React.FC<DocumentUploadProps> = ({ onUpload, docId }) => {
-//   const { documentMasterId, inspectionType } = useParams<{ documentMasterId: string; inspectionType: string }>();
+//   const { documentMasterId, inspectionTaskId } = useParams<{ documentMasterId: string; inspectionTaskId: string }>();
 //   const [selectedFiles, setSelectedFiles] = useState<{ url: string; name: string }[]>([]);
 //   const [isModalOpen, setIsModalOpen] = useState(false);
-//   const [modalImageUrl, setModalImageUrl] = useState<string | null>(null);
+//   const [modalFile, setModalFile] = useState<{ url: string; name: string } | null>(null);
 //   const fileInputRef = useRef<HTMLInputElement>(null);
 
 //   const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
@@ -219,7 +223,7 @@
 //         },
 //       });
 
-//       const parameters = `inspectionTaskId=${inspectionType}&documentMasterId=${docId}`;
+//       const parameters = `inspectionTaskId=${inspectionTaskId}&documentMasterId=${docId}`;
 
 //       for (const file of selectedFiles) {
 //         let uploadFile: File | null = null;
@@ -230,7 +234,7 @@
 //         } else {
 //           const response = await fetch(file.url);
 //           const blob = await response.blob();
-//           uploadFile = new File([blob], file.name, { type: 'image/jpeg' });
+//           uploadFile = new File([blob], file.name, { type: blob.type });
 //         }
 
 //         if (!uploadFile) {
@@ -240,9 +244,8 @@
 
 //         const formData = new FormData();
 //         formData.append('multipartFile', uploadFile);
-
 //         await api.post(`/inspection/v1/inspectionTaskDocument/upload?${parameters}`, formData);
-
+  
 //         onUpload(uploadFile);
 //       }
 
@@ -287,14 +290,21 @@
 //     }
 //   };
 
-//   const handleViewFile = (url: string) => {
-//     setModalImageUrl(url);
-//     setIsModalOpen(true);
+//   const handleViewFile = (file: { url: string; name: string }) => {
+//     if (file.name.endsWith('.pdf')) {
+//       const link = document.createElement('a');
+//       link.href = file.url;
+//       link.download = file.name;
+//       link.click();
+//     } else {
+//       setModalFile(file);
+//       setIsModalOpen(true);
+//     }
 //   };
 
 //   const handleCloseModal = () => {
 //     setIsModalOpen(false);
-//     setModalImageUrl(null);
+//     setModalFile(null);
 //   };
 
 //   return (
@@ -307,9 +317,9 @@
 //       {selectedFiles.length > 0 && (
 //         <>
 //           <IonButton onClick={handleUpload}>Upload</IonButton>
-//           <IonButton onClick={handleClear}>Clear</IonButton>
+//           <IonButton onClick={handleClear} className='bd'><IonIcon icon={trashSharp} slot="icon-only" /></IonButton>
 //           {selectedFiles.map((file, index) => (
-//             <IonButton key={index} onClick={() => handleViewFile(file.url)}>View {index + 1}</IonButton>
+//             <IonButton key={index} onClick={() => handleViewFile(file)} className='bd'><IonIcon icon={eyeSharp} slot="icon-only" />{index + 1}</IonButton>
 //           ))}
 //         </>
 //       )}
@@ -331,12 +341,12 @@
 //       <IonModal isOpen={isModalOpen} onDidDismiss={handleCloseModal}>
 //         <IonHeader>
 //           <IonToolbar>
-//             <IonTitle>View Image</IonTitle>
+//             <IonTitle>View File</IonTitle>
 //             <IonButton slot="end" onClick={handleCloseModal}>Close</IonButton>
 //           </IonToolbar>
 //         </IonHeader>
 //         <IonContent>
-//           {modalImageUrl && <IonImg src={modalImageUrl} />}
+//           {modalFile && !modalFile.name.endsWith('.pdf') && <IonImg src={modalFile.url} />}
 //         </IonContent>
 //       </IonModal>
 //     </div>
@@ -349,7 +359,6 @@
 
 
 
-//Back button added in this code
 
 import { brushSharp, camera, eyeOutline, eyeSharp, fileTrayStackedOutline, imageOutline, trashSharp } from 'ionicons/icons';
 import React, { useState, useRef } from 'react';
@@ -359,6 +368,7 @@ import axios from 'axios';
 import { API_URL_Inspection } from '../../../services/auth.service';
 import { Plugins } from '@capacitor/core';
 import { CameraResultType, CameraSource } from '@capacitor/camera';
+import { Geolocation } from '@capacitor/geolocation';
 
 interface DocumentUploadProps {
   onUpload: (file: File) => void;
@@ -440,6 +450,8 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({ onUpload, docId }) => {
     }
   };
 
+
+
   const handleCameraCapture = async () => {
     try {
       const capturedPhoto = await Plugins.Camera.getPhoto({
@@ -448,17 +460,114 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({ onUpload, docId }) => {
         resultType: CameraResultType.Uri,
         source: CameraSource.Camera,
       });
-
+  
       if (capturedPhoto && capturedPhoto.webPath) {
-        setSelectedFiles((prevFiles) => [...prevFiles, { url: capturedPhoto.webPath, name: 'capturedImage.jpg' }]);
-        if (fileInputRef.current) {
-          fileInputRef.current.value = '';
-        }
+        // Get the current position
+        const position = await Geolocation.getCurrentPosition();
+        const { latitude, longitude } = position.coords;
+  
+        // Create a new image element
+        const img = new Image();
+        img.src = capturedPhoto.webPath;
+        img.onload = () => {
+          // Create a canvas to draw the image and text
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+  
+          // Set canvas dimensions to the image dimensions
+          // Optionally resize the image to reduce file size
+          const maxWidth = 1024; // Max width for resizing
+          const maxHeight = 1024; // Max height for resizing
+          let { width, height } = img;
+  
+          if (width > height) {
+            if (width > maxWidth) {
+              height *= maxWidth / width;
+              width = maxWidth;
+            }
+          } else {
+            if (height > maxHeight) {
+              width *= maxHeight / height;
+              height = maxHeight;
+            }
+          }
+  
+          canvas.width = width;
+          canvas.height = height;
+  
+          // Draw the image on the canvas
+          ctx.drawImage(img, 0, 0, width, height);
+  
+          // Set the text style
+          ctx.fillStyle = 'white';
+          ctx.font = 'bold 30px Arial'; // Set font size to 30px
+  
+          // Add the location text
+          ctx.fillText(`Latitude: ${latitude}`, 10, 50); // Display latitude on the first line
+          ctx.fillText(`Longitude: ${longitude}`, 10, 90); // Display longitude on the second line
+  
+          // Get the new image URL from the canvas with reduced quality for smaller file size
+          const newImageUrl = canvas.toDataURL('image/jpeg', 0.7); // Reduce quality to 70%
+  
+          // Add the new image with location text to the selected files
+          setSelectedFiles((prevFiles) => [...prevFiles, { url: newImageUrl, name: 'capturedImage.jpg' }]);
+        };
       }
     } catch (error) {
-      console.error('Error capturing photo:', error);
+      console.error('Error capturing photo or fetching location:', error);
     }
   };
+  
+
+
+  // const handleCameraCapture = async () => {
+  //   try {
+  //     const capturedPhoto = await Plugins.Camera.getPhoto({
+  //       quality: 90,
+  //       allowEditing: false,
+  //       resultType: CameraResultType.Uri,
+  //       source: CameraSource.Camera,
+  //     });
+
+  //     if (capturedPhoto && capturedPhoto.webPath) {
+  //       // Get the current position
+  //       const position = await Geolocation.getCurrentPosition();
+  //       const { latitude, longitude } = position.coords;
+
+  //       // Create a new image element
+  //       const img = new Image();
+  //       img.src = capturedPhoto.webPath;
+  //       img.onload = () => {
+  //         // Create a canvas to draw the image and text
+  //         const canvas = document.createElement('canvas');
+  //         const ctx = canvas.getContext('2d');
+
+  //         // Set canvas dimensions to the image dimensions
+  //         canvas.width = img.width;
+  //         canvas.height = img.height;
+
+  //         // Draw the image on the canvas
+  //         ctx.drawImage(img, 0, 0);
+
+  //         // Set the text style
+  //         ctx.fillStyle = 'white';
+  //         ctx.font = 'bold 45px Arial';
+
+  //         // Add the location text
+  //         ctx.fillText(`Latitude: ${latitude}`, 10, 50); // Display latitude on the first line
+  //         ctx.fillText(`Longitude: ${longitude}`, 10, 90); // Display longitude on the second line
+
+  //         // Get the new image URL from the canvas
+  //         const newImageUrl = canvas.toDataURL('image/jpeg', 0.9);
+
+  //         // Add the new image with location text to the selected files
+  //         setSelectedFiles((prevFiles) => [...prevFiles, { url: newImageUrl, name: 'capturedImage.jpg' }]);
+  //       };
+  //     }
+  //   } catch (error) {
+  //     console.error('Error capturing photo or fetching location:', error);
+  //   }
+  // };
 
   const handleClear = () => {
     setSelectedFiles([]);
