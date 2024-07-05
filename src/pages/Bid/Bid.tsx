@@ -454,6 +454,8 @@ const Bid: React.FC = () => {
   }
 
   const handleClearAfterBid = () => {
+    setLotNumberValue('');
+    setHighestBidForLot('');
     setBidAmountValueStart('0');
     setBidAmountValue1('');
     setBidAmountValue2('');
