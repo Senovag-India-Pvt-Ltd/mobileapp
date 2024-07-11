@@ -454,12 +454,13 @@ const Bid: React.FC = () => {
   }
 
   const handleClearAfterBid = () => {
-    setLotNumberValue('');
-    setHighestBidForLot('');
+   
     setBidAmountValueStart('0');
     setBidAmountValue1('');
     setBidAmountValue2('');
     setBidAmountValue3('');
+
+    handleLotClear();
   }
 
   const handleBidBtn = () => {
@@ -487,7 +488,7 @@ const Bid: React.FC = () => {
         console.log(res.data)
         handleClearAfterBid();
         handleRefreshBtn();
-        fetchHighestBidForLot(lotId);
+      //  fetchHighestBidForLot(lotId);
         if (res.data.errorCode != 0) {
           setMessage(res.data.errorMessages[0].message);
           setIserror(true)
