@@ -145,7 +145,7 @@ function TimeTicker({ isActive }: { isActive: boolean; }) {
 
   return (
     <IonText>
-      <p style={{ paddingRight: '30px', fontWeight: 'bold', color: 'red', float: 'right', fontSize: 30 }}>{formatedTime}</p>
+      <p style={{ paddingRight: '30px', fontWeight: 'bold', color: 'red', float: 'right', fontSize: 30 }}></p>
     </IonText>
   );
 }
