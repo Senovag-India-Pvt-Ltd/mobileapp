@@ -158,7 +158,7 @@ const Login: React.FC = () => {
     }
   };
 
-  const generateOtp = () => {
+  const generateOtp = async() => {
     const loginData = {
       "username": email,
       "password": password
@@ -168,25 +168,70 @@ const Login: React.FC = () => {
       // baseURL: API_URL,
       baseURL: API_URL_Master,
     })
-    api.post("master-data/v1/userMaster/generate-otp-by-user-name-and-password", loginData)
-      .then(res => {
+    // api.post("master-data/v1/userMaster/login-without-otp", loginData)
+    //   .then(res => {
 
-        if (res.data.content.error) {
-          setMessage(res.data.content.error_description);
-          setIserror(true)
-        } else {
-          setPhoneNumber(res.data.content.phoneNumber.substring(res.data.content.phoneNumber.length - 4));
-          handleStart();
-          setShowVerificationSection(true)
-          setShowLoginSection(false)
-          otpInputRef.current?.setFocus();
+    //     if (res.data.content.error) {
+    //       setMessage(res.data.content.error_description);
+    //       setIserror(true)
+    //     } else {
+    //       // setPhoneNumber(res.data.content.phoneNumber.substring(res.data.content.phoneNumber.length - 4));
+    //       // handleStart();
+    //       // setShowVerificationSection(false)
+    //       // setShowLoginSection(false)
+    //       // otpInputRef.current?.setFocus();
+    //       setShowLoginSection(true);
+    //       setShowVerificationSection(false);
+    //       if (localStorage.getItem("userType") == '2') {
+    //         history.push("/bid/" + email);
+    //       }else if (localStorage.getItem("userType") == '3') {
+    //         history.push("/dash");
+    //       } else {
+    //         history.push("/accept-bid");
+    //       }
+    //     }
+    //   })
+    //   .catch(error => {
+
+    //     setMessage("OTP not sent " + error);
+    //     setIserror(true)
+    //   })
+    try {
+      const res = await api.post("master-data/v1/userMaster/login-without-otp", loginData);
+      if (res.data.content.otpVerified) {
+        await authService.login(email, password);
+        if (localStorage.getItem("jwtToken") == 'null' || localStorage.getItem("jwtToken") == null || localStorage.getItem("jwtToken") == ' ') {
+          setMessage("Not able to login, please check credentials");
+          setIserror(true);
+          setShowLoginSection(true);
+          setShowVerificationSection(false);
+          history.push("/login");
+        } else if (localStorage.getItem("deviceId") != deviceId && localStorage.getItem("userType") == '2') {
+          setMessage("Please use the registered device");
+          setIserror(true);
+          setShowLoginSection(true);
+          setShowVerificationSection(false);
+          history.push("/login");
+        }else {
+          setShowLoginSection(true);
+          setShowVerificationSection(false);
+          if (localStorage.getItem("userType") == '2') {
+            history.push("/bid/" + email);
+          }else if (localStorage.getItem("userType") == '3') {
+            history.push("/dash");
+          } else {
+            history.push("/accept-bid");
+          }
         }
-      })
-      .catch(error => {
-
-        setMessage("OTP not sent " + error);
-        setIserror(true)
-      })
+      } else {
+        setMessage("OTP not verified");
+        setIserror(true);
+      }
+    }
+    catch (error) {
+      setMessage("Error while authenticating user credential");
+      setIserror(true);
+    }
   };
 
   const verifyOtp = async () => {

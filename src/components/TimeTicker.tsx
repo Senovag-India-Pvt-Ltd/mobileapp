@@ -117,29 +117,29 @@ function TimeTicker({ isActive }: { isActive: boolean; }) {
   //     });
   // }, []);
 
-  useEffect(() => {
-    // Update server time when isActive changes (i.e., when BidAccept is resumed)
-    if (isActive) {
-      // const apiUrl = 'https://api.senovagseri.com/master-data/v1/util/current-time-millisec';
-       const apiUrl = API_URL_Master+'master-data/v1/util/current-time-millisec';
-    //  const apiUrl = API_URL_Master +'master-data/v1/util/current-time-millisec';
-      const jwtToken = authService.getToken();
+  // useEffect(() => {
+  //   // Update server time when isActive changes (i.e., when BidAccept is resumed)
+  //   if (isActive) {
+  //     // const apiUrl = 'https://api.senovagseri.com/master-data/v1/util/current-time-millisec';
+  //      const apiUrl = API_URL_Master+'master-data/v1/util/current-time-millisec';
+  //   //  const apiUrl = API_URL_Master +'master-data/v1/util/current-time-millisec';
+  //     const jwtToken = authService.getToken();
 
-      const headers = {
-        'Authorization': `Bearer ${jwtToken}`,
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      };
+  //     const headers = {
+  //       'Authorization': `Bearer ${jwtToken}`,
+  //       'Content-Type': 'application/json',
+  //       'Access-Control-Allow-Origin': '*',
+  //     };
 
-      axios.get(apiUrl, { headers })
-        .then((response) => {
-          setServerTime(response.data);
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
-    }
-  }, [isActive]);
+  //     axios.get(apiUrl, { headers })
+  //       .then((response) => {
+  //         setServerTime(response.data);
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error:', error);
+  //       });
+  //   }
+  // }, [isActive]);
 
   const formattedTime = currentTime.toLocaleTimeString();
 
