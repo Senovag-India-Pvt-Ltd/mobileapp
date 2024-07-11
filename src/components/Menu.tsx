@@ -97,9 +97,9 @@ const Menu: React.FC = () => {
       return false;
     }
     
-    if (page.title === 'Dashboard' && userType != '3') {
-      return false;
-    }
+    // if (page.title === 'Dashboard' && userType != '3') {
+    //   return false;
+    // }
     if (page.title === 'Start Bid' && userType != '2') {
       return false;
     }
