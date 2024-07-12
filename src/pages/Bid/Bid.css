@@ -124,5 +124,10 @@ ion-content{
         font-size: 14px !important;
     }
 
+    .custom-ion-col {
+        padding: 0.5;
+        margin: 0.5;
+      }
+
 }
 
