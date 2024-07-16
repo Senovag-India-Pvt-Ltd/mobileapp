@@ -55,9 +55,15 @@ const App: React.FC = () => {
         <IonSplitPane contentId="main">
           <Menu />
           <IonRouterOutlet id="main" >
-            <Route path="/" exact={true}>
+            {/* <Route path="/" exact={true}>
               <Redirect to="/login" />
-            </Route>
+            </Route> */}
+             <Route exact path="/">
+          {localStorage.getItem("userType") == "0" ? <Redirect to="/accept-bid" /> : 
+           localStorage.getItem("userType") == "2" ? <Redirect to="/bid/test" /> : 
+           <Redirect to="/login" />}
+        </Route>
+       
             <Route path="/folder/:name" exact={true}>
               <Page />
             </Route>

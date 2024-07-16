@@ -33,16 +33,16 @@ import jwtDecode from 'jwt-decode';
 
 
 
-export const API_URL_Market = 'https://api.senovagseri.com/';
-export const API_URL_Master = 'https://api.senovagseri.com/';
-export const API_URL_Inspection = 'https://api.senovagseri.com/';
-export const API_URL_DBT = 'https://api.senovagseri.com/';
+// export const API_URL_Market = 'https://api.senovagseri.com/';
+// export const API_URL_Master = 'https://api.senovagseri.com/';
+// export const API_URL_Inspection = 'https://api.senovagseri.com/';
+// export const API_URL_DBT = 'https://api.senovagseri.com/';
 
 
-// export const API_URL_Market = 'https://e-reshme.karnataka.gov.in/';
-// export const API_URL_Master = 'https://e-reshme.karnataka.gov.in/';
-// export const API_URL_Inspection = 'https://e-reshme.karnataka.gov.in/';
-// export const API_URL_DBT = 'https://e-reshme.karnataka.gov.in/';
+export const API_URL_Market = 'https://e-reshme.karnataka.gov.in/';
+export const API_URL_Master = 'https://e-reshme.karnataka.gov.in/';
+export const API_URL_Inspection = 'https://e-reshme.karnataka.gov.in/';
+export const API_URL_DBT = 'https://e-reshme.karnataka.gov.in/';
 
 const authService = {
   login: async (username: string, password: string) => {
@@ -116,6 +116,7 @@ const authService = {
 
   logout: () => {
     localStorage.removeItem('jwtToken');
+    localStorage.removeItem('userType');
   },
 
   isAuthenticated: () => {
