@@ -12,7 +12,12 @@ const Logout: React.FC = () => {
   const history = useHistory();
   useEffect(() => {
     authService.logout();
-    history.push("/login");
+    // sessionStorage.clear();
+    // localStorage.clear();
+  
+   // history.push("/login");
+   // Force a page reload to clear the stack and create a new instance for the login screen
+   window.location.href = "/login";
   }, []);
 
   return (
