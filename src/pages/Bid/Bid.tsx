@@ -783,10 +783,10 @@ const Bid: React.FC = () => {
                     <IonLabel>{item.allottedLotId}</IonLabel>
                   </IonCol>
                   <IonCol size="2" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
-                    <IonLabel>{item.highestBidAmount}</IonLabel>
+                    <IonLabel>{item.myBidAmount}</IonLabel>
                   </IonCol>
                   <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
-                    <IonLabel>{item.myBidAmount}</IonLabel>
+                    <IonLabel>{item.highestBidAmount}</IonLabel>
                   </IonCol>
                   <IonCol size="2" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
                     <IonLabel>{item.status}</IonLabel>
