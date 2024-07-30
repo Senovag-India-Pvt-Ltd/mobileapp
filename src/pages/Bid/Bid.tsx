@@ -775,7 +775,7 @@ const Bid: React.FC = () => {
             </IonItem>
             {bidData.map((item) => (
               <IonCol size='12' key={item.allottedLotId} className="custom-ion-col">
-                <IonRow>
+                <IonRow className='row-data'>
                 <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
                     <IonButton className='re-bid-button' size="small" onClick={(e) => handleReBid(e, item.allottedLotId, inputRef1)}>Re-Bid</IonButton>
                   </IonCol>
