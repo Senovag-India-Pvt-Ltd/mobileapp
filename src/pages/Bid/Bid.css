@@ -5,6 +5,7 @@ ion-content{
 .item-background-color{
     --ion-item-background:#57e3edd5;
     text-align: center;
+    
 }
 
 .awarded-label {
@@ -13,8 +14,8 @@ ion-content{
     padding: 5px;
     text-align: center;
     font-weight: bold;
-    font-size:10px;
-    height:20px;
+    font-size:18px;
+    height:35px;
 }
 
 .not-awarded-label {
@@ -23,8 +24,8 @@ ion-content{
     padding: 5px;
     text-align: center;
     font-weight: bold;
-    font-size:10px;
-    height:20px;
+    font-size:15px;
+    height:30px;
 }
 
 .input-big-font-size{
@@ -132,8 +133,8 @@ ion-content{
     }
 
     .custom-ion-col {
-        padding: 0.5;
-        margin: 0.5;
+        padding: 0.9;
+        margin: 0.9;
       }
 
     .row-data{
@@ -145,3 +146,56 @@ ion-content{
 
 }
 
+.input-small {
+    font-size: 12px; /* Smaller font size for input text */
+    height: 20px; /* Reduce the height of the input box */
+    width: 20px; /* Reduce the width of the input box */
+    padding: 2px; /* Adjust padding inside the input box */
+  }
+
+
+input-fill-outline.sc-ion-input-md-h {
+    --border-color: var(--ion-color-step-300, #b3b3b3);
+    --border-radius: 30px;
+    --padding-start: 17px;
+    --padding-end: 20px;
+    min-height: 10px;
+}
+
+
+
+/* Custom CSS to reduce the header and toolbar space */
+.custom-header {
+    height: 40px; /* Adjust the height as needed */
+  }
+  
+  .custom-toolbar {
+    min-height: 40px; /* Decrease the toolbar height */
+    padding: 0; /* Remove padding */
+  }
+  
+
+
+  .row-data {
+    margin: 2px !important;       /* Remove margin around the row */
+    padding: 2px !important;      /* Remove padding around the row */
+  }
+  
+  .custom-ion-col {
+    padding: 0 !important;      /* Remove padding for the columns */
+    margin: 0 !important;       /* Remove margin for the columns */
+  }
+  
+  .ion-no-margin {
+    --ion-margin: 0 !important; /* Ensure no margin on IonRow */
+  }
+  
+  .ion-no-padding {
+    --ion-padding: 0 !important; /* Ensure no padding on IonRow */
+  }
+  
+  .ion-col {
+    padding: 0 !important;      /* Reset padding for IonCol */
+    margin: 0 !important;       /* Reset margin for IonCol */
+  }
+  

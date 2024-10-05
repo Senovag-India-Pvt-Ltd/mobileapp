@@ -38,6 +38,10 @@ import ListPage from './pages/practice/Dashboard/ListPage';
 
 import DocPage from './pages/practice/Dashboard/DocPage';
 import DocumentUpload from './pages/practice/Dashboard/DocumentUpload';
+import Dashboard from './pages/practice/Dashboard/Dashboard';
+import RejectPage from './pages/practice/Dashboard/RejectPage';
+import DocPage2 from './pages/practice/Dashboard/DocPage2';
+import ListPage2 from './pages/practice/Dashboard/ListPage2';
 
 
 
@@ -75,15 +79,36 @@ const App: React.FC = () => {
 
             
              
-              
+              <Route path="/reject" exact={true}>
+  <RejectPage />
+</Route>
+
               
               <Route path="/dash" exact={true}>
+              <Dashboard/>
+              </Route>
+
+
+              <Route path="/home" exact={true}>
               <HomePage/>
               </Route>
-              <Route path="/list/:inspectionType" exact={true}>
+              <Route path="/docu2" exact={true}>
+              <DocPage2/>
+              </Route>
+              {/* <Route path="/list2/:inspectionType/:inspectionTaskId" exact={true}>
+              <ListPage2/>
+              </Route> */}
+                <Route path="/list2" exact={true}>
+              <ListPage2/>
+              </Route>
+
+
+
+
+              <Route path="/list/:approvalStageId" exact={true}>
                 <ListPage/>
               </Route>
-              <Route path="/docu/:inspectionType/:inspectionTaskId" exact={true}>
+              <Route path="/docu/:applicationDocumentId" exact={true}>
                 <DocPage/>
               </Route>
               

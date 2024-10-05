@@ -1,0 +1,39 @@
+.card-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 75px; /* Adjust height as needed */
+}
+
+.card-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  height: 33px; /* Adjust height as needed */
+}
+
+.step-name {
+  font-size: 1.5rem !important; /* Force the size for step name */
+  color: transparent; /* Make the text color transparent */
+  background:  linear-gradient(135deg, #343634 20%, #1c1b1b 50%);
+ 
+ /* background:linear-gradient(135deg, #00c6ff 0%, #00c6ff 100%) ; */
+  -webkit-background-clip: text; /* Apply the background gradient to text */
+  background-clip: text; /* Apply the background gradient to text */
+  text-align: center;
+  font-weight: bold !important;
+}
+
+.count {
+  font-size: 1.5rem !important; /* Force the font size for the count */
+  font-weight: bold !important;
+  color: transparent; /* Make the text color transparent */
+  background: linear-gradient(135deg, #eaeeeb 20%, #e4ece5 50%); /* Gradient color */
+  -webkit-background-clip: text; /* Apply the background gradient to text */
+  background-clip: text; /* Apply the background gradient to text */
+  margin: 7px;
+  text-align: center;
+}

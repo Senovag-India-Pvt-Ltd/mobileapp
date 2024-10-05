@@ -1,5 +1,5 @@
 .notification-bar {
-  background-color: #c7c6c6;/* Blue background color */
+    background-color: #dddddd; /* Blue background color */
     color: #fff; /* White text color */
     padding: 10px; /* Adjust padding as needed */
     border-radius: 8px; /* Rounded corners */
@@ -9,6 +9,9 @@
     font-size: 16px; /* Font size */
     font-weight: bold; /* Font weight */
   }
+
+
+
 
 
   .location-container {
@@ -27,17 +30,7 @@
     font-size: 14px; /* Adjust font size as needed */
     padding: 5px;
     border-radius: 12px;
-    border: 3px solid #c1ce0c;
-    color: #090a0a; /* Change text color */
-  }
-  
-  /* Center the Current Location label */
-  .location-label {
-    display: block;
-    text-align: center;
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #111212;
+    border: 3px solid #ccc;
   }
   
   /* Add margin-right to the latitude input */
@@ -49,7 +42,6 @@
   @media only screen and (max-width: 600px) {
     .location-container input[type="text"] {
       width: 100px; /* Adjust width for smaller screens */
-      color: #0d0d0d; /* Ensure the color applies on smaller screens */
     }
   
     /* Adjust margin-right for latitude input on smaller screens */
@@ -58,11 +50,10 @@
     }
   }
   
-  .cld {
-    color: #F5CE00;
+  .cld{
+    color:#F5CE00;
   }
-  
-  .bd {
-    color: #FFFAFA;
+  .bd{
+    color:#FFFAFA
   }
   

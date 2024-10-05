@@ -582,6 +582,14 @@ const BidAccept: React.FC = () => {
         onDidDismiss={() => setShowAcceptConfirmationAlert(false)}
 
         buttons={[
+          {
+            text: 'No',
+            role: 'cancel',
+            handler: () => {
+              console.log('Alert canceled');
+
+            },
+          },
         
           {
             text: 'Yes',
@@ -591,14 +599,7 @@ const BidAccept: React.FC = () => {
               handleAcceptButtonEvent();
             },
           },
-          {
-            text: 'No',
-            role: 'cancel',
-            handler: () => {
-              console.log('Alert canceled');
-
-            },
-          },
+          
         ]}
 
       ></IonAlert>

@@ -1,12 +1,17 @@
 
 
+
+
+
+
+
 // import React, { useState, useEffect } from 'react';
-// import { IonContent, IonPage, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonButtons, IonHeader, IonMenuButton, IonTitle, IonToolbar, IonToast, IonIcon } from '@ionic/react';
+// import { IonContent, IonPage, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonButtons, IonHeader, IonMenuButton, IonTitle, IonToolbar, IonToast, IonIcon, IonInput, IonLabel } from '@ionic/react';
 // import axios from 'axios';
 // import { useParams, useHistory } from 'react-router-dom';
 // import './DocPage.css';
-// import DocumentUpload from './DocumentUpload'; // Assuming the file path is correct
-// import { API_URL_DBT, API_URL_Inspection } from '../../../services/auth.service';
+// import DocumentUpload from './DocumentUpload'; 
+// import { API_URL_DBT, API_URL_Inspection, API_URL_Master } from '../../../services/auth.service';
 // import { arrowBack } from 'ionicons/icons';
 
 // const DocPage: React.FC = () => {
@@ -15,34 +20,25 @@
 //   const [documents, setDocuments] = useState<any[]>([]);
 //   const [currentLocation, setCurrentLocation] = useState<{ latitude: string; longitude: string }>({ latitude: '', longitude: '' });
 //   const [required, setRequired] = useState<boolean>(false);
-//   const [inspectionTypeId, setInspectionTypeId] = useState<number>(0);
-//   const [request, setRequest] = useState<number>(0);
-//   const [status, setStatus] = useState<number>(0); // Add status as state
-//   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false); // State for submit success status
-//   const [submitError, setSubmitError] = useState<boolean>(false); // State for submit error status
+//   const [comment, setComment] = useState<string>('');
+//   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
+//   const [submitError, setSubmitError] = useState<boolean>(false);
 
 //   useEffect(() => {
 //     fetchData();
-//     fetchLocationData();
-//     fetchCurrentLocation();
+//     fetchCurrentLocation(); 
 //   }, []);
 
-//   useEffect(() => {
-//     if (currentLocation.latitude && currentLocation.longitude && required) {
-//       sendLocationToAPI(currentLocation.latitude, currentLocation.longitude);
-//     }
-//   }, [currentLocation, required]);
 
+
+
+  
 //   const fetchData = () => {
-//     const fetchDetails = {
-//       inspectionType: inspectionType,
-//     };
-
 //     const api = axios.create({
-//       baseURL: API_URL_Inspection,
+//       baseURL: API_URL_Master, // Assuming this is your base URL for the new API
 //     });
 
-//     api.post('inspection/v1/inspectionTypeDocument/get-by-inspection-type', fetchDetails, {
+//     api.get('master-data/v1/documentMaster/get-all', {
 //       headers: {
 //         'Content-Type': 'application/json',
 //         accept: '*/*',
@@ -50,54 +46,41 @@
 //       },
 //     })
 //       .then((res) => {
-//         console.log(res.data);
-//         if (res.data.errorCode === -1) {
-//           // Handle error
-//         } else {
-//           setDocuments(res.data.content?.inspectionTypeDocument || []);
-//           setInspectionTypeId(res.data.content.inspectionType);
-//         }
+//         // Adjust the state to use the correct structure
+//         setDocuments(res.data.content?.documentMaster || []);
 //       })
 //       .catch((error) => {
-//         // Handle error
+//         console.error('Error fetching documents:', error);
 //       });
 //   };
 
-//   const fetchLocationData = () => {
-//     const api = axios.create({
-//       baseURL: API_URL_Inspection,
-//     });
+//   // const fetchLocationData = () => {
+//   //   const api = axios.create({
+//   //     baseURL: API_URL_Inspection,
+//   //   });
 
-//     api.get(`inspection/v1/inspectionTypeGps/get-by-inspection-type/${inspectionType}`, {
-//       headers: {
-//         'Content-Type': 'application/json',
-//         accept: '*/*',
-//         Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
-//       },
-//     })
-//       .then((res) => {
-//         console.log(res.data);
-//         if (res.data.errorCode === -1) {
-//           // Handle error
-//         } else {
-//           setRequired(res.data.content?.isRequired || false);
-//         }
-//       })
-//       .catch((error) => {
-//         // Handle error
-//       });
-//   };
+//   //   api.get(`inspection/v1/inspectionTypeGps/get-by-inspection-type/${inspectionType}`, {
+//   //     headers: {
+//   //       'Content-Type': 'application/json',
+//   //       accept: '*/*',
+//   //       Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+//   //     },
+//   //   })
+//   //     .then((res) => {
+//   //       setRequired(res.data.content?.isRequired || false);
+//   //     })
+//   //     .catch((error) => {
+//   //       console.error('Error fetching location data:', error);
+//   //     });
+//   // };
 
 //   const fetchCurrentLocation = () => {
 //     if (navigator.geolocation) {
 //       navigator.geolocation.getCurrentPosition(
 //         (position) => {
-//           const latitude = position.coords.latitude.toString();
-//           const longitude = position.coords.longitude.toString();
-
 //           setCurrentLocation({
-//             latitude: latitude,
-//             longitude: longitude,
+//             latitude: position.coords.latitude.toString(),
+//             longitude: position.coords.longitude.toString(),
 //           });
 //         },
 //         (error) => {
@@ -109,35 +92,6 @@
 //     }
 //   };
 
-//   const sendLocationToAPI = (latitude: string, longitude: string) => {
-//     const api = axios.create({
-//       baseURL: API_URL_Inspection,
-//     });
-
-//     const requestBody = {
-//       inspectionTaskId: inspectionTaskId,
-//       lat: latitude,
-//       lng: longitude,
-//     };
-
-//     api.post('inspection/v1/inspectionTaskGps/add', requestBody, {
-//       headers: {
-//         'Content-Type': 'application/json',
-//         Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
-//       },
-//     })
-//       .then((res) => {
-//         console.log(res.data);
-//       })
-//       .catch((error) => {
-//         console.error('Error sending location data:', error);
-//       });
-//   };
-
-//   const handleUpload = (documentId: string, file: File) => {
-//     console.log('File uploaded for document ID:', documentId, file);
-//   };
-
 //   const updateInspectionTaskStatus = () => {
 //     const api = axios.create({
 //       baseURL: API_URL_Inspection,
@@ -146,6 +100,9 @@
 //     const requestBody = {
 //       inspectionTaskId: inspectionTaskId,
 //       inspectionType: inspectionType,
+//       comment: comment,
+//       latitude: currentLocation.latitude,
+//       longitude: currentLocation.longitude,
 //     };
 
 //     api.post('inspection/v1/inspectionTask/update-status', requestBody, {
@@ -155,64 +112,30 @@
 //       },
 //     })
 //       .then((res) => {
-//         console.log('First API Response:', res.data); // Log entire response
-//         const requestTypeId = res.data.content.requestTypeId; // Assuming this is where you get requestTypeId
-//         setRequest(requestTypeId); // Assuming setRequest is a function that sets state
-
-//         // Set status here based on your response data
-//         const status = res.data.content.status;
-//         console.log('Status:', status); // Log status
-
-//         // Check conditions for calling the second API
-//         if (
-//           ([1, 2, 3].includes(Number(inspectionType)) && status === 3) ||
-//           ([4, 5].includes(Number(inspectionType)) && status === 4)
-//         ) {
-//           console.log('Calling second API...'); // Log message indicating second API call
-//           // Call second API here
-//           const anotherApi = axios.create({
-//             baseURL: API_URL_DBT,
-//           });
-
-//           const anotherRequestBody = {
-//             id: requestTypeId, // Use the correct variable here
-//           };
-
-//           anotherApi.post(`dbt/v1/service/updateApplicationWorkFlowStatusAndTriggerNextStep?id=${requestTypeId}`, {}, {
-//             headers: {
-//               'Content-Type': 'application/json',
-//               accept: '*/*',
-//               Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
-//             },
-//           })
-//             .then((res) => {
-//               console.log('Second API Response:', res.data); // Log response from second API
-//             })
-//             .catch((error) => {
-//               console.error('Error calling second API:', error);
-//               setSubmitError(true);
-//               setTimeout(() => setSubmitError(false), 3000);
-//             });
-//         } else {
-//           console.log('Second API not called because conditions not met.');
-//         }
+//         console.log('API Response:', res.data);
 //       })
 //       .catch((error) => {
 //         console.error('Error updating inspection task status:', error);
+//         setSubmitError(true);
+//         setTimeout(() => setSubmitError(false), 3000);
 //       });
 //   };
 
 //   const handleSubmit = () => {
-//     // Call your API here
 //     updateInspectionTaskStatus();
-
-//     setSubmitSuccess(true); // Set submit success status
+//     setSubmitSuccess(true);
 //     setTimeout(() => setSubmitSuccess(false), 3000);
 //   };
 
-//   const handleGoBack = () => {
-//     history.goBack();
-//   };
+//   const boxColors = ['linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%)',  // Coral to Peach
+    
+//     'linear-gradient(135deg, #00c6ff 0%, #0072ff 100%)', // Light Blue to Dark Blue
+//     'linear-gradient(135deg, #56ab2f 0%, #a8e063 100%)', // Green to Light Green
+//     'linear-gradient(135deg, #c94b4b 0%, #4b134f 100%)', // Purple to Blue
+//     'linear-gradient(135deg, #ff9966 0%, #ff5e62 100%)', // Orange to Red
+//     'linear-gradient(135deg, #c94b4b 0%, #4b134f 100%)', // Red to Dark Purple
+    
+//   ];
 
 //   return (
 //     <IonPage>
@@ -223,7 +146,7 @@
 //           </IonButtons>
 //           <IonTitle><b>Documents</b></IonTitle>
 //           <IonButtons slot="end">
-//             <IonButton onClick={handleGoBack}>
+//             <IonButton onClick={() => history.goBack()}>
 //               <IonIcon icon={arrowBack} />
 //               Go Back
 //             </IonButton>
@@ -233,18 +156,20 @@
 //       <IonContent>
 //         <IonGrid>
 //           <IonRow>
-//             {documents && documents.length > 0 ? documents.map((item, index) => (
-//               <IonCol size="6" key={index}>
-//                 <IonCard className='notification-bar'>
-//                   <IonCardHeader>
-//                     <IonCardTitle>Documents: {item.documentMasterName}</IonCardTitle>
-//                   </IonCardHeader>
-//                   <IonCardContent>
-//                     <DocumentUpload onUpload={(file) => handleUpload(item.documentId, file)} docId={item.documentMasterId} />
-//                   </IonCardContent>
-//                 </IonCard>
-//               </IonCol>
-//             )) : (
+//             {documents.length > 0 ? (
+//               documents.map((item, index) => (
+//                 <IonCol size="5.9" key={index}>
+//                   <IonCard className="notification-bar" style={{ background: boxColors[index % boxColors.length] }}>
+//                     <IonCardHeader>
+//                       <IonCardTitle>Documents: {item.documentMasterName}</IonCardTitle>
+//                     </IonCardHeader>
+//                     <IonCardContent>
+//                       <DocumentUpload onUpload={(file) => console.log(file)} docId={item.documentMasterId} />
+//                     </IonCardContent>
+//                   </IonCard>
+//                 </IonCol>
+//               ))
+//             ) : (
 //               <IonCol size="12">
 //                 <p>No documents available.</p>
 //               </IonCol>
@@ -252,6 +177,7 @@
 //           </IonRow>
 //         </IonGrid>
 
+//         {/* Toasts */}
 //         <IonToast
 //           isOpen={submitSuccess}
 //           onDidDismiss={() => setSubmitSuccess(false)}
@@ -267,17 +193,36 @@
 //           color="danger"
 //         />
 
-//         {required && currentLocation.latitude && currentLocation.longitude && (
-//           <div className="location-container">
-//             <label htmlFor="latitude">Latitude:</label>
-//             <input type="text" id="latitude" value={currentLocation.latitude} readOnly />
-//             <label htmlFor="longitude">Longitude:</label>
-//             <input type="text" id="longitude" value={currentLocation.longitude} readOnly />
-//           </div>
-//         )}
-//         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-//           <IonButton onClick={handleSubmit}>Submit</IonButton>
-//         </div>
+//         {/* Comment and Location */}
+//         <IonGrid>
+//           <IonRow>
+//             <IonCol size="12">
+//               <IonLabel><b>Comment:</b></IonLabel>
+//               <IonInput
+//                 value={comment}
+//                 placeholder="Enter comment here"
+//                 onIonChange={(e) => setComment(e.detail.value!)}
+//               />
+//             </IonCol>
+
+//             {/* Styled Location Section */}
+//             <IonCol size="12" className="location-container">
+//               <div className="location-box">
+//                 <IonLabel className="location-label"><b>Current Location</b></IonLabel>
+//                 <IonRow>
+//                   <IonCol size="6">
+//                     <IonInput value={currentLocation.latitude} placeholder="Latitude" disabled />
+//                   </IonCol>
+//                   <IonCol size="6">
+//                     <IonInput value={currentLocation.longitude} placeholder="Longitude" disabled />
+//                   </IonCol>
+//                 </IonRow>
+//               </div>
+//             </IonCol>
+//           </IonRow>
+//         </IonGrid>
+
+//         <IonButton expand="full" color="primary" onClick={handleSubmit}>Submit</IonButton>
 //       </IonContent>
 //     </IonPage>
 //   );
@@ -291,95 +236,386 @@
 
 
 
+// import React, { useState, useEffect } from 'react';
+// import {
+//   IonContent,
+//   IonPage,
+//   IonGrid,
+//   IonRow,
+//   IonCol,
+//   IonCard,
+//   IonCardHeader,
+//   IonCardTitle,
+//   IonCardContent,
+//   IonButton,
+//   IonButtons,
+//   IonHeader,
+//   IonMenuButton,
+//   IonTitle,
+//   IonToolbar,
+//   IonToast,
+//   IonIcon,
+//   IonInput,
+//   IonLabel,
+//   IonSelect,
+//   IonSelectOption,
+// } from '@ionic/react';
+// import axios from 'axios';
+// import { useParams, useHistory } from 'react-router-dom';
+// import './DocPage.css';
+// import DocumentUpload from './DocumentUpload';
+// import { API_URL_DBT, API_URL_Inspection, API_URL_Master } from '../../../services/auth.service';
+// import { arrowBack } from 'ionicons/icons';
+
+// const DocPage: React.FC = () => {
+//   const { inspectionType, inspectionTaskId, requestTypeId } = useParams<{
+//     inspectionType: string;
+//     inspectionTaskId: string;
+//     requestTypeId: string;
+//   }>();
+//   const history = useHistory();
+//   const [documents, setDocuments] = useState<any[]>([]);
+//   const [currentLocation, setCurrentLocation] = useState<{ latitude: string; longitude: string }>({
+//     latitude: '',
+//     longitude: '',
+//   });
+//   const [required, setRequired] = useState<boolean>(false);
+//   const [comment, setComment] = useState<string>('');
+//   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
+//   const [submitError, setSubmitError] = useState<boolean>(false);
+
+//   // Rejection reason related states
+//   const [rejectionReason, setRejectionReason] = useState<string>(''); // Rejection reason state
+//   const [rejectionOptions, setRejectionOptions] = useState<any[]>([]); // List of rejection reasons from API
+//   const [fetchError, setFetchError] = useState<boolean>(false); // Fetch error state
+
+//   useEffect(() => {
+//     fetchData();
+//     fetchCurrentLocation();
+//     fetchRejectionReasons(); // Fetch rejection reasons
+//   }, []);
+
+//   const fetchRejectionReasons = async () => {
+//     try {
+//       const response = await axios.get(`${API_URL_Master}master-data/v1/rejectReasonWorkFlowMaster/get-all`, {
+//         headers: {
+//           Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+//         },
+//       });
+
+//       if (response.data && response.data.content) {
+//         setRejectionOptions(response.data.content.rejectReasonWorkFlowMaster);
+//       } else {
+//         console.error('Unexpected API response format:', response);
+//         setFetchError(true);
+//       }
+//     } catch (error) {
+//       console.error('Error fetching rejection reasons:', error);
+//       setFetchError(true);
+//     }
+//   };
+
+//   const fetchData = () => {
+//     const api = axios.create({
+//       baseURL: API_URL_Master,
+//     });
+
+//     api.get('master-data/v1/documentMaster/get-all', {
+//       headers: {
+//         'Content-Type': 'application/json',
+//         accept: '*/*',
+//         Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+//       },
+//     })
+//       .then((res) => {
+//         setDocuments(res.data.content?.documentMaster || []);
+//       })
+//       .catch((error) => {
+//         console.error('Error fetching documents:', error);
+//       });
+//   };
+
+//   const fetchCurrentLocation = () => {
+//     if (navigator.geolocation) {
+//       navigator.geolocation.getCurrentPosition(
+//         (position) => {
+//           setCurrentLocation({
+//             latitude: position.coords.latitude.toString(),
+//             longitude: position.coords.longitude.toString(),
+//           });
+//         },
+//         (error) => {
+//           console.error('Error getting current location:', error);
+//         }
+//       );
+//     } else {
+//       console.error('Geolocation is not supported by this browser.');
+//     }
+//   };
+
+//   const updateInspectionTaskStatus = () => {
+//     const api = axios.create({
+//       baseURL: API_URL_Inspection,
+//     });
+
+//     const requestBody = {
+//       inspectionTaskId: inspectionTaskId,
+//       inspectionType: inspectionType,
+//       comment: comment,
+//       latitude: currentLocation.latitude,
+//       longitude: currentLocation.longitude,
+//     };
+
+//     api.post('inspection/v1/inspectionTask/update-status', requestBody, {
+//       headers: {
+//         'Content-Type': 'application/json',
+//         Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+//       },
+//     })
+//       .then((res) => {
+//         console.log('API Response:', res.data);
+//       })
+//       .catch((error) => {
+//         console.error('Error updating inspection task status:', error);
+//         setSubmitError(true);
+//         setTimeout(() => setSubmitError(false), 3000);
+//       });
+//   };
+
+//   const handleSubmit = () => {
+//     updateInspectionTaskStatus();
+//     setSubmitSuccess(true);
+//     setTimeout(() => setSubmitSuccess(false), 3000);
+//   };
+
+//   const handleRejectionChange = (value: string) => {
+//     setRejectionReason(value); // Set the selected rejection reason
+//   };
+
+//   const boxColors = [
+//     'linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%)', // Coral to Peach
+//     'linear-gradient(135deg, #00c6ff 0%, #0072ff 100%)', // Light Blue to Dark Blue
+//     'linear-gradient(135deg, #56ab2f 0%, #a8e063 100%)', // Green to Light Green
+//     'linear-gradient(135deg, #c94b4b 0%, #4b134f 100%)', // Purple to Blue
+//     'linear-gradient(135deg, #ff9966 0%, #ff5e62 100%)', // Orange to Red
+//     'linear-gradient(135deg, #c94b4b 0%, #4b134f 100%)', // Red to Dark Purple
+//   ];
+
+//   return (
+//     <IonPage>
+//       <IonHeader>
+//         <IonToolbar>
+//           <IonButtons slot="start">
+//             <IonMenuButton />
+//           </IonButtons>
+//           <IonTitle>
+//             <b>Documents</b>
+//           </IonTitle>
+//           <IonButtons slot="end">
+//             <IonButton onClick={() => history.goBack()}>
+//               <IonIcon icon={arrowBack} />
+//               Go Back
+//             </IonButton>
+//           </IonButtons>
+//         </IonToolbar>
+//       </IonHeader>
+
+//       <IonContent>
+//         <IonGrid>
+//           <IonRow>
+//             {/* Rejection Reason Selection */}
+
+//             <IonCol size="12">
+//             <IonLabel>
+//     <b>Reject Reason:</b>
+//   </IonLabel>
+//               {fetchError ? (
+//                 <p style={{ color: 'red' }}>Failed to fetch rejection reasons. Please try again later.</p>
+//               ) : (
+//                 <IonSelect
+//                   value={rejectionReason}
+//                   placeholder="Select reason for rejection"
+//                   onIonChange={(e) => handleRejectionChange(e.detail.value!)}
+//                 >
+//                   {rejectionOptions.map((option) => (
+//                     <IonSelectOption key={option.rejectReasonWorkFlowMasterId} value={option.rejectReasonWorkFlowMasterId}>
+//                       {option.reason}
+//                     </IonSelectOption>
+//                   ))}
+//                 </IonSelect>
+//               )}
+//             </IonCol>
+
+//             {/* Documents Section */}
+//             {documents.length > 0 ? (
+//               documents.map((item, index) => (
+//                 <IonCol size="5.9" key={index}>
+//                   <IonCard className="notification-bar" style={{ background: boxColors[index % boxColors.length] }}>
+//                     <IonCardHeader>
+//                       <IonCardTitle>Documents: {item.documentMasterName}</IonCardTitle>
+//                     </IonCardHeader>
+//                     <IonCardContent>
+//                       <DocumentUpload onUpload={(file) => console.log(file)} docId={item.documentMasterId} />
+//                     </IonCardContent>
+//                   </IonCard>
+//                 </IonCol>
+//               ))
+//             ) : (
+//               <IonCol size="12">
+//                 <p>No documents available.</p>
+//               </IonCol>
+//             )}
+//           </IonRow>
+//         </IonGrid>
+
+//         {/* Toasts */}
+//         <IonToast
+//           isOpen={submitSuccess}
+//           onDidDismiss={() => setSubmitSuccess(false)}
+//           message="Successfully submitted"
+//           duration={3000}
+//         />
+
+//         <IonToast
+//           isOpen={submitError}
+//           onDidDismiss={() => setSubmitError(false)}
+//           message="Error submitting. Please try again."
+//           duration={3000}
+//           color="danger"
+//         />
+
+//         {/* Comment and Location */}
+//         <IonGrid>
+//           <IonRow>
+//             <IonCol size="12">
+//               <IonLabel>
+//                 <b>Comment:</b>
+//               </IonLabel>
+//               <IonInput
+//                 value={comment}
+//                 placeholder="Enter comment here"
+//                 onIonChange={(e) => setComment(e.detail.value!)}
+//               />
+//             </IonCol>
+
+//             {/* Styled Location Section */}
+//             <IonCol size="12" className="location-container">
+//               <div className="location-box">
+//                 <IonLabel className="location-label">
+//                   <b>Current Location</b>
+//                 </IonLabel>
+//                 <IonRow>
+//                   <IonCol size="6">
+//                     <IonInput value={currentLocation.latitude} placeholder="Latitude" disabled />
+//                   </IonCol>
+//                   <IonCol size="6">
+//                     <IonInput value={currentLocation.longitude} placeholder="Longitude" disabled />
+//                   </IonCol>
+//                 </IonRow>
+//               </div>
+//             </IonCol>
+
+//             {/* Submit Button */}
+//             <IonCol size="12">
+//               <IonButton expand="block" onClick={handleSubmit}>
+//                 Submit
+//               </IonButton>
+//             </IonCol>
+//           </IonRow>
+//         </IonGrid>
+//       </IonContent>
+//     </IonPage>
+//   );
+// };
+
+// export default DocPage;
+
+
 
 
 
 
 import React, { useState, useEffect } from 'react';
-import { IonContent, IonPage, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonButtons, IonHeader, IonMenuButton, IonTitle, IonToolbar, IonToast, IonIcon } from '@ionic/react';
+import {
+  IonContent,
+  IonPage,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonButton,
+  IonButtons,
+  IonHeader,
+  IonMenuButton,
+  IonTitle,
+  IonToolbar,
+  IonToast,
+  IonIcon,
+  IonInput,
+  IonLabel,
+  IonSelect,
+  IonSelectOption,
+} from '@ionic/react';
 import axios from 'axios';
 import { useParams, useHistory } from 'react-router-dom';
 import './DocPage.css';
-import DocumentUpload from './DocumentUpload'; // Assuming the file path is correct
-import { API_URL_DBT, API_URL_Inspection } from '../../../services/auth.service';
+import DocumentUpload from './DocumentUpload';
+import { API_URL_DBT, API_URL_DBT_, API_URL_Inspection, API_URL_Master } from '../../../services/auth.service';
 import { arrowBack } from 'ionicons/icons';
 
 const DocPage: React.FC = () => {
-  const { inspectionType, inspectionTaskId, requestTypeId } = useParams<{ inspectionType: string; inspectionTaskId: string; requestTypeId: string }>();
+  // const { inspectionType, inspectionTaskId, requestTypeId } = useParams<{
+  //   inspectionType: string;
+  //   inspectionTaskId: string;
+  //   requestTypeId: string;
+  // }>();
+  const {applicationDocumentId} = useParams<{applicationDocumentId:string}>()
   const history = useHistory();
   const [documents, setDocuments] = useState<any[]>([]);
-  const [currentLocation, setCurrentLocation] = useState<{ latitude: string; longitude: string }>({ latitude: '', longitude: '' });
-  const [required, setRequired] = useState<boolean>(false);
-  const [inspectionTypeId, setInspectionTypeId] = useState<number>(0);
-  const [request, setRequest] = useState<number>(0);
-  const [status, setStatus] = useState<number>(0); // Add status as state
-  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false); // State for submit success status
-  const [submitError, setSubmitError] = useState<boolean>(false); // State for submit error status
+  const [selectedDocument, setSelectedDocument] = useState<any | null>(null);
+  const [currentLocation, setCurrentLocation] = useState<{ latitude: string; longitude: string }>({
+    latitude: '',
+    longitude: '',
+  });
+  const [comment, setComment] = useState<string>('');
+  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
+  const [submitError, setSubmitError] = useState<boolean>(false);
+
+  // Rejection reasons
+  const [rejectionReason, setRejectionReason] = useState<string>(''); // Rejection reason state
+  const [rejectionOptions, setRejectionOptions] = useState<any[]>([]); // List of rejection reasons from API
+  const [fetchError, setFetchError] = useState<boolean>(false); // Fetch error state
+
+    // Usernames
+    const [usernames, setUsernames] = useState<any[]>([]);
+    const [selectedUsername, setSelectedUsername] = useState<string>(''); // Selected username
+     // Nextsteps
+     const [nextsteps, setNextsteps] = useState<any[]>([]);
+     const [selectedNextstep, setSelectedNextstep] = useState<string>(''); // Selected username
 
   useEffect(() => {
-    fetchData();
-    fetchLocationData();
+    fetchDocuments();
     fetchCurrentLocation();
+    fetchRejectionReasons();
+    fetchUsernames();
+    fetchNextsteps();
   }, []);
 
-  useEffect(() => {
-    if (currentLocation.latitude && currentLocation.longitude && required) {
-      sendLocationToAPI(currentLocation.latitude, currentLocation.longitude);
-    }
-  }, [currentLocation, required]);
-
-  const fetchData = () => {
-    const fetchDetails = {
-      inspectionType: inspectionType,
-    };
-
-    const api = axios.create({
-      baseURL: API_URL_Inspection,
-    });
-
-    api.post('inspection/v1/inspectionTypeDocument/get-by-inspection-type', fetchDetails, {
-      headers: {
-        'Content-Type': 'application/json',
-        accept: '*/*',
-        Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
-      },
-    })
+  const fetchDocuments = () => {
+    axios
+      .get(`${API_URL_Master}master-data/v1/documentMaster/get-all`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+        },
+      })
       .then((res) => {
-        console.log(res.data);
-        if (res.data.errorCode === -1) {
-          // Handle error
-        } else {
-          setDocuments(res.data.content?.inspectionTypeDocument || []);
-          setInspectionTypeId(res.data.content.inspectionType);
-        }
+        setDocuments(res.data.content?.documentMaster || []);
       })
       .catch((error) => {
-        // Handle error
-      });
-  };
-
-  const fetchLocationData = () => {
-    const api = axios.create({
-      baseURL: API_URL_Inspection,
-    });
-
-    api.get(`inspection/v1/inspectionTypeGps/get-by-inspection-type/${inspectionType}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        accept: '*/*',
-        Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
-      },
-    })
-      .then((res) => {
-        console.log(res.data);
-        if (res.data.errorCode === -1) {
-          // Handle error
-        } else {
-          setRequired(res.data.content?.isRequired || false);
-        }
-      })
-      .catch((error) => {
-        // Handle error
+        console.error('Error fetching documents:', error);
       });
   };
 
@@ -387,12 +623,9 @@ const DocPage: React.FC = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const latitude = position.coords.latitude.toString();
-          const longitude = position.coords.longitude.toString();
-
           setCurrentLocation({
-            latitude: latitude,
-            longitude: longitude,
+            latitude: position.coords.latitude.toString(),
+            longitude: position.coords.longitude.toString(),
           });
         },
         (error) => {
@@ -404,110 +637,132 @@ const DocPage: React.FC = () => {
     }
   };
 
-  const sendLocationToAPI = (latitude: string, longitude: string) => {
-    const api = axios.create({
-      baseURL: API_URL_Inspection,
-    });
-
-    const requestBody = {
-      inspectionTaskId: inspectionTaskId,
-      lat: latitude,
-      lng: longitude,
-    };
-
-    api.post('inspection/v1/inspectionTaskGps/add', requestBody, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
-      },
-    })
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((error) => {
-        console.error('Error sending location data:', error);
+  const fetchRejectionReasons = async () => {
+    try {
+      const response = await axios.get(`${API_URL_Master}master-data/v1/rejectReasonWorkFlowMaster/get-all`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+        },
       });
+
+      if (response.data && response.data.content) {
+        setRejectionOptions(response.data.content.rejectReasonWorkFlowMaster);
+      } else {
+        console.error('Unexpected API response format:', response);
+        setFetchError(true);
+      }
+    } catch (error) {
+      console.error('Error fetching rejection reasons:', error);
+      setFetchError(true);
+    }
   };
 
-  const handleUpload = (documentId: string, file: File) => {
-    console.log('File uploaded for document ID:', documentId, file);
+
+  // Fetch usernames from the API
+  const fetchUsernames = async () => {
+    try {
+      const response = await axios.get(`${API_URL_Master}master-data/v1/userMaster/get-all`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+        },
+      });
+      if (response.data && response.data.content) {
+        setUsernames(response.data.content.userMaster || []);
+      } else {
+        console.error('Unexpected API response format:', response);
+      }
+    } catch (error) {
+      console.error('Error fetching usernames:', error);
+    }
   };
+
+  // Fetch nextstep from the API
+  const fetchNextsteps = async () => {
+    try {
+      const response = await axios.get(`${API_URL_Master}master-data/v1/scApprovalStage/get-all`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+        },
+      });
+      if (response.data && response.data.content) {
+        setNextsteps(response.data.content.scApprovalStage || []);
+      } else {
+        console.error('Unexpected API response format:', response);
+      }
+    } catch (error) {
+      console.error('Error fetching usernames:', error);
+    }
+  };
+
+  
+
+  const handleRejectionChange = (value: string) => {
+    setRejectionReason(value); // Set the selected rejection reason
+  };
+
+  const handleUsernameChange = (value: string) => {
+    setSelectedUsername(value); // Set the selected username
+  };
+  const handleNextstepChange = (value: string) => {
+    setSelectedNextstep(value); // Set the selected nextstep
+  };
+
+
 
   const updateInspectionTaskStatus = () => {
-    const api = axios.create({
-      baseURL: API_URL_Inspection,
-    });
-
-    const requestBody = {
-      inspectionTaskId: inspectionTaskId,
-      inspectionType: inspectionType,
+    // Construct the payload dynamically based on selected values
+    const requestBody: any = {
+      applicationFormId: applicationDocumentId, // Replace with actual ID or state if dynamic
+      lat: currentLocation.latitude,
+      lon: currentLocation.longitude,
+      description: comment || "Field Verification", // Default if no comment
     };
-
-    api.post('inspection/v1/inspectionTask/update-status', requestBody, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
-      },
-    })
+  
+    if (rejectionReason) {
+      requestBody.rejectedReasonId = parseInt(rejectionReason); // Add if rejection reason is selected
+    }
+  
+    if (selectedUsername) {
+      requestBody.userId = parseInt(selectedUsername); // Add if username is selected
+    }
+  
+    if (selectedNextstep) {
+      requestBody.stepId = parseInt(selectedNextstep); // Add if next step is selected
+    }
+  
+    // Send the API request
+    axios
+      .post(`${API_URL_DBT_}dbt/v1/service/inspectionUpdate`, requestBody, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+        },
+      })
       .then((res) => {
-        console.log('First API Response:', res.data); // Log entire response
-        const requestTypeId = res.data.content.requestTypeId; // Assuming this is where you get requestTypeId
-        setRequest(requestTypeId); // Assuming setRequest is a function that sets state
-
-        // Set status here based on your response data
-        const status = res.data.content.status;
-        console.log('Status:', status); // Log status
-
-        // Check conditions for calling the second API
-        // if (
-        //   ([1, 2, 3].includes(Number(inspectionType)) && status === 3) ||
-        //   ([4, 5].includes(Number(inspectionType)) && status === 4)
-        // ) {
-          console.log('Calling second API...'); // Log message indicating second API call
-          // Call second API here
-          const anotherApi = axios.create({
-            baseURL: API_URL_DBT,
-          });
-
-          const anotherRequestBody = {
-            id: requestTypeId, // Use the correct variable here
-          };
-
-          anotherApi.post(`dbt/v1/service/updateApplicationWorkFlowStatusAndTriggerNextStep?id=${requestTypeId}`, {}, {
-            headers: {
-              'Content-Type': 'application/json',
-              accept: '*/*',
-              Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
-            },
-          })
-            .then((res) => {
-              console.log('Second API Response:', res.data); // Log response from second API
-            })
-            .catch((error) => {
-              console.error('Error calling second API:', error);
-              setSubmitError(true);
-              setTimeout(() => setSubmitError(false), 3000);
-            });
-        // } else {
-        //   console.log('Second API not called because conditions not met.');
-        // }
+        console.log('API Response:', res.data);
+        setSubmitSuccess(true);
+        setTimeout(() => {setSubmitSuccess(false);history.push('/dash');window.location.reload();}, 3000);
       })
       .catch((error) => {
         console.error('Error updating inspection task status:', error);
+        setSubmitError(true);
+        setTimeout(() => setSubmitError(false), 3000);
       });
   };
-
+  
+  
+  
   const handleSubmit = () => {
-    // Call your API here
     updateInspectionTaskStatus();
-
-    setSubmitSuccess(true); // Set submit success status
+    setSubmitSuccess(true);
     setTimeout(() => setSubmitSuccess(false), 3000);
   };
 
-  const handleGoBack = () => {
-    history.goBack();
+  const handleDocumentSelect = (value: string) => {
+    const selected = documents.find((doc) => doc.documentMasterId === value);
+    setSelectedDocument(selected || null);
   };
+
+
 
   return (
     <IonPage>
@@ -516,73 +771,178 @@ const DocPage: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle><b>Documents</b></IonTitle>
+          <IonTitle>
+            <b>Documents</b>
+          </IonTitle>
           <IonButtons slot="end">
-            <IonButton onClick={handleGoBack}>
+            <IonButton onClick={() => history.goBack()}>
               <IonIcon icon={arrowBack} />
               Go Back
             </IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
+
       <IonContent>
         <IonGrid>
           <IonRow>
-            {documents && documents.length > 0 ? documents.map((item, index) => (
-              <IonCol size="6" key={index}>
-                <IonCard className='notification-bar'>
+            <IonCol size="12">
+              <IonLabel>
+                <b>Select Rejection Reason:</b>
+              </IonLabel>
+              {fetchError ? (
+                <p style={{ color: 'red' }}>Failed to fetch rejection reasons. Please try again later.</p>
+              ) : (
+                <IonSelect
+                  value={rejectionReason}
+                  placeholder="Select reason for rejection"
+                  onIonChange={(e) => handleRejectionChange(e.detail.value!)}
+                >
+                  <IonSelectOption value="">None</IonSelectOption> {/* Option to deselect */}
+                  {rejectionOptions.map((option) => (
+                    <IonSelectOption key={option.rejectReasonWorkFlowMasterId} value={option.rejectReasonWorkFlowMasterId}>
+                      {option.reason}
+                    </IonSelectOption>
+                  ))}
+                </IonSelect>
+              )}
+            </IonCol>
+
+            {/* Document Selection Dropdown */}
+            <IonCol size="12">
+              <IonLabel>
+                <b>Select Document:</b>
+              </IonLabel>
+              <IonSelect
+                value={selectedDocument?.documentMasterId || ''}
+                placeholder="Select a document"
+                onIonChange={(e) => handleDocumentSelect(e.detail.value!)}
+              >
+                <IonSelectOption value="">None</IonSelectOption> {/* Option to deselect */}
+                {documents.map((doc) => (
+                  <IonSelectOption key={doc.documentMasterId} value={doc.documentMasterId}>
+                    {doc.documentMasterName}
+                  </IonSelectOption>
+                ))}
+              </IonSelect>
+            </IonCol>
+
+            {/* Show Card for Selected Document */}
+            {selectedDocument && (
+              <IonCol size="8">
+                <IonCard className="notification-bar" >
                   <IonCardHeader>
-                    <IonCardTitle>Documents: {item.documentMasterName}</IonCardTitle>
+                    <IonCardTitle>Documents: {selectedDocument.documentMasterName}</IonCardTitle>
                   </IonCardHeader>
                   <IonCardContent>
-                    <DocumentUpload onUpload={(file) => handleUpload(item.documentId, file)} docId={item.documentMasterId} />
+                    <DocumentUpload onUpload={(file) => console.log(file)} docId={selectedDocument.documentMasterId} />
                   </IonCardContent>
                 </IonCard>
-              </IonCol>
-            )) : (
-              <IonCol size="12">
-                <p>No documents available.</p>
               </IonCol>
             )}
           </IonRow>
         </IonGrid>
 
-        <IonToast
-          isOpen={submitSuccess}
-          onDidDismiss={() => setSubmitSuccess(false)}
-          message="Successfully submitted"
-          duration={3000}
-        />
+        {/* Comment and Location */}
+        <IonGrid>
+          <IonRow>
+            <IonCol size="12">
+              <IonLabel>
+                <b>Comment:</b>
+              </IonLabel>
+              <IonInput
+                value={comment}
+                placeholder="Enter comment here"
+                onIonChange={(e) => setComment(e.detail.value!)}
+              />
+            </IonCol>
 
-        <IonToast
-          isOpen={submitError}
-          onDidDismiss={() => setSubmitError(false)}
-          message="Error submitting. Please try again."
-          duration={3000}
-          color="danger"
-        />
+              {/* Username Dropdown */}
+              <IonCol size="12">
+              <IonLabel>
+                <b>Select Username:</b>
+              </IonLabel>
+              <IonSelect
+                value={selectedUsername}
+                placeholder="Select a username"
+                onIonChange={(e) => handleUsernameChange(e.detail.value!)}
+              >
+                <IonSelectOption value="">None</IonSelectOption>
+                {usernames.map((user) => (
+                  <IonSelectOption key={user.userMasterId} value={user.userMasterId}>
+                                       {user.username}
+                  </IonSelectOption>
+                ))}
+              </IonSelect>
+            </IonCol>
 
-        {required && currentLocation.latitude && currentLocation.longitude && (
-          <div className="location-container">
-            <label htmlFor="latitude">Latitude:</label>
-            <input type="text" id="latitude" value={currentLocation.latitude} readOnly />
-            <label htmlFor="longitude">Longitude:</label>
-            <input type="text" id="longitude" value={currentLocation.longitude} readOnly />
-          </div>
-        )}
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-          <IonButton onClick={handleSubmit}>Submit</IonButton>
-        </div>
+
+            {/* Username Dropdown */}
+            <IonCol size="12">
+              <IonLabel>
+                <b>Select NextStep:</b>
+              </IonLabel>
+              <IonSelect
+                value={selectedNextstep}
+                placeholder="Select a NextStep"
+                onIonChange={(e) => handleNextstepChange(e.detail.value!)}
+              >
+                <IonSelectOption value="">None</IonSelectOption>
+                {nextsteps.map((user) => (
+                  <IonSelectOption key={user.scApprovalStageId} value={user.scApprovalStageId}>
+                                       {user.stageName}
+                  </IonSelectOption>
+                ))}
+              </IonSelect>
+            </IonCol>
+           
+
+            {/* Styled Location Section */}
+            <IonCol size="12" className="location-container">
+              <div className="location-box">
+                <IonLabel className="location-label">
+                  <b>Current Location</b>
+                </IonLabel>
+                <IonRow>
+                  <IonCol size="6">
+                    <IonInput value={currentLocation.latitude} placeholder="Latitude" disabled />
+                  </IonCol>
+                  <IonCol size="6">
+                    <IonInput value={currentLocation.longitude} placeholder="Longitude" disabled />
+                  </IonCol>
+                </IonRow>
+              </div>
+            </IonCol>
+
+            {/* Submit Button */}
+            <IonCol size="12">
+              <IonButton expand="block" onClick={handleSubmit}>
+                Submit
+              </IonButton>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
+
+      {/* Toasts */}
+      <IonToast
+        isOpen={submitSuccess}
+        onDidDismiss={() => setSubmitSuccess(false)}
+        message="Successfully submitted"
+        duration={3000}
+      />
+
+      <IonToast
+        isOpen={submitError}
+        onDidDismiss={() => setSubmitError(false)}
+        message="Error submitting data"
+        duration={3000}
+      />
     </IonPage>
   );
 };
 
 export default DocPage;
-
-
-
-
 
 
 

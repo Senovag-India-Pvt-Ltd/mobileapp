@@ -624,8 +624,8 @@ const Bid: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader className="ion-no-border">
-        <IonToolbar className='bid-tool-bar-height'>
+      <IonHeader className="custom-header ion-no-border">
+        <IonToolbar className='.custom-toolbar'>
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
@@ -635,8 +635,8 @@ const Bid: React.FC = () => {
 
       <IonContent fullscreen>
         <IonHeader>
+         
           <IonToolbar>
-
             <IonSegment value={ionSegmentText}>
               <IonSegmentButton value="home" onClick={toggleHomeSection}>
                 <IonLabel>Home</IonLabel>
@@ -646,7 +646,7 @@ const Bid: React.FC = () => {
               </IonSegmentButton>
             </IonSegment>
 
-          </IonToolbar>
+            </IonToolbar>
         </IonHeader>
         {showHomeSection && (
           <IonContent fullscreen className="ion-padding">
@@ -662,7 +662,7 @@ const Bid: React.FC = () => {
                     label="Lot No" labelPlacement="stacked" fill="outline" ref={inputRefLot}></IonInput>
                 </IonCol>
                 <IonCol>
-                  <IonButton size="large" style={{marginTop: '-1px'}} onClick={handleLotClear}>Clr</IonButton>
+                  <IonButton size="default" style={{marginTop: '-1px'}} onClick={handleLotClear}>Clr</IonButton>
                 </IonCol>
                 <IonCol>
                   <IonLabel className='highest-bid-label' style={{marginTop: '-1px'}}>{highestBidForLot}</IonLabel>
@@ -670,7 +670,7 @@ const Bid: React.FC = () => {
               </IonRow>
               <IonRow>
                 <IonCol>
-                  <h3>Bid Amount</h3>
+                  <h5>Bid Amount</h5>
                 </IonCol>
               </IonRow>
               <IonRow>
@@ -681,6 +681,7 @@ const Bid: React.FC = () => {
                       type='text'
                       maxlength={1}
                       pattern="[0-9]{1}"
+                      
                       fill="outline"
                       value={bidAmountValueStart}
                       onIonInput={(e) => handleInputChangeStart(inputRef1, e.detail.value!)}
@@ -747,11 +748,11 @@ const Bid: React.FC = () => {
               </IonRow>
               <IonRow>
                 <IonCol>
-                  <IonButton id="bid-btn" expand="full" size="large" onClick={generateBidAmount} disabled={isButtonDisabled}>Bid</IonButton>
+                  <IonButton id="bid-btn" expand="full" size="default" onClick={generateBidAmount} disabled={isButtonDisabled}>Bid</IonButton>
                   {/* <IonButton id="bid-btn" expand="full" size="large">Bid</IonButton> */}
                 </IonCol>
                 <IonCol>
-                  <IonButton expand="full" size="large" onClick={handleRefreshBtn}>Refresh</IonButton>
+                  <IonButton expand="full" size="default" onClick={handleRefreshBtn}>Refresh</IonButton>
                 </IonCol>
               </IonRow>
             </IonGrid>
@@ -774,26 +775,29 @@ const Bid: React.FC = () => {
                     </IonCol>
             </IonItem>
             {bidData.map((item) => (
-              <IonCol size='12' key={item.allottedLotId} className="custom-ion-col">
-                <IonRow className='row-data'>
-                <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
-                    <IonButton className='re-bid-button' size="small" onClick={(e) => handleReBid(e, item.allottedLotId, inputRef1)}>Re-Bid</IonButton>
-                  </IonCol>
-                  <IonCol size="2" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
-                    <IonLabel>{item.allottedLotId}</IonLabel>
-                  </IonCol>
-                  <IonCol size="2" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
-                    <IonLabel>{item.myBidAmount}</IonLabel>
-                  </IonCol>
-                  <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
-                    <IonLabel>{item.highestBidAmount}</IonLabel>
-                  </IonCol>
-                  <IonCol size="2" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
-                    <IonLabel>{item.status}</IonLabel>
-                  </IonCol>
-                </IonRow>
-              </IonCol>
-            ))}
+  <IonCol size='12' key={item.allottedLotId} className="custom-ion-col">
+    <IonRow className='row-data ion-no-margin ion-no-padding'>
+      <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
+        <IonButton className='re-bid-button' size="small" onClick={(e) => handleReBid(e, item.allottedLotId, inputRef1)}>
+          Re-Bid
+        </IonButton>
+      </IonCol>
+      <IonCol size="2" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
+        <IonLabel>{item.allottedLotId}</IonLabel>
+      </IonCol>
+      <IonCol size="2" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
+        <IonLabel>{item.myBidAmount}</IonLabel>
+      </IonCol>
+      <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
+        <IonLabel>{item.highestBidAmount}</IonLabel>
+      </IonCol>
+      <IonCol size="2" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
+        <IonLabel>{item.status}</IonLabel>
+      </IonCol>
+    </IonRow>
+  </IonCol>
+))}
+
 
 
           </IonContent>
