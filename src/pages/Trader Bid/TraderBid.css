@@ -199,26 +199,3 @@ input-fill-outline.sc-ion-input-md-h {
     margin: 0 !important;       /* Reset margin for IonCol */
   }
   
-
-  .bottom-spacer {
-    height: 50px; /* Adjust this value to increase or decrease spacing */
-}
-
-
-.fixed-header-container {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 10; /* Ensures it stays on top */
-    background-color: white; /* Ensure it has a background */
-  }
-  
-  .no-scroll {
-    overflow: hidden; /* Prevents scrolling */
-    height: 100vh; /* Use viewport height */
-  }
-  .scrollable-content {
-    max-height: 70vh; /* Adjust based on your design */
-    overflow-y: auto; /* Allows vertical scrolling */
-  }
-  

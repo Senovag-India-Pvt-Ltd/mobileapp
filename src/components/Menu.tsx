@@ -40,9 +40,22 @@ const appPages: AppPage[] = [
     iosIcon: paperPlaneOutline,
     mdIcon: paperPlaneSharp
   },
+
+  {
+    title: 'Start TraderBid',
+    url: '/traderbid/KKR1',
+    iosIcon: paperPlaneOutline,
+    mdIcon: paperPlaneSharp
+  },
   {
     title: 'Accept Bid',
     url: '/accept-bid',
+    iosIcon: paperPlaneOutline,
+    mdIcon: paperPlaneSharp
+  },
+  {
+    title: 'Trader Accept Bid',
+    url: '/traderaccept-bid',
     iosIcon: paperPlaneOutline,
     mdIcon: paperPlaneSharp
   },
@@ -101,11 +114,17 @@ const Menu: React.FC = () => {
     if (page.title === 'Accept Bid' && (userType == '2' || userType == '3')) {
       return false;
     }
+    if (page.title === 'Trader Accept Bid' && (userType == '2' || userType == '3')) {
+      return false;
+    }
     
     if (page.title === 'Service Dashboard' && userType != '0') {
       return false;
     }
     if (page.title === 'Start Bid' && userType != '2') {
+      return false;
+    }
+    if (page.title === 'Start TraderBid' && (userType == '0'|| userType=='2') ){
       return false;
     }
     return true;

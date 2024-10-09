@@ -558,6 +558,7 @@ import {
   IonLabel,
   IonSelect,
   IonSelectOption,
+  IonSearchbar,
 } from '@ionic/react';
 import axios from 'axios';
 import { useParams, useHistory } from 'react-router-dom';
@@ -595,6 +596,7 @@ const DocPage: React.FC = () => {
      // Nextsteps
      const [nextsteps, setNextsteps] = useState<any[]>([]);
      const [selectedNextstep, setSelectedNextstep] = useState<string>(''); // Selected username
+     const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetchDocuments();
@@ -763,6 +765,9 @@ const DocPage: React.FC = () => {
   };
 
 
+  const filteredUsernames = usernames.filter(user =>
+    user.username.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <IonPage>
@@ -858,7 +863,7 @@ const DocPage: React.FC = () => {
             </IonCol>
 
               {/* Username Dropdown */}
-              <IonCol size="12">
+              {/* <IonCol size="12">
               <IonLabel>
                 <b>Select Username:</b>
               </IonLabel>
@@ -874,7 +879,35 @@ const DocPage: React.FC = () => {
                   </IonSelectOption>
                 ))}
               </IonSelect>
-            </IonCol>
+            </IonCol> */}
+
+<IonCol size="12">
+  <IonLabel>
+    <b>Select Username:</b>
+  </IonLabel>
+  
+  {/* Searchbar for filtering usernames */}
+  <IonSearchbar
+    value={searchTerm}
+    onIonInput={e => setSearchTerm(e.detail.value!)}
+    placeholder="Search for a username"
+    className="custom-searchbar"
+  />
+
+  <IonSelect
+    value={selectedUsername}
+    placeholder="Select a username"
+    onIonChange={e => handleUsernameChange(e.detail.value!)}
+  >
+    <IonSelectOption value="">None</IonSelectOption>
+    {filteredUsernames.map(user => (
+      <IonSelectOption key={user.userMasterId} value={user.userMasterId}>
+        {user.username}
+      </IonSelectOption>
+    ))}
+  </IonSelect>
+</IonCol>
+
 
 
             {/* Username Dropdown */}

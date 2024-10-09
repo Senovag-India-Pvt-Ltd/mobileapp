@@ -66,3 +66,15 @@
     color: #FFFAFA;
   }
   
+  /* styles.css or your relevant CSS file */
+.custom-searchbar {
+  height: 40px !important; /* Set smaller height */
+  font-size: 10px !important; /* Adjust font size */
+  padding: 5px !important; /* Reduce padding */
+  border-radius: 30px; /* Slightly round corners */
+  border: 5px solid #1ea0a4; /* Add subtle border */
+  margin-bottom: 5px; /* Space below the search bar */
+  background-color: #fff; /* White background */
+  color: #333; /* Text color */
+  --box-shadow: none; /* Remove default shadow */
+}

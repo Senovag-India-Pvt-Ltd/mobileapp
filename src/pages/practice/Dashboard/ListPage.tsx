@@ -109,7 +109,7 @@ const ListPage: React.FC = () => {
                       <IonLabel><IonIcon icon={cash} /><b> Scheme Amount:</b> {item.schemeAmount}</IonLabel><br />
                       <IonLabel><IonIcon icon={location} /> <b>District:</b> {item.districtName}</IonLabel><br />
                       <IonLabel><IonIcon icon={pin} /> <b>Taluk:</b> {item.talukName}</IonLabel><br />
-                      <IonLabel><IonIcon icon={pinOutline} /> <b>Tsc:</b> {item.tscName}</IonLabel><br />
+                      <IonLabel><IonIcon icon={pinOutline} /> <b>TSC:</b> {item.tscName}</IonLabel><br />
                       
 
                      

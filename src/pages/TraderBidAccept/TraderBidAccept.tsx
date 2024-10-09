@@ -29,11 +29,13 @@ const BidAccept: React.FC = () => {
   const [amount, setAmount] = useState<string>("");
   const [reelerAuctionId, setReelerAuctionId] = useState<number>();
   const [reelerName, setReelerName] = useState<string>("");
-  const [villageName, setVillageName] = useState<string>("");
+  const [traderName, setTraderName] = useState<string>("");
+  const [reelerVillage, setReelerVillage] = useState<string>("");
   const [bidStatus, setBidStatus] = useState<string>("");
   const [bidAcceptedBy, setBidAcceptedBy] = useState<string>("");
 
   const [reelingLicenseNumber, setReelingLicenseNumber] = useState<string>("");
+  const [traderLicenseNumber, setTraderLicenseNumber] = useState<string>("");
   const [reelerFruitsId, setReelerFruitsId] = useState<string>("");
 
   const [timeTickerKey, setTimeTickerKey] = useState(0);
@@ -91,6 +93,8 @@ const BidAccept: React.FC = () => {
     };
   }, []); // The empty dependency array ensures this effect runs only once when the component mounts
 
+//Trader API Added
+
   const fetchHighestBidDetails = () => {
     inputRefLot.current?.setFocus();
 
@@ -110,7 +114,7 @@ const BidAccept: React.FC = () => {
     //  baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
     // baseURL: `http://localhost:8002/market-auction/v1/auction/reeler`
     })
-    api.post("market-auction/v1/auction/reeler/getHighestBidPerLotDetails", fetchHighestBidPayload, {
+    api.post("market-auction/v1/auction/trader/getHighestBidPerLotDetails", fetchHighestBidPayload, {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
@@ -134,16 +138,18 @@ const BidAccept: React.FC = () => {
 
         } else {
 
-          setFruitsId(contents.farmerNumber);
-          setFarmerName(contents.farmerFirstName + "" + contents.farmerMiddleName + "" + contents.farmerLastName);
+          setFruitsId(contents.reelingLicenseNumber);
+          // setFarmerName(contents.farmerFirstName + "" + contents.farmerMiddleName + "" + contents.farmerLastName);
           // setAmount(contents.amount + ".000");
           setAmount(contents.amount);
           setReelerName(contents.reelerName);
+          setTraderName(contents.traderName);
           setReelerAuctionId(contents.reelerAuctionId);
-          setVillageName(contents.farmervillageName);
+          setReelerVillage(contents.reelerVillageName);
           setBidAcceptedBy(contents.bidAcceptedBy);
           setBidStatus(contents.status);
           setReelingLicenseNumber(contents.reelingLicenseNumber);
+          setTraderLicenseNumber(contents.traderLicenseNumber);
           setReelerFruitsId(contents.reelerFruitsId);
 
           if (contents.status == "accepted") {
@@ -168,6 +174,10 @@ const BidAccept: React.FC = () => {
     // setShowFarmerDetailsSection(!showFarmerDetailsSection);
     // setShowAcceptButtonSection(!showAcceptButtonSection);
 
+
+
+//Trader API Added
+
     const fetchHighestBidPayload = {
       "marketId": localStorage.getItem("marketId"),
       "allottedLotId": lotId
@@ -180,7 +190,7 @@ const BidAccept: React.FC = () => {
     //  baseURL: `https://api.senovagseri.com/market-auction/v1/auction/reeler`
    // baseURL: `http://localhost:8002/market-auction/v1/auction/reeler`
     })
-    api.post("market-auction/v1/auction/reeler/getHighestBidPerLotDetails", fetchHighestBidPayload, {
+    api.post("market-auction/v1/auction/trader/getHighestBidPerLotDetails", fetchHighestBidPayload, {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
@@ -204,16 +214,30 @@ const BidAccept: React.FC = () => {
 
         } else {
 
-          setFruitsId(contents.farmerNumber);
-          setFarmerName(contents.farmerFirstName + "" + contents.farmerMiddleName + "" + contents.farmerLastName);
+          // setFruitsId(contents.farmerNumber);
+          // setFarmerName(contents.farmerFirstName + "" + contents.farmerMiddleName + "" + contents.farmerLastName);
+          // // setAmount(contents.amount + ".000");
+          // setAmount(contents.amount);
+          // setReelerName(contents.reelerName);
+          // setReelerAuctionId(contents.reelerAuctionId);
+          // setVillageName(contents.farmervillageName);
+          // setBidAcceptedBy(contents.bidAcceptedBy);
+          // setBidStatus(contents.status);
+          // setReelingLicenseNumber(contents.reelingLicenseNumber);
+          // setReelerFruitsId(contents.reelerFruitsId);
+          
+          setFruitsId(contents.reelingLicenseNumber);
+          // setFarmerName(contents.farmerFirstName + "" + contents.farmerMiddleName + "" + contents.farmerLastName);
           // setAmount(contents.amount + ".000");
           setAmount(contents.amount);
           setReelerName(contents.reelerName);
+          setTraderName(contents.traderName);
           setReelerAuctionId(contents.reelerAuctionId);
-          setVillageName(contents.farmervillageName);
+          setReelerVillage(contents.reelerVillageName);
           setBidAcceptedBy(contents.bidAcceptedBy);
           setBidStatus(contents.status);
           setReelingLicenseNumber(contents.reelingLicenseNumber);
+          setTraderLicenseNumber(contents.traderLicenseNumber);
           setReelerFruitsId(contents.reelerFruitsId);
 
           if (contents.status == "accepted") {
@@ -293,7 +317,7 @@ const BidAccept: React.FC = () => {
       //  baseURL: API_URL
       baseURL: API_URL_Market
     })
-    api.post("market-auction/v1/auction/reeler/acceptReelerBidForGivenLot", acceptBidPayLoad, {
+    api.post("market-auction/v1/auction/trader/acceptTraderBidForGivenLot", acceptBidPayLoad, {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
@@ -307,7 +331,7 @@ const BidAccept: React.FC = () => {
           setIserror(true)
         } else {
           setIsSuccess(true)
-          setMessage("Bid accepted. Reeler:"+reelerName+"("+reelingLicenseNumber+")"+"Bidded Amount:"+amount)
+          setMessage("Bid accepted. Trader:"+traderName+"("+traderLicenseNumber+")")
         }
 
       })
@@ -335,7 +359,7 @@ const BidAccept: React.FC = () => {
       // baseURL: API_URL
       baseURL: API_URL_Market
     })
-    api.post("market-auction/v1/auction/reeler/rejectReelerBidForGivenLot", rejectBidPayLoad, {
+    api.post("market-auction/v1/auction/trader/rejectTraderBidForGivenLot", rejectBidPayLoad, {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
@@ -488,23 +512,23 @@ const BidAccept: React.FC = () => {
                   <IonGrid>
                     <IonRow>
                       <IonCol className='row-header content-margin'>
-                        <IonLabel className='label-content'><h6>Farmer Details</h6></IonLabel>
+                        <IonLabel className='label-content'><h6>Reeler Details</h6></IonLabel>
                       </IonCol>
                     </IonRow>
-                    <IonRow className='first-row'>
+                    {/* <IonRow className='first-row'>
                       <IonCol class='col-padding'>
                         <IonItem  className='content-padding'>{fruitsId}</IonItem>
                       </IonCol>
-                    </IonRow>
+                    </IonRow> */}
                     <IonRow className='next-row'>
                       <IonCol class='col-padding'>
-                        <IonItem  className='content-padding'>{farmerName}</IonItem>
+                        <IonItem  className='content-padding'>{reelerName}</IonItem>
                       </IonCol>
                     </IonRow>
-                    {villageName && (
+                    {reelerVillage && (
                       <IonRow className='next-row'>
                         <IonCol class='col-padding'>
-                          <IonItem  className='content-padding'>{villageName}</IonItem>
+                          <IonItem  className='content-padding'>{reelerVillage}</IonItem>
                         </IonCol>
                       </IonRow>
                     )}
@@ -610,7 +634,7 @@ const BidAccept: React.FC = () => {
           cssClass="my-custom-class"
           header={"Error!"}
           message={message}
-          buttons={["Ok"]}
+          buttons={["Dismiss"]}
         />
         <IonAlert
           isOpen={isSuccess}
@@ -618,7 +642,7 @@ const BidAccept: React.FC = () => {
           cssClass="my-custom-class"
           header={"Success!"}
           message={message}
-          buttons={["Ok"]}
+          buttons={["Dismiss"]}
         />
 
       </IonContent>

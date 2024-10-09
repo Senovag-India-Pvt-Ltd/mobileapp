@@ -218,7 +218,7 @@ const Login: React.FC = () => {
           if (localStorage.getItem("userType") == '2') {
             history.push("/bid/" + email);
           }else if (localStorage.getItem("userType") == '3') {
-            history.push("/dash");
+            history.push("/traderbid/"+email);
           } else {
             history.push("/accept-bid");
           }
@@ -281,29 +281,40 @@ const Login: React.FC = () => {
   //   }
   // };
 
+
+
   try {
     const res = await api.post("master-data/v1/userMaster/verify-otp-by-user-name", loginData);
     if (res.data.content.otpVerified) {
       await authService.login(email, password);
+  
+      const localStorageDeviceId = localStorage.getItem("deviceId");
+      const userType = localStorage.getItem("userType");
+  
+      console.log('Device ID from server:', deviceId);
+      console.log('Device ID in local storage:', localStorageDeviceId);
+      console.log('User Type:', userType);
+  
       if (localStorage.getItem("jwtToken") == 'null' || localStorage.getItem("jwtToken") == null || localStorage.getItem("jwtToken") == ' ') {
         setMessage("Not able to login, please check credentials");
         setIserror(true);
         setShowLoginSection(true);
         setShowVerificationSection(false);
         history.push("/login");
-      } else if (localStorage.getItem("deviceId") != deviceId && localStorage.getItem("userType") == '2') {
+      } else if (localStorageDeviceId !== deviceId && (userType === '2' || userType === '3')) {
+        console.log('Device ID does not match, showing error for user type 2 or 3.');
         setMessage("Please use the registered device");
         setIserror(true);
         setShowLoginSection(true);
         setShowVerificationSection(false);
         history.push("/login");
-      }else {
+      } else {
         setShowLoginSection(true);
         setShowVerificationSection(false);
-        if (localStorage.getItem("userType") == '2') {
+        if (userType == '2') {
           history.push("/bid/" + email);
-        }else if (localStorage.getItem("userType") == '3') {
-          history.push("/dash");
+        } else if (userType == '3') {
+          history.push("/traderbid/" + email);
         } else {
           history.push("/accept-bid");
         }
@@ -312,12 +323,49 @@ const Login: React.FC = () => {
       setMessage("OTP not verified");
       setIserror(true);
     }
-  }
-  catch (error) {
+  } catch (error) {
     setMessage("Error while authenticating user credential");
     setIserror(true);
-  }
-};
+  }};
+  
+
+//   try {
+//     const res = await api.post("master-data/v1/userMaster/verify-otp-by-user-name", loginData);
+//     if (res.data.content.otpVerified) {
+//       await authService.login(email, password);
+//       if (localStorage.getItem("jwtToken") == 'null' || localStorage.getItem("jwtToken") == null || localStorage.getItem("jwtToken") == ' ') {
+//         setMessage("Not able to login, please check credentials");
+//         setIserror(true);
+//         setShowLoginSection(true);
+//         setShowVerificationSection(false);
+//         history.push("/login");
+//       } else if (localStorage.getItem("deviceId") != deviceId && (localStorage.getItem("userType") === '2'||localStorage.getItem("userType") === '3')) {
+//         setMessage("Please use the registered device");
+//         setIserror(true);
+//         setShowLoginSection(true);
+//         setShowVerificationSection(false);
+//         history.push("/login");
+//       }else {
+//         setShowLoginSection(true);
+//         setShowVerificationSection(false);
+//         if (localStorage.getItem("userType") == '2') {
+//           history.push("/bid/" + email);
+//         }else if (localStorage.getItem("userType") == '3') {
+//           history.push("/traderbid/"+email);
+//         } else {
+//           history.push("/accept-bid");
+//         }
+//       }
+//     } else {
+//       setMessage("OTP not verified");
+//       setIserror(true);
+//     }
+//   }
+//   catch (error) {
+//     setMessage("Error while authenticating user credential");
+//     setIserror(true);
+//   }
+// };
 
   return (
     <IonPage>

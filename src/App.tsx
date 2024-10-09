@@ -42,6 +42,8 @@ import Dashboard from './pages/practice/Dashboard/Dashboard';
 import RejectPage from './pages/practice/Dashboard/RejectPage';
 import DocPage2 from './pages/practice/Dashboard/DocPage2';
 import ListPage2 from './pages/practice/Dashboard/ListPage2';
+import TraderBid from './pages/Trader Bid/TraderBid';
+import TraderBidAccept from './pages/TraderBidAccept/TraderBidAccept';
 
 
 
@@ -118,8 +120,14 @@ const App: React.FC = () => {
              <Route path="/bid/:name" exact={true}>
               <Bid />
             </Route>
+            <Route path="/traderbid/:name" exact={true}>
+              <TraderBid/>
+            </Route>
             <Route path="/accept-bid" exact={true}>
               <BidAccept />
+            </Route>
+            <Route path="/traderaccept-bid" exact={true}>
+              <TraderBidAccept/>
             </Route>
             <Route path="/change-password" exact={true}>
               <ChangePassword />
