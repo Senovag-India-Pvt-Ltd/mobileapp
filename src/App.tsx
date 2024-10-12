@@ -110,7 +110,7 @@ const App: React.FC = () => {
               <Route path="/list/:approvalStageId" exact={true}>
                 <ListPage/>
               </Route>
-              <Route path="/docu/:applicationDocumentId" exact={true}>
+              <Route path="/docu/:applicationDocumentId/:approvalStageId/:subSchemeId" exact={true}>
                 <DocPage/>
               </Route>
               

@@ -1,16 +1,9 @@
-
-
-
-
-
-
-
 // import React, { useState, useEffect } from 'react';
 // import { IonContent, IonPage, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonButtons, IonHeader, IonMenuButton, IonTitle, IonToolbar, IonToast, IonIcon, IonInput, IonLabel } from '@ionic/react';
 // import axios from 'axios';
 // import { useParams, useHistory } from 'react-router-dom';
 // import './DocPage.css';
-// import DocumentUpload from './DocumentUpload'; 
+// import DocumentUpload from './DocumentUpload';
 // import { API_URL_DBT, API_URL_Inspection, API_URL_Master } from '../../../services/auth.service';
 // import { arrowBack } from 'ionicons/icons';
 
@@ -26,13 +19,9 @@
 
 //   useEffect(() => {
 //     fetchData();
-//     fetchCurrentLocation(); 
+//     fetchCurrentLocation();
 //   }, []);
 
-
-
-
-  
 //   const fetchData = () => {
 //     const api = axios.create({
 //       baseURL: API_URL_Master, // Assuming this is your base URL for the new API
@@ -128,13 +117,13 @@
 //   };
 
 //   const boxColors = ['linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%)',  // Coral to Peach
-    
+
 //     'linear-gradient(135deg, #00c6ff 0%, #0072ff 100%)', // Light Blue to Dark Blue
 //     'linear-gradient(135deg, #56ab2f 0%, #a8e063 100%)', // Green to Light Green
 //     'linear-gradient(135deg, #c94b4b 0%, #4b134f 100%)', // Purple to Blue
 //     'linear-gradient(135deg, #ff9966 0%, #ff5e62 100%)', // Orange to Red
 //     'linear-gradient(135deg, #c94b4b 0%, #4b134f 100%)', // Red to Dark Purple
-    
+
 //   ];
 
 //   return (
@@ -229,12 +218,6 @@
 // };
 
 // export default DocPage;
-
-
-
-
-
-
 
 // import React, { useState, useEffect } from 'react';
 // import {
@@ -530,12 +513,7 @@
 
 // export default DocPage;
 
-
-
-
-
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   IonContent,
   IonPage,
@@ -559,13 +537,18 @@ import {
   IonSelect,
   IonSelectOption,
   IonSearchbar,
-} from '@ionic/react';
-import axios from 'axios';
-import { useParams, useHistory } from 'react-router-dom';
-import './DocPage.css';
-import DocumentUpload from './DocumentUpload';
-import { API_URL_DBT, API_URL_DBT_, API_URL_Inspection, API_URL_Master } from '../../../services/auth.service';
-import { arrowBack } from 'ionicons/icons';
+} from "@ionic/react";
+import axios from "axios";
+import { useParams, useHistory } from "react-router-dom";
+import "./DocPage.css";
+import DocumentUpload from "./DocumentUpload";
+import {
+  API_URL_DBT,
+  API_URL_DBT_,
+  API_URL_Inspection,
+  API_URL_Master,
+} from "../../../services/auth.service";
+import { arrowBack } from "ionicons/icons";
 
 const DocPage: React.FC = () => {
   // const { inspectionType, inspectionTaskId, requestTypeId } = useParams<{
@@ -573,51 +556,82 @@ const DocPage: React.FC = () => {
   //   inspectionTaskId: string;
   //   requestTypeId: string;
   // }>();
-  const {applicationDocumentId} = useParams<{applicationDocumentId:string}>()
+  const { applicationDocumentId, approvalStageId, subSchemeId } = useParams<{
+    applicationDocumentId: string;
+    approvalStageId: string;
+    subSchemeId: string;
+  }>();
   const history = useHistory();
   const [documents, setDocuments] = useState<any[]>([]);
   const [selectedDocument, setSelectedDocument] = useState<any | null>(null);
-  const [currentLocation, setCurrentLocation] = useState<{ latitude: string; longitude: string }>({
-    latitude: '',
-    longitude: '',
+  const [currentLocation, setCurrentLocation] = useState<{
+    latitude: string;
+    longitude: string;
+  }>({
+    latitude: "",
+    longitude: "",
   });
-  const [comment, setComment] = useState<string>('');
+  const [comment, setComment] = useState<string>("");
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<boolean>(false);
 
   // Rejection reasons
-  const [rejectionReason, setRejectionReason] = useState<string>(''); // Rejection reason state
+  const [rejectionReason, setRejectionReason] = useState<string>(""); // Rejection reason state
   const [rejectionOptions, setRejectionOptions] = useState<any[]>([]); // List of rejection reasons from API
   const [fetchError, setFetchError] = useState<boolean>(false); // Fetch error state
 
-    // Usernames
-    const [usernames, setUsernames] = useState<any[]>([]);
-    const [selectedUsername, setSelectedUsername] = useState<string>(''); // Selected username
-     // Nextsteps
-     const [nextsteps, setNextsteps] = useState<any[]>([]);
-     const [selectedNextstep, setSelectedNextstep] = useState<string>(''); // Selected username
-     const [searchTerm, setSearchTerm] = useState('');
+  // Usernames
+  const [usernames, setUsernames] = useState<any[]>([]);
+  const [selectedUsername, setSelectedUsername] = useState<string>(""); // Selected username
+  // Nextsteps
+  const [nextsteps, setNextsteps] = useState<any[]>([]);
+  const [selectedNextstep, setSelectedNextstep] = useState<string>(""); // Selected username
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchDocuments();
     fetchCurrentLocation();
     fetchRejectionReasons();
-    fetchUsernames();
-    fetchNextsteps();
+    fetchUser();
   }, []);
+
+  const fetchUser = () => {
+    axios
+      .get(
+        `${API_URL_Master}master-data/v1/userMaster/get-join/${localStorage.getItem(
+          "userMasterId"
+        )}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
+        }
+      )
+      .then((res) => {
+        const districtId: number = res.data.content.districtId;
+        const talukId: number = res.data.content.talukId;
+        if (districtId && talukId) {
+          fetchUsernames(districtId, talukId);
+          fetchNextsteps();
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching documents:", error);
+      });
+  };
 
   const fetchDocuments = () => {
     axios
       .get(`${API_URL_Master}master-data/v1/documentMaster/get-all`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
         },
       })
       .then((res) => {
         setDocuments(res.data.content?.documentMaster || []);
       })
       .catch((error) => {
-        console.error('Error fetching documents:', error);
+        console.error("Error fetching documents:", error);
       });
   };
 
@@ -631,72 +645,80 @@ const DocPage: React.FC = () => {
           });
         },
         (error) => {
-          console.error('Error getting current location:', error);
+          console.error("Error getting current location:", error);
         }
       );
     } else {
-      console.error('Geolocation is not supported by this browser.');
+      console.error("Geolocation is not supported by this browser.");
     }
   };
 
   const fetchRejectionReasons = async () => {
     try {
-      const response = await axios.get(`${API_URL_Master}master-data/v1/rejectReasonWorkFlowMaster/get-all`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
-        },
-      });
+      const response = await axios.get(
+        `${API_URL_Master}master-data/v1/rejectReasonWorkFlowMaster/get-all`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
+        }
+      );
 
       if (response.data && response.data.content) {
         setRejectionOptions(response.data.content.rejectReasonWorkFlowMaster);
       } else {
-        console.error('Unexpected API response format:', response);
+        console.error("Unexpected API response format:", response);
         setFetchError(true);
       }
     } catch (error) {
-      console.error('Error fetching rejection reasons:', error);
+      console.error("Error fetching rejection reasons:", error);
       setFetchError(true);
     }
   };
 
-
   // Fetch usernames from the API
-  const fetchUsernames = async () => {
+  const fetchUsernames = async (districtId: number, talukId: number) => {
     try {
-      const response = await axios.get(`${API_URL_Master}master-data/v1/userMaster/get-all`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
-        },
-      });
+      const response = await axios.post(
+        `${API_URL_DBT_}dbt/v1/service/getUserBySubSchemeIdAndScApprovalStageIdAndTalukIdAndDistrictId?subSchemeId=${subSchemeId}&approvalStageId=${approvalStageId}&districtId=${districtId}&talukId=${talukId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
+        }
+      );
       if (response.data && response.data.content) {
-        setUsernames(response.data.content.userMaster || []);
+        setUsernames(response.data.content || []);
       } else {
-        console.error('Unexpected API response format:', response);
+        console.error("Unexpected API response format:", response);
       }
     } catch (error) {
-      console.error('Error fetching usernames:', error);
+      console.error("Error fetching usernames:", error);
     }
   };
 
   // Fetch nextstep from the API
   const fetchNextsteps = async () => {
     try {
-      const response = await axios.get(`${API_URL_Master}master-data/v1/scApprovalStage/get-all`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
-        },
-      });
+      const response = await axios.post(
+        `${API_URL_DBT_}dbt/v1/service/getNextStepDetailsAfterSubmitBySubSchemeIdAndApprovalStageId?subSchemeId=${subSchemeId}&approvalStageId=${approvalStageId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
+        }
+      );
       if (response.data && response.data.content) {
-        setNextsteps(response.data.content.scApprovalStage || []);
+        setNextsteps(response.data.content || []);
       } else {
-        console.error('Unexpected API response format:', response);
+        console.error("Unexpected API response format:", response);
       }
     } catch (error) {
-      console.error('Error fetching usernames:', error);
+      console.error("Error fetching usernames:", error);
     }
   };
-
-  
 
   const handleRejectionChange = (value: string) => {
     setRejectionReason(value); // Set the selected rejection reason
@@ -709,8 +731,6 @@ const DocPage: React.FC = () => {
     setSelectedNextstep(value); // Set the selected nextstep
   };
 
-
-
   const updateInspectionTaskStatus = () => {
     // Construct the payload dynamically based on selected values
     const requestBody: any = {
@@ -719,40 +739,42 @@ const DocPage: React.FC = () => {
       lon: currentLocation.longitude,
       description: comment || "Field Verification", // Default if no comment
     };
-  
+
     if (rejectionReason) {
       requestBody.rejectedReasonId = parseInt(rejectionReason); // Add if rejection reason is selected
     }
-  
+
     if (selectedUsername) {
       requestBody.userId = parseInt(selectedUsername); // Add if username is selected
     }
-  
+
     if (selectedNextstep) {
       requestBody.stepId = parseInt(selectedNextstep); // Add if next step is selected
     }
-  
+
     // Send the API request
     axios
       .post(`${API_URL_DBT_}dbt/v1/service/inspectionUpdate`, requestBody, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
         },
       })
       .then((res) => {
-        console.log('API Response:', res.data);
+        console.log("API Response:", res.data);
         setSubmitSuccess(true);
-        setTimeout(() => {setSubmitSuccess(false);history.push('/dash');window.location.reload();}, 3000);
+        setTimeout(() => {
+          setSubmitSuccess(false);
+          history.push("/dash");
+          window.location.reload();
+        }, 3000);
       })
       .catch((error) => {
-        console.error('Error updating inspection task status:', error);
+        console.error("Error updating inspection task status:", error);
         setSubmitError(true);
         setTimeout(() => setSubmitError(false), 3000);
       });
   };
-  
-  
-  
+
   const handleSubmit = () => {
     updateInspectionTaskStatus();
     setSubmitSuccess(true);
@@ -764,9 +786,8 @@ const DocPage: React.FC = () => {
     setSelectedDocument(selected || null);
   };
 
-
-  const filteredUsernames = usernames.filter(user =>
-    user.username.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredUsernames = usernames.filter((user) =>
+    user.userName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -796,16 +817,22 @@ const DocPage: React.FC = () => {
                 <b>Select Rejection Reason:</b>
               </IonLabel>
               {fetchError ? (
-                <p style={{ color: 'red' }}>Failed to fetch rejection reasons. Please try again later.</p>
+                <p style={{ color: "red" }}>
+                  Failed to fetch rejection reasons. Please try again later.
+                </p>
               ) : (
                 <IonSelect
                   value={rejectionReason}
                   placeholder="Select reason for rejection"
                   onIonChange={(e) => handleRejectionChange(e.detail.value!)}
                 >
-                  <IonSelectOption value="">None</IonSelectOption> {/* Option to deselect */}
+                  <IonSelectOption value="">None</IonSelectOption>{" "}
+                  {/* Option to deselect */}
                   {rejectionOptions.map((option) => (
-                    <IonSelectOption key={option.rejectReasonWorkFlowMasterId} value={option.rejectReasonWorkFlowMasterId}>
+                    <IonSelectOption
+                      key={option.rejectReasonWorkFlowMasterId}
+                      value={option.rejectReasonWorkFlowMasterId}
+                    >
                       {option.reason}
                     </IonSelectOption>
                   ))}
@@ -819,13 +846,17 @@ const DocPage: React.FC = () => {
                 <b>Select Document:</b>
               </IonLabel>
               <IonSelect
-                value={selectedDocument?.documentMasterId || ''}
+                value={selectedDocument?.documentMasterId || ""}
                 placeholder="Select a document"
                 onIonChange={(e) => handleDocumentSelect(e.detail.value!)}
               >
-                <IonSelectOption value="">None</IonSelectOption> {/* Option to deselect */}
+                <IonSelectOption value="">None</IonSelectOption>{" "}
+                {/* Option to deselect */}
                 {documents.map((doc) => (
-                  <IonSelectOption key={doc.documentMasterId} value={doc.documentMasterId}>
+                  <IonSelectOption
+                    key={doc.documentMasterId}
+                    value={doc.documentMasterId}
+                  >
                     {doc.documentMasterName}
                   </IonSelectOption>
                 ))}
@@ -835,12 +866,17 @@ const DocPage: React.FC = () => {
             {/* Show Card for Selected Document */}
             {selectedDocument && (
               <IonCol size="8">
-                <IonCard className="notification-bar" >
+                <IonCard className="notification-bar">
                   <IonCardHeader>
-                    <IonCardTitle>Documents: {selectedDocument.documentMasterName}</IonCardTitle>
+                    <IonCardTitle>
+                      Documents: {selectedDocument.documentMasterName}
+                    </IonCardTitle>
                   </IonCardHeader>
                   <IonCardContent>
-                    <DocumentUpload onUpload={(file) => console.log(file)} docId={selectedDocument.documentMasterId} />
+                    <DocumentUpload
+                      onUpload={(file) => console.log(file)}
+                      docId={selectedDocument.documentMasterId}
+                    />
                   </IonCardContent>
                 </IonCard>
               </IonCol>
@@ -862,8 +898,8 @@ const DocPage: React.FC = () => {
               />
             </IonCol>
 
-              {/* Username Dropdown */}
-              {/* <IonCol size="12">
+            {/* Username Dropdown */}
+            {/* <IonCol size="12">
               <IonLabel>
                 <b>Select Username:</b>
               </IonLabel>
@@ -881,34 +917,32 @@ const DocPage: React.FC = () => {
               </IonSelect>
             </IonCol> */}
 
-<IonCol size="12">
-  <IonLabel>
-    <b>Select Username:</b>
-  </IonLabel>
-  
-  {/* Searchbar for filtering usernames */}
-  <IonSearchbar
-    value={searchTerm}
-    onIonInput={e => setSearchTerm(e.detail.value!)}
-    placeholder="Search for a username"
-    className="custom-searchbar"
-  />
+            <IonCol size="12">
+              <IonLabel>
+                <b>Select Username:</b>
+              </IonLabel>
 
-  <IonSelect
-    value={selectedUsername}
-    placeholder="Select a username"
-    onIonChange={e => handleUsernameChange(e.detail.value!)}
-  >
-    <IonSelectOption value="">None</IonSelectOption>
-    {filteredUsernames.map(user => (
-      <IonSelectOption key={user.userMasterId} value={user.userMasterId}>
-        {user.username}
-      </IonSelectOption>
-    ))}
-  </IonSelect>
-</IonCol>
+              {/* Searchbar for filtering usernames */}
+              <IonSearchbar
+                value={searchTerm}
+                onIonInput={(e) => setSearchTerm(e.detail.value!)}
+                placeholder="Search for a username"
+                className="custom-searchbar"
+              />
 
-
+              <IonSelect
+                value={selectedUsername}
+                placeholder="Select a username"
+                onIonChange={(e) => handleUsernameChange(e.detail.value!)}
+              >
+                <IonSelectOption value="">None</IonSelectOption>
+                {filteredUsernames.map((user) => (
+                  <IonSelectOption key={user.userId} value={user.userId}>
+                    {user.userName}
+                  </IonSelectOption>
+                ))}
+              </IonSelect>
+            </IonCol>
 
             {/* Username Dropdown */}
             <IonCol size="12">
@@ -922,13 +956,15 @@ const DocPage: React.FC = () => {
               >
                 <IonSelectOption value="">None</IonSelectOption>
                 {nextsteps.map((user) => (
-                  <IonSelectOption key={user.scApprovalStageId} value={user.scApprovalStageId}>
-                                       {user.stageName}
+                  <IonSelectOption
+                    key={user.approvalStageId}
+                    value={user.approvalStageId}
+                  >
+                    {user.approvalStageName}
                   </IonSelectOption>
                 ))}
               </IonSelect>
             </IonCol>
-           
 
             {/* Styled Location Section */}
             <IonCol size="12" className="location-container">
@@ -938,10 +974,18 @@ const DocPage: React.FC = () => {
                 </IonLabel>
                 <IonRow>
                   <IonCol size="6">
-                    <IonInput value={currentLocation.latitude} placeholder="Latitude" disabled />
+                    <IonInput
+                      value={currentLocation.latitude}
+                      placeholder="Latitude"
+                      disabled
+                    />
                   </IonCol>
                   <IonCol size="6">
-                    <IonInput value={currentLocation.longitude} placeholder="Longitude" disabled />
+                    <IonInput
+                      value={currentLocation.longitude}
+                      placeholder="Longitude"
+                      disabled
+                    />
                   </IonCol>
                 </IonRow>
               </div>
@@ -976,8 +1020,3 @@ const DocPage: React.FC = () => {
 };
 
 export default DocPage;
-
-
-
-
-

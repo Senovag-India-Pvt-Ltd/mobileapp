@@ -51,8 +51,8 @@ const ListPage: React.FC = () => {
     setViewIndex(prevIndex => (prevIndex === index ? null : index));
   };
 
-  const handleUploadDocumentsClick = (applicationDocumentId: number) => {
-    history.push(`/docu/${applicationDocumentId}`);
+  const handleUploadDocumentsClick = (applicationDocumentId: number,approvalStageId:number,subSchemeId:number) => {
+    history.push(`/docu/${applicationDocumentId}/${approvalStageId}/${subSchemeId}`);
   };
 
   
@@ -117,7 +117,7 @@ const ListPage: React.FC = () => {
                       <IonButton
                         expand="full"
                         className="gradient-button"
-                        onClick={() => handleUploadDocumentsClick(item.applicationDocumentId)}
+                        onClick={() => handleUploadDocumentsClick(item.applicationDocumentId,item.approvalStageId,item.subSchemeId)}
                       >
                         <IonIcon icon={arrowForward} slot="start" />
                         Proceed
