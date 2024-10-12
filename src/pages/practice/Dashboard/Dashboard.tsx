@@ -247,6 +247,7 @@ const HomePage: React.FC = () => {
     api.post(`dbt/v1/service/getUserDashboardCount?id=${localStorage.getItem("userMasterId")}`, fetchDetails, {
       headers: {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": '*',
         accept: "*/*",
         Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
       },
