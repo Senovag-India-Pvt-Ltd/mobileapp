@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useParams, useHistory } from 'react-router-dom';
 import './DocPage.css';
 import DocumentUpload from './DocumentUpload'; // Assuming the file path is correct
-import { API_URL_DBT, API_URL_Inspection } from '../../../services/auth.service';
+import { API_URL_DBT_, API_URL_Inspection } from '../../../services/auth.service';
 import { arrowBack } from 'ionicons/icons';
 
 const DocPage: React.FC = () => {
@@ -170,7 +170,7 @@ const DocPage: React.FC = () => {
           console.log('Calling second API...'); // Log message indicating second API call
           // Call second API here
           const anotherApi = axios.create({
-            baseURL: API_URL_DBT,
+            baseURL: API_URL_DBT_,
           });
 
           const anotherRequestBody = {
