@@ -220,7 +220,7 @@ const Login: React.FC = () => {
           }else if (localStorage.getItem("userType") == '3') {
             history.push("/traderbid/"+email);
           } else {
-            history.push("/accept-bid");
+            history.push("/homeLink");
           }
         }
       } else {

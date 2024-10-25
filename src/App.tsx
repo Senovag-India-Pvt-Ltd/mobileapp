@@ -44,6 +44,7 @@ import DocPage2 from './pages/practice/Dashboard/DocPage2';
 import ListPage2 from './pages/practice/Dashboard/ListPage2';
 import TraderBid from './pages/Trader Bid/TraderBid';
 import TraderBidAccept from './pages/TraderBidAccept/TraderBidAccept';
+import Home from './pages/Home/Home';
 
 
 
@@ -90,8 +91,10 @@ const App: React.FC = () => {
               <Dashboard/>
               </Route>
 
-
-              <Route path="/home" exact={true}>
+              <Route path="/homeLink" exact={true}>
+              <Home/>
+              </Route>
+              <Route path="/homePage" exact={true}>
               <HomePage/>
               </Route>
               <Route path="/docu2" exact={true}>

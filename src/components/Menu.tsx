@@ -65,12 +65,12 @@ const appPages: AppPage[] = [
     iosIcon: gridSharp,
     mdIcon: gridSharp
   },
-  {
-    title: 'Dashboard',
-    url: '/home',
-    iosIcon: gridSharp,
-    mdIcon: gridSharp
-  },
+  // {
+  //   title: 'Dashboard',
+  //   url: '/home',
+  //   iosIcon: gridSharp,
+  //   mdIcon: gridSharp
+  // },
   
  
   {
