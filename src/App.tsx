@@ -44,6 +44,7 @@ import DocPage2 from './pages/practice/Dashboard/DocPage2';
 import ListPage2 from './pages/practice/Dashboard/ListPage2';
 import TraderBid from './pages/Trader Bid/TraderBid';
 import TraderBidAccept from './pages/TraderBidAccept/TraderBidAccept';
+import SeedReelerBid from './pages/SeedReelerBid/SeedReelerBid';
 
 
 
@@ -119,6 +120,9 @@ const App: React.FC = () => {
               
              <Route path="/bid/:name" exact={true}>
               <Bid />
+            </Route>
+            <Route path="/seed-reeler-bid/:name" exact={true}>
+              <SeedReelerBid />
             </Route>
             <Route path="/traderbid/:name" exact={true}>
               <TraderBid/>

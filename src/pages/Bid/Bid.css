@@ -1,224 +1,239 @@
-ion-content{
-    --ion-background-color:#fff;
+ion-content {
+  --ion-background-color: #fff;
 }
 
-.item-background-color{
-    --ion-item-background:#57e3edd5;
-    text-align: center;
-    
+.item-background-color {
+  --ion-item-background: #57e3edd5;
+  text-align: center;
 }
 
 .awarded-label {
-    background-color: green;
-    color: #fff;
-    padding: 5px;
-    text-align: center;
-    font-weight: bold;
-    font-size:18px;
-    height:35px;
+  background-color: green;
+  color: #fff;
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  height: 35px;
+  border-radius: 5px;
 }
 
 .not-awarded-label {
-    background-color: red;
-    color: #fff;
-    padding: 5px;
-    text-align: center;
-    font-weight: bold;
-    font-size:15px;
-    height:30px;
+  background-color: red;
+  color: #fff;
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 15px;
+  height: 30px;
+  border-radius: 5px;
 }
 
-.input-big-font-size{
-    font-size: 30px;
-    text-align: center;
+.input-big-font-size {
+  font-size: 30px;
+  text-align: center;
 }
 
-.highest-bid-label{
-    font-size: 30px;
-    text-align: center;
+.highest-bid-label {
+  font-size: 30px;
+  text-align: center;
 }
 
 .custom-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
-.divider-component{
-    /* margin-right: 100px !important;
+.divider-component {
+  /* margin-right: 100px !important;
     margin-left: 10px !important; */
-    min-height: 0px !important;
+  min-height: 0px !important;
 }
 
-.divider-component-for-table{
-    min-height: 0px !important;
+.divider-component-for-table {
+  min-height: 0px !important;
 }
 
-.report-section-contents{
-    height: 50px;
+.report-section-contents {
+  height: 50px;
 }
 
-.divider-component-for-table{
-    min-height: 10px !important;
+.divider-component-for-table {
+  min-height: 10px !important;
 }
 
-.report-contents{
-    text-align: center;
-    font-size: 10px;
+.report-contents {
+  text-align: center;
+  font-size: 10px;
 }
 
-.centered-modal{
-    display: flex; 
-     justify-content: center;
-    align-items: center;
-    height: 100vh;
-/* 
+.centered-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  /* 
     line-height: 40px;
     height: 100%;
     text-align: center; */
 }
 
 .modal-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .modal-content {
-    width:100%;
-    max-width: 100%; /* Adjust as needed */
-    padding: 20px;
-    border-radius: 10px;
+  width: 100%;
+  max-width: 100%; /* Adjust as needed */
+  padding: 20px;
+  border-radius: 10px;
 }
 
-.bid-tool-bar-height{
-    height: 60px !important; 
+.bid-tool-bar-height {
+  height: 60px !important;
 }
 
-.report-summary{
-    margin-left: 5px;
-    font-size: 12px;
+.report-summary {
+  margin-left: 5px;
+  font-size: 12px;
 }
 
-.report-summary-reeler-balance{
-    margin-left: 5px;
-    height:100px;
-    font-size: 12px;
+.report-summary-reeler-balance {
+  margin-left: 5px;
+  height: 100px;
+  font-size: 12px;
 }
 
-.re-bid-button{
-     margin-top: -8px;
-    max-width: 40px; 
-     width: 40px; 
-    font-size: 7px;
+.re-bid-button {
+  margin-top: -8px;
+  max-width: 40px;
+  width: 40px;
+  font-size: 7px;
 }
 
-.rep-header-contents{
-    font-size: 10px;
+.rep-header-contents {
+  font-size: 10px;
 }
 
 .alert-button-group.sc-ion-alert-md {
-    justify-content: space-around !important;
+  justify-content: space-around !important;
 }
 
 @media screen and (max-width: 300px) {
-    .label-text.sc-ion-input-md{
-        font-size: 14px !important;
-    }
+  .label-text.sc-ion-input-md {
+    font-size: 14px !important;
+  }
 
-    .table-header{
-        font-size: 14px !important;
-    }
+  .table-header {
+    font-size: 14px !important;
+  }
 
-    .custom-ion-col {
-        padding: 0.9;
-        margin: 0.9;
-      }
+  .custom-ion-col {
+    padding: 0.9;
+    margin: 0.9;
+  }
 
-    .row-data{
-        /* margin-top:-10px;
+  .row-data {
+    /* margin-top:-10px;
         margin-bottom: -10px; */
-        margin-top:-15px;
-        margin-bottom: -15px;
-    }
-
+    margin-top: -15px;
+    margin-bottom: -15px;
+  }
 }
 
 .input-small {
-    font-size: 12px; /* Smaller font size for input text */
-    height: 20px; /* Reduce the height of the input box */
-    width: 20px; /* Reduce the width of the input box */
-    padding: 2px; /* Adjust padding inside the input box */
-  }
-
-
-input-fill-outline.sc-ion-input-md-h {
-    --border-color: var(--ion-color-step-300, #b3b3b3);
-    --border-radius: 30px;
-    --padding-start: 17px;
-    --padding-end: 20px;
-    min-height: 10px;
+  font-size: 12px; /* Smaller font size for input text */
+  height: 20px; /* Reduce the height of the input box */
+  width: 20px; /* Reduce the width of the input box */
+  padding: 2px; /* Adjust padding inside the input box */
 }
 
-
+input-fill-outline.sc-ion-input-md-h {
+  --border-color: var(--ion-color-step-300, #b3b3b3);
+  --border-radius: 30px;
+  --padding-start: 17px;
+  --padding-end: 20px;
+  min-height: 10px;
+}
 
 /* Custom CSS to reduce the header and toolbar space */
 .custom-header {
-    height: 40px; /* Adjust the height as needed */
-  }
-  
-  .custom-toolbar {
-    min-height: 40px; /* Decrease the toolbar height */
-    padding: 0; /* Remove padding */
-  }
-  
-
-
-  .row-data {
-    margin: 2px !important;       /* Remove margin around the row */
-    padding: 2px !important;      /* Remove padding around the row */
-  }
-  
-  .custom-ion-col {
-    padding: 0 !important;      /* Remove padding for the columns */
-    margin: 0 !important;       /* Remove margin for the columns */
-  }
-  
-  .ion-no-margin {
-    --ion-margin: 0 !important; /* Ensure no margin on IonRow */
-  }
-  
-  .ion-no-padding {
-    --ion-padding: 0 !important; /* Ensure no padding on IonRow */
-  }
-  
-  .ion-col {
-    padding: 0 !important;      /* Reset padding for IonCol */
-    margin: 0 !important;       /* Reset margin for IonCol */
-  }
-  
-
-  .bottom-spacer {
-    height: 50px; /* Adjust this value to increase or decrease spacing */
+  height: 40px; /* Adjust the height as needed */
 }
 
+.custom-toolbar {
+  min-height: 40px; /* Decrease the toolbar height */
+  padding: 0; /* Remove padding */
+}
+
+.row-data {
+  margin: 2px !important; /* Remove margin around the row */
+  padding: 2px !important; /* Remove padding around the row */
+}
+
+.custom-ion-col {
+  padding: 0 !important; /* Remove padding for the columns */
+  margin: 0 !important; /* Remove margin for the columns */
+}
+
+.ion-no-margin {
+  --ion-margin: 0 !important; /* Ensure no margin on IonRow */
+}
+
+.ion-no-padding {
+  --ion-padding: 0 !important; /* Ensure no padding on IonRow */
+}
+
+.ion-col {
+  padding: 0 !important; /* Reset padding for IonCol */
+  margin: 0 !important; /* Reset margin for IonCol */
+}
+
+.bottom-spacer {
+  height: 50px; /* Adjust this value to increase or decrease spacing */
+}
 
 .fixed-header-container {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 10; /* Ensures it stays on top */
-    background-color: white; /* Ensure it has a background */
-  }
-  
-  .no-scroll {
-    overflow: hidden; /* Prevents scrolling */
-    height: 100vh; /* Use viewport height */
-  }
-  .scrollable-content {
-    max-height: 70vh; /* Adjust based on your design */
-    overflow-y: auto; /* Allows vertical scrolling */
-  }
-  
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10; /* Ensures it stays on top */
+  background-color: white; /* Ensure it has a background */
+}
+
+.no-scroll {
+  overflow: hidden; /* Prevents scrolling */
+  height: 100vh; /* Use viewport height */
+}
+.scrollable-content {
+  max-height: 70vh; /* Adjust based on your design */
+  overflow-y: auto; /* Allows vertical scrolling */
+}
+
+.column-border {
+  border-right: 2px solid #070089;
+}
+
+.space{
+    padding: 1%;
+}
+
+.column-border:last-child {
+  border-right: none;
+}
+
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.color-with-radius{
+    background-color: #57e3edd5;
+    border-radius: 5px;
+}

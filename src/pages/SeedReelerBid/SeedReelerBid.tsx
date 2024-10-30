@@ -9,12 +9,12 @@ import { App } from '@capacitor/app';
 import TimeTicker from '../../components/TimeTicker';
 import { Geolocation } from '@capacitor/geolocation';
 import { options } from 'ionicons/icons';
-import PopupForm from './PopupForm';
+import PopupForm from './SeedReelerPopupForm';
  //import { API_URL, API_URL_Market } from '../../services/auth.service';
 import {  API_URL_Market, API_URL_Master } from '../../services/auth.service';
 
 
-const Bid: React.FC = () => {
+const SeedReelerBid: React.FC = () => {
 
   const { name } = useParams<{ name: string; }>();
 
@@ -304,15 +304,18 @@ const Bid: React.FC = () => {
     //   77.5602775
     // };
    
-    // let mrktloc = {
-    //   lat: localStorage.getItem("marketLat"), 
-    //   lng: localStorage.getItem("marketLongitude")
-    // };
-
     let mrktloc = {
-      lat: 12.9927085,
-      lng: 77.5540493
+      lat: localStorage.getItem("marketLat"), 
+      lng: localStorage.getItem("marketLongitude")
     };
+
+//     let mrktloc = {
+//       lat: 
+//       12.9927085,
+//       lng: 
+      
+// 77.5540493
+//     };
     //  let mrktloc = {
     //   lat:12.959744,
     //   lng: 77.6404992
@@ -746,7 +749,7 @@ const Bid: React.FC = () => {
               <IonRow>
                 <IonCol>
                   <IonButton id="bid-btn" expand="full" size="default" onClick={generateBidAmount} 
-                  disabled={isButtonDisabled}
+                  // disabled={isButtonDisabled}
                   >Bid</IonButton>
                   {/* <IonButton id="bid-btn" expand="full" size="large">Bid</IonButton> */}
                 </IonCol>
@@ -756,51 +759,41 @@ const Bid: React.FC = () => {
               </IonRow>
             </IonGrid>
 
-            {/* <IonItem className='item-background-color'> */}
-            <IonRow className='row-data ion-no-margin ion-no-padding color-with-radius'>
-            <IonCol size="3" className='center column-border space'>
+            <IonItem className='item-background-color'>
+            <IonCol size="3" className='column-border'>
               <IonLabel className='table-header'>Re-Bid</IonLabel>
                     </IonCol>
-                    <IonCol size="2" className='center column-border'>
+                    <IonCol size="2" className='column-border'>
               <IonLabel className='table-header'>Lt No</IonLabel>
                     </IonCol>
-                    <IonCol size="2" className='center column-border'>
+                    <IonCol size="2" className='column-border'>
               <IonLabel className='table-header'>Bid Amt</IonLabel>
                     </IonCol>
-                    <IonCol size="3" className='center column-border'>
+                    <IonCol size="3" className='column-border'>
               <IonLabel className='table-header'>Curr. Bid</IonLabel>
                     </IonCol>
-                    <IonCol size="2" className='center column-border'>
+                    <IonCol size="2" className='column-border'>
               <IonLabel className='table-header'>Y/N</IonLabel>
                     </IonCol>
-              </IonRow>
-            {/* </IonItem> */}
+            </IonItem>
             {bidData.map((item) => (
   <IonCol size='12' key={item.allottedLotId} className="custom-ion-col">
-    <IonRow className='row-data ion-no-margin ion-no-padding color-with-radius' >
-      <IonCol size="3" className='center column-border'
-      // className={item.awarded ? "awarded-label" : "not-awarded-label"}
-      >
+    <IonRow className='row-data ion-no-margin ion-no-padding'>
+      <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
         <IonButton className='re-bid-button' size="small" onClick={(e) => handleReBid(e, item.allottedLotId, inputRef1)}>
           Re-Bid
         </IonButton>
       </IonCol>
-      <IonCol size="2" className='center column-border'
-      // className={item.awarded ? "awarded-label" : "not-awarded-label"}
-      >
+      <IonCol size="2" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
         <IonLabel>{item.allottedLotId}</IonLabel>
       </IonCol>
-      <IonCol size="2" className='center column-border'
-      // className={item.awarded ? "awarded-label" : "not-awarded-label"}
-      >
+      <IonCol size="2" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
         <IonLabel>{item.myBidAmount}</IonLabel>
       </IonCol>
-      <IonCol size="3" className='center column-border'>
-        <IonLabel className={item.awarded ? "awarded-label" : "not-awarded-label"}>{item.highestBidAmount}</IonLabel>
+      <IonCol size="3" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
+        <IonLabel>{item.highestBidAmount}</IonLabel>
       </IonCol>
-      <IonCol size="2" className='center column-border'
-      // className={item.awarded ? "awarded-label" : "not-awarded-label"}
-      >
+      <IonCol size="2" className={item.awarded ? "awarded-label" : "not-awarded-label"}>
         <IonLabel>{item.status}</IonLabel>
       </IonCol>
     </IonRow>
@@ -937,4 +930,4 @@ const Bid: React.FC = () => {
   );
 };
 
-export default Bid;
+export default SeedReelerBid;

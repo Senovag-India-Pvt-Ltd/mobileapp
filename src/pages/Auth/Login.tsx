@@ -219,6 +219,8 @@ const Login: React.FC = () => {
             history.push("/bid/" + email);
           }else if (localStorage.getItem("userType") == '3') {
             history.push("/traderbid/"+email);
+          }else if(localStorage.getItem("userType") == '4'){
+            history.push("/seed-reeler-bid/"+email);
           } else {
             history.push("/accept-bid");
           }
