@@ -807,7 +807,8 @@ const Bid: React.FC = () => {
   </IonCol>
 ))}
 
-
+{/* Add a blank space or margin at the bottom */}
+<div style={{ height: '35px' }}></div>
 
           </IonContent>
 

@@ -222,7 +222,7 @@ const Login: React.FC = () => {
           }else if(localStorage.getItem("userType") == '4'){
             history.push("/seed-reeler-bid/"+email);
           } else {
-            history.push("/accept-bid");
+            history.push("/homeLink");
           }
         }
       } else {
