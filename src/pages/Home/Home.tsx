@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonRow, IonCol, IonImg, IonButtons, IonMenuButton, IonButton, IonIcon, useIonRouter } from '@ionic/react';
-import './Home.css';
+// import './Home.css';
 import { arrowBackOutline } from 'ionicons/icons';
 
 const Home: React.FC = () => {
