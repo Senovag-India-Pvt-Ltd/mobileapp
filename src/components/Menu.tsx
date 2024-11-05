@@ -60,6 +60,12 @@ const appPages: AppPage[] = [
     mdIcon: paperPlaneSharp
   },
   {
+    title: 'Seed Market Reeler Accept Bid',
+    url: '/seed-accept-bid',
+    iosIcon: paperPlaneOutline,
+    mdIcon: paperPlaneSharp
+  },
+  {
     title: 'Service Dashboard',
     url: '/dash',
     iosIcon: gridSharp,

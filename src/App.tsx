@@ -46,6 +46,7 @@ import TraderBid from './pages/Trader Bid/TraderBid';
 import TraderBidAccept from './pages/TraderBidAccept/TraderBidAccept';
 import Home from './pages/Home/Home';
 import SeedReelerBid from './pages/SeedReelerBid/SeedReelerBid';
+import SeedReelerBidAccept from './pages/SeedReelerBidAccept/SeedReelerBidAccept';
 
 
 
@@ -135,6 +136,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/traderaccept-bid" exact={true}>
               <TraderBidAccept/>
+            </Route>
+            <Route path="/seed-accept-bid" exact={true}>
+              <SeedReelerBidAccept />
             </Route>
             <Route path="/change-password" exact={true}>
               <ChangePassword />

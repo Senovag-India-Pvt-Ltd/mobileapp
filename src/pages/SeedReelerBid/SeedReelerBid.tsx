@@ -1,4 +1,4 @@
-import { InputChangeEventDetail, IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonItem, IonItemDivider, IonLabel, IonMenuButton, IonPage, IonRow, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
+import { InputChangeEventDetail,IonDatetime, IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonItem, IonItemDivider, IonLabel, IonMenuButton, IonPage, IonRow, IonSegment, IonSegmentButton, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
 import { useHistory, useLocation, useParams } from 'react-router';
 import ExploreContainer from '../../components/ExploreContainer';
 import './../Bid/Bid.css';
@@ -24,9 +24,16 @@ const SeedReelerBid: React.FC = () => {
   const [reelerId, setReelerId] = useState<number>(3);
   const [amount, setAmount] = useState<number>();
   const [status, setStatus] = useState<string>('StatusString');
-  const [auctionDate, setAuctionDate] = useState<string>('2023-12-02');
+  const [auctionDate, setAuctionDate] = useState<string>();
+  useEffect(() => {
+    const today = new Date();
+    setAuctionDate(today.toISOString().split('T')[0]); // Sets the date in YYYY-MM-DD format
+  }, []);
+
   const [surrogateBid, setSurrogateBid] = useState<boolean>(false);
   const [auctionNumber, setAuctionNumber] = useState<string>('AUCTION1');
+  const [showHatchingDatePicker, setShowHatchingDatePicker] =
+  useState<boolean>(false);
 
   const [iserror, setIserror] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
@@ -88,46 +95,47 @@ const SeedReelerBid: React.FC = () => {
     setShowPopup(false);
   };
 
-  const checkReelerMinBalance = () => {
-    const submitBidData = {
-      "marketId": parseInt(localStorage.getItem("marketId")!),
-      "godownId": parseInt(localStorage.getItem("godownId")!),
-      "reelerId": parseInt(localStorage.getItem("userTypeId")!)
-    }
+  // const checkReelerMinBalance = () => {
+  //   const submitBidData = {
+  //     "marketId": parseInt(localStorage.getItem("marketId")!),
+  //     "godownId": parseInt(localStorage.getItem("godownId")!),
+  //     "reelerId": parseInt(localStorage.getItem("userTypeId")!),
+  //     "auctionDate": auctionDate,
+  //   }
 
-    const api = axios.create({
-      //  baseURL: API_URL,
-       baseURL: API_URL_Market
-    })
-    api.post("market-auction/v1/auction/seedMarketAuction/getReelerBalance", submitBidData, {
-      headers: {
-        "Content-Type": "application/json",
-        accept: "*/*",
-        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-      },
-    })
-      .then(res => {
-        console.log(res.data)
-        handleLotClear();
-        if (res.data.content.balance < res.data.content.minimumMarketBalance) {
-          setMessage("Reeler minimum balance should be "+res.data.content.minimumMarketBalance);
-          setIserror(true)
-          setIsMinimumBalanceValid(false)
-          setButtonDisabled(true)
-        }else{
-          setIsMinimumBalanceValid(true)
-          if(isUserInExactLocation == true && isMinimumBalanceValid == true){
-          setButtonDisabled(false)
-          }
-        }
-      })
-      .catch(error => {
-        setIsMinimumBalanceValid(false)
-        setMessage("Failed to check reeler balance");
-        setIserror(true)
-        setButtonDisabled(true)
-      })
-  }
+  //   const api = axios.create({
+  //     //  baseURL: API_URL,
+  //      baseURL: API_URL_Market
+  //   })
+  //   api.post("market-auction/v1/auction/seedMarketAuction/getReelerBalance", submitBidData, {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       accept: "*/*",
+  //       Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+  //     },
+  //   })
+  //     .then(res => {
+  //       console.log(res.data)
+  //       handleLotClear();
+  //       if (res.data.content.balance < res.data.content.minimumMarketBalance) {
+  //         setMessage("Reeler minimum balance should be "+res.data.content.minimumMarketBalance);
+  //         setIserror(true)
+  //         setIsMinimumBalanceValid(false)
+  //         setButtonDisabled(true)
+  //       }else{
+  //         setIsMinimumBalanceValid(true)
+  //         if(isUserInExactLocation == true && isMinimumBalanceValid == true){
+  //         setButtonDisabled(false)
+  //         }
+  //       }
+  //     })
+  //     .catch(error => {
+  //       setIsMinimumBalanceValid(false)
+  //       setMessage("Failed to check reeler balance");
+  //       setIserror(true)
+  //       setButtonDisabled(true)
+  //     })
+  // }
 
   // const getReelerNumber = () => {
   //   const reelerPayload = {
@@ -386,7 +394,7 @@ const SeedReelerBid: React.FC = () => {
 
   useEffect(() => {
     startTimer();
-    checkReelerMinBalance();
+    // checkReelerMinBalance();
     inputRefLot.current?.setFocus();
     getDeviceLocation();
     const currentDate = new Date();
@@ -468,6 +476,7 @@ const SeedReelerBid: React.FC = () => {
       "marketId": parseInt(localStorage.getItem("marketId")!),
       "godownId": parseInt(localStorage.getItem("godownId")!), //userMasterId
       "allottedLotId": lotId,
+      "auctionDate": auctionDate,
       "reelerId": parseInt(localStorage.getItem("userTypeId")!),
       "amount": amount,
       "auctionNumber": auctionNumber
@@ -508,6 +517,7 @@ const SeedReelerBid: React.FC = () => {
     const highestBidData = {
       "marketId": parseInt(localStorage.getItem("marketId")!),
       "godownId": parseInt(localStorage.getItem("godownId")!),
+      "auctionDate": auctionDate,
       "allottedLotId": parseInt(_lotid)
     }
 
@@ -547,6 +557,7 @@ const SeedReelerBid: React.FC = () => {
       "marketId": parseInt(localStorage.getItem("marketId")!),
       "godownId": parseInt(localStorage.getItem("godownId")!),
       "reelerId": parseInt(localStorage.getItem("userTypeId")!),
+      "auctionDate": auctionDate,
     }
 
     const api = axios.create({
@@ -652,7 +663,7 @@ const SeedReelerBid: React.FC = () => {
           <IonContent fullscreen className="ion-padding">
             <IonGrid>
               <IonRow>
-                <IonCol>
+                <IonCol size="6">
                   <IonInput className='input-big-font-size' inputmode="numeric" value={lotNumberValue}
                   onIonBlur= { async (e: any) => {
                     // After focus out, automatically focus on the next input field
@@ -661,6 +672,53 @@ const SeedReelerBid: React.FC = () => {
                   }}
                     label="Lot No" labelPlacement="stacked" fill="outline" ref={inputRefLot}></IonInput>
                 </IonCol>
+
+                {/* <IonCol>
+                <IonItem>
+                  <IonLabel position="stacked">
+                    Auction Date
+                    <span className="text-danger">*</span>
+                  </IonLabel>
+                  <div className="form-control-wrap">
+                    <DatePicker
+                      selected={new Date(auctionDate)} // Use state for the date value
+                      onChange={(date) => setAuctionDate(date)} // Set the date value
+                      dateFormat="dd/MM/yyyy" // Desired date format
+                      className="form-control" // Add your class for styling
+                      required
+                      placeholderText="Select Date" // Placeholder text until a date is selected
+                      // Additional props can be added as needed
+                    />
+                  </div>
+                </IonItem>
+              </IonCol> */}
+
+              <IonCol size="6"> {/* Adjust size to balance layout */}
+                  <div className="details-row" style={{ position: 'relative' }}>
+                    <IonLabel>Hatching Date:</IonLabel>
+                    <div
+                      onClick={() => setShowHatchingDatePicker(true)}
+                      className="date-display"
+                      style={{ marginTop: '5px', cursor: 'pointer' }} // Adjusted margin
+                    >
+                      {auctionDate
+                        ? new Date(auctionDate).toLocaleDateString()
+                        : "Select Date"}
+                    </div>
+                    {showHatchingDatePicker && (
+                      <IonDatetime
+                        value={auctionDate} // Ensure it reflects the selected date
+                        onIonChange={(e) => {
+                          setAuctionDate(e.detail.value); // Update state with selected date
+                          setShowHatchingDatePicker(false);
+                        }}
+                        onIonCancel={() => setShowHatchingDatePicker(false)}
+                        max={new Date().toISOString().split('T')[0]}
+                      />
+                    )}
+                  </div>
+                </IonCol>
+
                 <IonCol>
                   <IonButton size="default" style={{marginTop: '-1px'}} onClick={handleLotClear}>Clr</IonButton>
                 </IonCol>
@@ -668,6 +726,11 @@ const SeedReelerBid: React.FC = () => {
                   <IonLabel className='highest-bid-label' style={{marginTop: '-1px'}}>{highestBidForLot}</IonLabel>
                 </IonCol>
               </IonRow>
+
+              {/* <IonRow> */}
+              
+            {/* </IonRow> */}
+
               <IonRow>
                 <IonCol>
                   <h5>Bid Amount</h5>
