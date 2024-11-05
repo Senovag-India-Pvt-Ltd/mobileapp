@@ -99,7 +99,7 @@ const SeedReelerBid: React.FC = () => {
       //  baseURL: API_URL,
        baseURL: API_URL_Market
     })
-    api.post("market-auction/v1/auction/reeler/getReelerBalance", submitBidData, {
+    api.post("market-auction/v1/auction/seedMarketAuction/getReelerBalance", submitBidData, {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
@@ -205,7 +205,7 @@ const SeedReelerBid: React.FC = () => {
        // baseURL: API_URL,
       baseURL: API_URL_Market,
     })
-    api.post("market-auction/v1/auction/report/getReelerReportForApp", reelerTransactionReportData, {
+    api.post("market-auction/v1/auction/report/getSeedMarketReelerReportForApp", reelerTransactionReportData, {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
@@ -477,7 +477,7 @@ const SeedReelerBid: React.FC = () => {
        // baseURL: API_URL,
       baseURL: API_URL_Market,
     })
-    api.post("market-auction/v1/auction/reeler/submitBid", submitBidData, {
+    api.post("market-auction/v1/auction/seedMarketAuction/submitBid", submitBidData, {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
@@ -515,7 +515,7 @@ const SeedReelerBid: React.FC = () => {
       //  baseURL: API_URL,
       baseURL: API_URL_Market,
     })
-    api.post("market-auction/v1/auction/reeler/getHighestBidPerLot", highestBidData, {
+    api.post("market-auction/v1/auction/seedMarketAuction/getHighestBidPerLot", highestBidData, {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
@@ -553,7 +553,7 @@ const SeedReelerBid: React.FC = () => {
       // baseURL: API_URL,
       baseURL: API_URL_Market,
     })
-    api.post("market-auction/v1/auction/reeler/getHighestAndCurrentBidByEachLotForReeler", submitData, {
+    api.post("market-auction/v1/auction/seedMarketAuction/getHighestAndCurrentBidByEachLotForReeler", submitData, {
       headers: {
         "Content-Type": "application/json",
         accept: "*/*",
