@@ -38,11 +38,16 @@ import jwtDecode from 'jwt-decode';
 // export const API_URL_Inspection = 'https://api.senovagseri.com/';
 // export const API_URL_DBT_ = 'https://api.senovagseri.com/';
 
+export const API_URL_Market = 'http://localhost:8002/';
+export const API_URL_Master = 'http://localhost:8001/';
+export const API_URL_Inspection = 'http://localhost:8010/';
+export const API_URL_DBT_ = 'http://localhost:8013/';
 
-export const API_URL_Market = 'https://e-reshme.karnataka.gov.in/';
-export const API_URL_Master = 'https://e-reshme.karnataka.gov.in/';
-export const API_URL_Inspection = 'https://e-reshme.karnataka.gov.in/';
-export const API_URL_DBT_ = 'https://e-reshme.karnataka.gov.in/';
+
+// export const API_URL_Market = 'https://e-reshme.karnataka.gov.in/';
+// export const API_URL_Master = 'https://e-reshme.karnataka.gov.in/';
+// export const API_URL_Inspection = 'https://e-reshme.karnataka.gov.in/';
+// export const API_URL_DBT_ = 'https://e-reshme.karnataka.gov.in/';
 
 const authService = {
   login: async (username: string, password: string) => {
