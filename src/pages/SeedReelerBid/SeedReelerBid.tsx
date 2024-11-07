@@ -695,7 +695,7 @@ const SeedReelerBid: React.FC = () => {
 
               <IonCol size="6"> {/* Adjust size to balance layout */}
                   <div className="details-row" style={{ position: 'relative' }}>
-                    <IonLabel>Hatching Date:</IonLabel>
+                    <IonLabel>Auction Date:</IonLabel>
                     <div
                       onClick={() => setShowHatchingDatePicker(true)}
                       className="date-display"
