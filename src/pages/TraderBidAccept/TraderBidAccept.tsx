@@ -512,7 +512,7 @@ const BidAccept: React.FC = () => {
                   <IonGrid>
                     <IonRow>
                       <IonCol className='row-header content-margin'>
-                        <IonLabel className='label-content'><h6>Reeler Details</h6></IonLabel>
+                        <IonLabel className='label-content'><h6>Trader Details</h6></IonLabel>
                       </IonCol>
                     </IonRow>
                     {/* <IonRow className='first-row'>
@@ -522,13 +522,13 @@ const BidAccept: React.FC = () => {
                     </IonRow> */}
                     <IonRow className='next-row'>
                       <IonCol class='col-padding'>
-                        <IonItem  className='content-padding'>{reelerName}</IonItem>
+                        <IonItem  className='content-padding'>{traderName}</IonItem>
                       </IonCol>
                     </IonRow>
                     {reelerVillage && (
                       <IonRow className='next-row'>
                         <IonCol class='col-padding'>
-                          <IonItem  className='content-padding'>{reelerVillage}</IonItem>
+                          <IonItem  className='content-padding'>{traderLicenseNumber}</IonItem>
                         </IonCol>
                       </IonRow>
                     )}

@@ -574,6 +574,7 @@ const DocPage: React.FC = () => {
   const [comment, setComment] = useState<string>("");
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<boolean>(false);
+  const [validationError, setValidationError] = useState<boolean>(false);
 
   // Rejection reasons
   const [rejectionReason, setRejectionReason] = useState<string>(""); // Rejection reason state
@@ -776,6 +777,11 @@ const DocPage: React.FC = () => {
   };
 
   const handleSubmit = () => {
+
+    if (!selectedNextstep) {
+      setValidationError(true);
+      return;
+    }
     updateInspectionTaskStatus();
     setSubmitSuccess(true);
     setTimeout(() => setSubmitSuccess(false), 3000);
@@ -947,7 +953,7 @@ const DocPage: React.FC = () => {
             {/* Username Dropdown */}
             <IonCol size="12">
               <IonLabel>
-                <b>Select NextStep:</b>
+                <b>Select Approval Stage:</b>
               </IonLabel>
               <IonSelect
                 value={selectedNextstep}
@@ -1003,6 +1009,12 @@ const DocPage: React.FC = () => {
 
       {/* Toasts */}
       <IonToast
+        isOpen={validationError}
+        onDidDismiss={() => setValidationError(false)}
+        message="Selecting Approval Stage is Mandatory"
+        duration={3000}
+      />
+      <IonToast
         isOpen={submitSuccess}
         onDidDismiss={() => setSubmitSuccess(false)}
         message="Successfully submitted"
@@ -1015,7 +1027,10 @@ const DocPage: React.FC = () => {
         message="Error submitting data"
         duration={3000}
       />
+
+
     </IonPage>
+    
   );
 };
 
